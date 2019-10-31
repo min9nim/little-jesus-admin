@@ -22,7 +22,7 @@
       :disabled="state.pointInit && state.editable"
       @change="handleDateChange"
     )
-  template(v-if="!state.loading")
+  template
     .form(v-for="(point, index) in globalState.points" :key="index")
       read-point(v-if="!state.editable" :point="point")
       edit-point(v-else :studentId="point.owner._id")

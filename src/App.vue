@@ -1,8 +1,10 @@
 <template lang="pug">
 #app
   #nav
-    router-link(to="/") 출석체크
-    router-link(to="/points") 포인트현황
+    router-link(to="/") Home
+    router-link(to="/teachers") Teachers
+    router-link(to="/students") Students
+    router-link(to="/points") Points
   router-view
 </template>
 
