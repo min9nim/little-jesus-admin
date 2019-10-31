@@ -1,38 +1,9 @@
 <template lang="pug">
 .home(v-loading='state.loading')
-  .options
-    el-select.teacher(
-      v-model="globalState.teacherId"
-      placeholder="선생님 선택"
-      @change="handleTeacherChange"
-    )
-      el-option(
-        v-for="item in globalState.teachers"
-        :key="item._id"
-        :label="item.name"
-        :value="item._id"
-      )
-    el-date-picker.date(
-      v-model="state.date"
-      type="date"
-      :clearable="false"
-      format="yyyy-MM-dd"
-      value-format="yyyyMMdd"
-      placeholder="날짜 선택"
-      :disabled="state.pointInit && state.editable"
-      @change="handleDateChange"
-    )
-  template
-    .form(v-for="(point, index) in globalState.points" :key="index")
-      read-point(v-if="!state.editable" :point="point")
-      edit-point(v-else :studentId="point.owner._id")
-    .btn(v-show="globalState.points.length > 0")
-      template(v-if="state.editable")
-        el-button(@click="handleSave") 저장
-        el-button(v-if="state.pointInit" @click="handleCancel") 취소
-      template(v-else)
-        el-button(@click="handleEdit") 수정
-        el-button(@click="handleRemove") 삭제
+  .teachers 선생님
+    .list
+      el-tag.item(v-for="item in globalState.teachers") {{item.name}}
+    
 </template>
 
 <script lang="ts">
@@ -84,32 +55,8 @@ export default {
   // margin: 0 10px;
   padding: 5px;
   text-align: left;
-
-  .options {
-    .teacher {
-      width: 130px;
-    }
-
-    .date {
-      cursor: pointer;
-      margin-left: 5px;
-      width: 140px;
-    }
+  .item {
+    margin: 5px;
   }
-
-  .form {
-    margin: 5px 0;
-    border: 1px solid #ddd;
-    padding: 10px;
-  }
-
-  .btn {
-    margin-top: 10px;
-  }
-}
-</style>
-<style lang="stylus">
-.el-input--prefix .el-input__inner {
-  cursor: pointer;
 }
 </style>

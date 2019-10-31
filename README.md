@@ -1,4 +1,4 @@
-# little-jesus-vue
+# little-jesus-admin
 
 ## Project setup
 ```

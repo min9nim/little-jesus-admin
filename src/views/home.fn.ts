@@ -58,42 +58,9 @@ export function useBeforeMount({root, state, globalState}: any) {
 }
 export async function initPoints({state, globalState}: IAllState) {
   state.loading = true
-  const result: any = await req(qPoints, {
-    date: state.date,
-    teacherId: globalState.teacherId,
-  })
+  const result: any = await req(qPoints)
+  globalState.points = result.res
   state.loading = false
-  const points: IPoint[] = result.res
-
-  if (points.length > 0) {
-    globalState.points = points
-    state.pointInit = true
-    state.editable = false
-    return
-  }
-  const teacher: ITeacher | undefined = globalState.teachers.find(
-    propEq('_id', globalState.teacherId),
-  )
-  if (!teacher) {
-    console.warn('Teacher is not selected yet')
-    return
-  }
-  globalState.points = teacher.students.map(student => {
-    return {
-      owner: {
-        _id: student._id,
-        name: student.name,
-      },
-      attendance: false,
-      visitcall: false,
-      meditation: 0,
-      invitation: 0,
-      recitation: false,
-      etc: '',
-    }
-  })
-  state.pointInit = false
-  state.editable = true
 }
 
 export async function initTeachers({state, globalState}: IAllState) {
