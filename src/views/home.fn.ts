@@ -4,7 +4,9 @@ import {prop} from 'ramda'
 import moment from 'moment'
 import {qCreatePoint, qTeachers, qPoints, qUpdatePoint, qRemovePoint} from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
-import {IGlobalState, ITeacher, IPoint} from '@/biz/type'
+import {IGlobalState, ITeacher, IStudent} from '@/biz/type'
+import {propEq, eqProps} from 'ramda'
+import {exclude} from '../utils'
 
 export interface IState {
   date?: string
@@ -12,6 +14,7 @@ export interface IState {
   loading: boolean
   pointInit?: boolean
   editable?: boolean
+  studentsLeft: IStudent[]
 }
 
 export interface IAllState {
@@ -28,6 +31,7 @@ export function useState(): IState {
     loading: false,
     pointInit: false,
     editable: false,
+    studentsLeft: [],
   })
   state.oldDate = state.date
   return state
@@ -169,5 +173,31 @@ export function useHandleRemove({state}: {state: IState}) {
         throw e
       }
     }
+  }
+}
+
+export function useHandleNewStudentChange(state: IState) {
+  return async (teacher: ITeacher) => {
+    if (!teacher.newStudentId) {
+      throw Error('Noy found newStudentdId')
+    }
+    const newStudent = state.studentsLeft.find(propEq('_id', teacher.newStudentId))
+    if (!newStudent) {
+      throw Error('Not found newStduent')
+    }
+    teacher.students.push(newStudent)
+    state.studentsLeft = exclude(propEq('_id', teacher.newStudentId))(state.studentsLeft)
+    teacher.newStudentId = ''
+  }
+}
+
+export function useHandleClose(state: IState) {
+  return (teacher: ITeacher, student: IStudent) => {
+    const studentClosed = teacher.students.find(eqProps('_id', student))
+    if (!studentClosed) {
+      throw Error('Not foudn studentdClosed')
+    }
+    state.studentsLeft.push(studentClosed)
+    teacher.students = exclude(eqProps('_id', student))(teacher.students)
   }
 }

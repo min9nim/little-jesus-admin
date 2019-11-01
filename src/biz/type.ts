@@ -1,12 +1,14 @@
-
 export interface IStudent {
   _id: string
   name: string
+  disable?: boolean
 }
 export interface ITeacher {
   _id: string
   name: string
+  disable?: boolean
   students: IStudent[]
+  newStudentId?: string
 }
 export interface IPoint {
   _id?: string
@@ -23,9 +25,7 @@ export interface IPoint {
   etc: string
 }
 
-
 export interface IGlobalState {
-  teacherId?: string
   teachers: ITeacher[]
   points: IPoint[]
 }

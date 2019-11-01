@@ -1,10 +1,28 @@
 <template lang="pug">
 .home(v-loading='state.loading')
   .teachers
-    h3 * 선생님 목록 *
+    h3 선생님&학생 현황
     div.teacher(v-for="teacher in globalState.teachers" :key="teacher._id")
-      h4.teacherName {{teacher.name}}
-      el-tag.item(v-for="student in teacher.students" :key="student._id") {{student.name}}
+      .teacherName
+        h4 {{teacher.name}}
+      .item(v-for="(student, index) in teacher.students" :key="student._id")
+        el-tag(
+          closable
+          @close="handleClose(teacher, student)"
+        ) {{student.name}}
+      .new-student(v-if="state.studentsLeft.length > 0")
+        el-select.studentsLeft(
+          v-model="teacher.newStudentId"
+          placeholder="학생 추가"
+          size="mini"
+          @change="handleNewStudentChange(teacher)"
+        )
+          el-option.newStudent(
+            v-for="item in state.studentsLeft"
+            :key="item._id"
+            :label="item.name"
+            :value="item._id"
+          )
     
 </template>
 
@@ -20,10 +38,14 @@ import {
   useHandleTeacherChange,
   useHandleEdit,
   useHandleRemove,
+  useHandleClose,
+  useHandleNewStudentChange,
 } from './home.fn'
 import EditPoint from '../components/EditPoint.vue'
 import ReadPoint from '../components/ReadPoint.vue'
-import {IGlobalState, IPoint, ITeacher} from '../biz/type'
+import {IGlobalState, IPoint, ITeacher, IStudent} from '../biz/type'
+import {remove, equals, propEq, eqProps} from 'ramda'
+import {exclude} from '../utils'
 
 export default {
   name: 'v-home',
@@ -35,6 +57,8 @@ export default {
     return {
       state,
       globalState,
+      handleClose: useHandleClose(state),
+      handleNewStudentChange: useHandleNewStudentChange(state),
     }
   },
 }
@@ -48,12 +72,22 @@ export default {
   .teachers {
     .teacher {
       margin: 20px 0;
+
       .teacherName {
         margin: 10px 0 3px 0;
       }
 
       .item {
-        margin: 2px 3px ;
+        margin: 2px 3px;
+        display: inline-block;
+      }
+
+      .new-student {
+        margin-top: 5px;
+
+        .studentsLeft {
+          width: 100px;
+        }
       }
     }
   }
