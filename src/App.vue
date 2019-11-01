@@ -1,7 +1,7 @@
 <template lang="pug">
 #app
   #nav
-    router-link(to="/") Home
+    router-link(to="/") Classes
     router-link(to="/teachers") Teachers
     router-link(to="/students") Students
     router-link(to="/points") Points

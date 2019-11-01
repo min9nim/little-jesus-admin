@@ -52,15 +52,10 @@ export function useGlobalState(): IGlobalState {
 
 export function useBeforeMount({state, globalState}: any) {
   return async () => {
-    await initTeachers({state, globalState})
-    // await initPoints({state, globalState})
+    if (globalState.teachers.length === 0) {
+      await initTeachers({state, globalState})
+    }
   }
-}
-export async function initPoints({state, globalState}: IAllState) {
-  state.loading = true
-  const result: any = await req(qPoints)
-  globalState.points = result.res
-  state.loading = false
 }
 
 export async function initTeachers({state, globalState}: IAllState) {
@@ -128,51 +123,9 @@ export async function createPoint({state, globalState}: IAllState) {
   Notification.success({message: '저장 완료', position: 'bottom-right'})
 }
 
-export function useHandleDateChange({state, globalState}: IAllState) {
-  return async (value: string) => {
-    if (moment(value, 'YYYYMMDD').format('dddd') !== 'Sunday') {
-      await MessageBox.alert('일요일만 선택가능합니다', {type: 'warning'})
-      state.date = state.oldDate
-      return
-    }
-    state.oldDate = state.date
-    await initPoints({state, globalState})
-  }
-}
-
-export function useHandleTeacherChange({state, globalState}: IAllState) {
-  return async (teacherId: string) => {
-    localStorage.setItem('teacherId', teacherId)
-    await initPoints({state, globalState})
-  }
-}
-
 export function useHandleEdit({state}: {state: IState}) {
   return () => {
     state.editable = true
-  }
-}
-export function useHandleRemove({state}: {state: IState}) {
-  return async () => {
-    try {
-      await MessageBox.confirm('입력했던 내용을 전부 삭제합니다', {type: 'warning'})
-      const globalState = useGlobalState()
-      state.loading = true
-      const results: Array<Promise<any>> = globalState.points.map(point =>
-        req(qRemovePoint, {_id: point._id}),
-      )
-      await Promise.all(results)
-      state.loading = false
-      // await Message({message: '삭제 완료', type: 'success'})
-      // @ts-ignore
-      Notification.success({message: '삭제 완료', position: 'bottom-right'})
-
-      await initPoints({state, globalState})
-    } catch (e) {
-      if (e !== 'cancel') {
-        throw e
-      }
-    }
   }
 }
 
