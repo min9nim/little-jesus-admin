@@ -1,8 +1,10 @@
 <template lang="pug">
 .home(v-loading='state.loading')
-  .teachers 선생님
-    .list
-      el-tag.item(v-for="item in globalState.teachers") {{item.name}}
+  .teachers
+    h3 * 선생님 목록 *
+    div.teacher(v-for="teacher in globalState.teachers" :key="teacher._id")
+      h4.teacherName {{teacher.name}}
+      el-tag.item(v-for="student in teacher.students" :key="student._id") {{student.name}}
     
 </template>
 
@@ -29,23 +31,10 @@ export default {
   setup(props: any, {root}: any) {
     const globalState: IGlobalState = useGlobalState()
     const state: IState = useState()
-    const handleTeacherChange = useHandleTeacherChange({state, globalState})
-    const handleDateChange = useHandleDateChange({state, globalState})
-    const handleSave = useHandleSave({state, globalState})
-    const handleEdit = useHandleEdit({state})
-    const handleRemove = useHandleRemove({state})
-    onBeforeMount(useBeforeMount({root, state, globalState}))
+    onBeforeMount(useBeforeMount({state, globalState}))
     return {
       state,
       globalState,
-      handleTeacherChange,
-      handleDateChange,
-      handleSave,
-      handleEdit,
-      handleRemove,
-      handleCancel: () => {
-        state.editable = false
-      },
     }
   },
 }
@@ -55,8 +44,18 @@ export default {
   // margin: 0 10px;
   padding: 5px;
   text-align: left;
-  .item {
-    margin: 5px;
+
+  .teachers {
+    .teacher {
+      margin: 20px 0;
+      .teacherName {
+        margin: 10px 0 3px 0;
+      }
+
+      .item {
+        margin: 2px 3px ;
+      }
+    }
   }
 }
 </style>

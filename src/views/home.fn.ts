@@ -1,6 +1,6 @@
 import {reactive} from '@vue/composition-api'
 import {req} from '@/utils'
-import {propEq, prop} from 'ramda'
+import {prop} from 'ramda'
 import moment from 'moment'
 import {qCreatePoint, qTeachers, qPoints, qUpdatePoint, qRemovePoint} from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
@@ -46,14 +46,10 @@ export function useGlobalState(): IGlobalState {
   return globalState
 }
 
-export function useBeforeMount({root, state, globalState}: any) {
+export function useBeforeMount({state, globalState}: any) {
   return async () => {
     await initTeachers({state, globalState})
-    await initPoints({state, globalState})
-    // console.log(root.$route)
-    if (root.$route.fullPath === '/?edit') {
-      state.editable = true
-    }
+    // await initPoints({state, globalState})
   }
 }
 export async function initPoints({state, globalState}: IAllState) {
