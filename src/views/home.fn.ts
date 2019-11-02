@@ -2,7 +2,13 @@ import {reactive} from '@vue/composition-api'
 import {req} from '@/utils'
 import {prop} from 'ramda'
 import moment from 'moment'
-import {qCreatePoint, qTeachers, qPoints, qUpdatePoint, qRemovePoint} from '@/biz/query'
+import {
+  qCreatePoint,
+  qTeachers,
+  qUpdatePoint,
+  qAddStudentToTeacherByName,
+  qRemoveStudentToTeacherByName,
+} from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
 import {IGlobalState, ITeacher, IStudent} from '@/biz/type'
 import {propEq, eqProps} from 'ramda'
@@ -138,19 +144,30 @@ export function useHandleNewStudentChange(state: IState) {
     if (!newStudent) {
       throw Error('Not found newStduent')
     }
+    state.loading = true
+    await req(qAddStudentToTeacherByName, {teacherName: teacher.name, studentName: student.name})
+    state.loading = false
+
     teacher.students.push(newStudent)
     state.studentsLeft = exclude(propEq('_id', teacher.newStudentId))(state.studentsLeft)
     teacher.newStudentId = ''
+    // @ts-ignore
+    Notification.success({message: '추가 완료', position: 'bottom-right'})
   }
 }
 
 export function useHandleClose(state: IState) {
-  return (teacher: ITeacher, student: IStudent) => {
+  return async (teacher: ITeacher, student: IStudent) => {
     const studentClosed = teacher.students.find(eqProps('_id', student))
     if (!studentClosed) {
-      throw Error('Not foudn studentdClosed')
+      throw Error('Not found studentdClosed')
     }
+    state.loading = true
+    await req(qRemoveStudentToTeacherByName, {teacherName: teacher.name, studentName: student.name})
+    state.loading = false
     state.studentsLeft.push(studentClosed)
     teacher.students = exclude(eqProps('_id', student))(teacher.students)
+    // @ts-ignore
+    Notification.success({message: '삭제 완료', position: 'bottom-right'})
   }
 }
