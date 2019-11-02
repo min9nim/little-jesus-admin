@@ -7,7 +7,7 @@
       el-tag.teacherName(
         closable
         @close="handleClose(teacher, index)"
-      ) {{teacher.name}}
+      ) {{teacher.name + ' (' + teacher.students.length + ')'}}
     .new-teacher
       el-input.input-new-tag(
         v-if="state.inputVisible"
