@@ -180,3 +180,29 @@ export const qAddStudentToTeacher = gql`
     }
   }
 `
+
+export const qCreateTeacher = gql`
+  mutation createTeacher($name: String!) {
+    createTeacher(name: $name) {
+      _id
+      name
+      students {
+        _id
+        name
+      }
+    }
+  }
+`
+
+export const qRemoveTeacher = gql`
+  mutation removeTeacher($_id: ObjectId!) {
+    removeTeacher(_id: $_id) {
+      _id
+      name
+      students {
+        _id
+        name
+      }
+    }
+  }
+`

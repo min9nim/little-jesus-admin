@@ -22,19 +22,12 @@
         size="small"
         @click="showInput"
       ) + 선생님 추가
-      
 </template>
 
 <script lang="ts">
 import {createComponent, onBeforeMount, onMounted} from '@vue/composition-api'
-import {
-  useBeforeMount,
-  useHandleSave,
-  useGlobalState,
-  useHandleEdit,
-  useHandleNewStudentChange,
-} from './home.fn'
-import {useState, IState, useHandleClose} from './teacher.fn'
+import {useBeforeMount, useHandleSave, useGlobalState, useHandleEdit} from './home.fn'
+import {useState, IState, useHandleClose, useHandleInputConfirm, useShowInput} from './teacher.fn'
 import {IGlobalState, IPoint, ITeacher, IStudent} from '../biz/type'
 import {remove, equals, propEq, eqProps} from 'ramda'
 import {exclude} from '../utils'
@@ -45,26 +38,17 @@ export default {
     const globalState = useGlobalState()
     const state: IState = useState()
     // @ts-ignore
-    const handleClose = useHandleClose(globalState)
+    const handleClose = useHandleClose(state, globalState)
     onBeforeMount(useBeforeMount({state, globalState}))
+    // @ts-ignore
+    const handleInputConfirm = useHandleInputConfirm(state, globalState)
+    const showInput = useShowInput({state, root, refs})
     return {
       state,
       globalState,
       handleClose,
-      showInput() {
-        state.inputVisible = true
-        root.$nextTick(() => {
-          refs.saveTagInput.$refs.input.focus()
-        })
-      },
-
-      handleInputConfirm() {
-        if (state.newTeacherName) {
-          globalState.teachers.push({_id: '', name: state.newTeacherName, students: []})
-        }
-        state.inputVisible = false
-        state.newTeacherName = ''
-      },
+      showInput,
+      handleInputConfirm,
     }
   },
 }
