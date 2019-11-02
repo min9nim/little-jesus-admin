@@ -1,13 +1,8 @@
 import {reactive} from '@vue/composition-api'
 import {IGlobalState, IStudent} from '../biz/type'
-import {req, useIntervalCall} from '@/utils'
-import moment from 'moment'
+import {req} from '@/utils'
 import {qCreateStudent, qRemoveStudent, qUpdateStudent} from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
-import {propEq, eqProps} from 'ramda'
-import {exclude} from '../utils'
-import {differenceWith, clone} from 'ramda'
-import {useGlobalState} from './home.fn'
 
 export interface IState {
   loading: boolean
@@ -71,7 +66,7 @@ export function useHandleStudentClick({root, refs}: any) {
   return (student: IStudent) => {
     student.editable = true
     root.$nextTick(() => {
-      console.log(refs, student._id, refs[student._id])
+      // console.log(refs, student._id, refs[student._id])
       refs[student._id][0].$refs.input.focus()
     })
   }
@@ -82,7 +77,7 @@ export function useHandleStudentNameConfirm(state: IState) {
     try {
       if (student.name) {
         student.loading = true
-        const result = await req(qUpdateStudent, {_id: student._id, name: student.name})
+        await req(qUpdateStudent, {_id: student._id, name: student.name})
         student.loading = false
         // @ts-ignore
         Notification.success({

@@ -85,7 +85,7 @@ export function useHandleTeacherNameConfirm(state: IState) {
     try {
       if (teacher.name) {
         teacher.loading = true
-        const result = await req(qUpdateTeacher, {_id: teacher._id, name: teacher.name})
+        await req(qUpdateTeacher, {_id: teacher._id, name: teacher.name})
         teacher.loading = false
         // @ts-ignore
         Notification.success({
