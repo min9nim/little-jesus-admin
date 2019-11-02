@@ -1,6 +1,6 @@
 import {reactive} from '@vue/composition-api'
 import {IGlobalState, IPoint, ITeacher, IStudent} from '../biz/type'
-import {req, intervalCall1000} from '@/utils'
+import {req, useIntervalCall} from '@/utils'
 import moment from 'moment'
 import {
   qCreatePoint,
@@ -53,23 +53,21 @@ export function useHandleClose(state: IState, globalState: IGlobalState) {
 }
 
 export function useHandleInputConfirm(state: IState, globalState: IGlobalState) {
-  return () => {
-    intervalCall1000(async () => {
-      console.log('handleInputConfirm called', state.newTeacherName)
-      if (state.newTeacherName) {
-        state.loading = true
-        const newTeacher = await req(qCreateTeacher, {name: state.newTeacherName})
-        state.loading = false
-        globalState.teachers.push({_id: newTeacher._id, name: state.newTeacherName, students: []})
-        // @ts-ignore
-        Notification.success({
-          message: state.newTeacherName + ' 선생님 추가 완료',
-          position: 'bottom-right',
-        })
-      }
-      state.inputVisible = false
-      state.newTeacherName = ''
-    })
+  return async () => {
+    console.log('handleInputConfirm called', state.newTeacherName)
+    if (state.newTeacherName) {
+      state.loading = true
+      const newTeacher = await req(qCreateTeacher, {name: state.newTeacherName})
+      state.loading = false
+      globalState.teachers.push({_id: newTeacher._id, name: state.newTeacherName, students: []})
+      // @ts-ignore
+      Notification.success({
+        message: state.newTeacherName + ' 선생님 추가 완료',
+        position: 'bottom-right',
+      })
+    }
+    state.inputVisible = false
+    state.newTeacherName = ''
   }
 }
 

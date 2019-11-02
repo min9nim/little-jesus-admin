@@ -1,6 +1,6 @@
 import {reactive} from '@vue/composition-api'
 import {IGlobalState, IStudent} from '../biz/type'
-import {req, intervalCall1000} from '@/utils'
+import {req, useIntervalCall} from '@/utils'
 import moment from 'moment'
 import {qCreateStudent, qRemoveStudent} from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
@@ -24,22 +24,20 @@ export function useState(): IState {
 }
 
 export function useHandleInputConfirm(state: IState, globalState: IGlobalState) {
-  return () => {
-    intervalCall1000(async () => {
-      if (state.newStudentName) {
-        state.loading = true
-        const newStudent = await req(qCreateStudent, {name: state.newStudentName})
-        state.loading = false
-        globalState.students.push({_id: newStudent._id, name: state.newStudentName})
-        // @ts-ignore
-        Notification.success({
-          message: state.newStudentName + ' 어린이 추가 완료',
-          position: 'bottom-right',
-        })
-      }
-      state.inputVisible = false
-      state.newStudentName = ''
-    })
+  return async () => {
+    if (state.newStudentName) {
+      state.loading = true
+      const newStudent = await req(qCreateStudent, {name: state.newStudentName})
+      state.loading = false
+      globalState.students.push({_id: newStudent._id, name: state.newStudentName})
+      // @ts-ignore
+      Notification.success({
+        message: state.newStudentName + ' 어린이 추가 완료',
+        position: 'bottom-right',
+      })
+    }
+    state.inputVisible = false
+    state.newStudentName = ''
   }
 }
 

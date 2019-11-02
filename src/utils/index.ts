@@ -21,19 +21,21 @@ export const exclude = pipe<any, any, any>(
   filter,
 )
 
-export const intervalCall1000 = intervalCall(1000)
-
-function intervalCall(interval: number) {
+export function useIntervalCall(interval: number = 1000) {
   // interval 시간 안에 다시 호출된 함수 콜은 무시한다
   let elapsed = true
   return (fn: any) => {
-    if (!elapsed) {
-      return // 마지막 호출 후 제한된 경과시간이 지나지 않은 경우 리턴
+    return function(...args: any[]) {
+      if (!elapsed) {
+        console.warn((fn.name || 'anonymous functiion') + ' is canceled by intervalCall')
+        return // 마지막 호출 후 제한된 경과시간이 지나지 않은 경우 리턴
+      }
+      elapsed = false
+      setTimeout(() => {
+        elapsed = true
+      }, interval)
+      // @ts-ignore
+      return fn.call(this, ...args)
     }
-    elapsed = false
-    fn()
-    setTimeout(() => {
-      elapsed = true
-    }, interval)
   }
 }

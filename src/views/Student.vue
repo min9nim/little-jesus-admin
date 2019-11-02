@@ -13,7 +13,7 @@
         v-model="state.newStudentName"
         ref="saveTagInput"
         size="mini"
-        @keyup.enter.native="handleInputConfirm"
+        @keyup.enter.native="$refs.saveTagInput.blur"
         @blur="handleInputConfirm"
       )
       el-button.button-new-tag(
