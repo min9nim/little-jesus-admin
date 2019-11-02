@@ -28,4 +28,5 @@ export interface IPoint {
 export interface IGlobalState {
   teachers: ITeacher[]
   points: IPoint[]
+  students: IStudent[]
 }

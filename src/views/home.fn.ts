@@ -8,11 +8,13 @@ import {
   qUpdatePoint,
   qAddStudentToTeacherByName,
   qRemoveStudentToTeacherByName,
+  qStudents,
 } from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
 import {IGlobalState, ITeacher, IStudent} from '@/biz/type'
 import {propEq, eqProps} from 'ramda'
 import {exclude} from '../utils'
+import {differenceWith, clone} from 'ramda'
 
 export interface IState {
   date?: string
@@ -31,9 +33,6 @@ export interface IAllState {
 export function useState(): IState {
   const state: IState = reactive({
     teachers: [] as ITeacher[],
-    date: moment()
-      .startOf('week')
-      .format('YYYYMMDD'),
     loading: false,
     pointInit: false,
     editable: false,
@@ -48,10 +47,10 @@ export function useGlobalState(): IGlobalState {
   if (globalState) {
     return globalState
   }
-  globalState = reactive({
-    teacherId: localStorage.getItem('teacherId') || '',
+  globalState = reactive<IGlobalState>({
     teachers: [] as ITeacher[],
     points: [],
+    students: [],
   })
   return globalState
 }
@@ -61,6 +60,13 @@ export function useBeforeMount({state, globalState}: any) {
     if (globalState.teachers.length === 0) {
       await initTeachers({state, globalState})
     }
+    if (globalState.students.length === 0) {
+      await initStudents({state, globalState})
+    }
+    state.studentsLeft = clone(globalState.students)
+    globalState.teachers.forEach((teacher: any) => {
+      state.studentsLeft = differenceWith(eqProps('_id'))(state.studentsLeft, teacher.students)
+    })
   }
 }
 
@@ -69,6 +75,12 @@ export async function initTeachers({state, globalState}: IAllState) {
   const result = await req(qTeachers)
   state.loading = false
   globalState.teachers = result.res
+}
+export async function initStudents({state, globalState}: IAllState) {
+  state.loading = true
+  const result = await req(qStudents)
+  state.loading = false
+  globalState.students = result.res
 }
 
 export function useHandleSave({state, globalState}: IAllState) {
@@ -145,29 +157,35 @@ export function useHandleNewStudentChange(state: IState) {
       throw Error('Not found newStduent')
     }
     state.loading = true
-    await req(qAddStudentToTeacherByName, {teacherName: teacher.name, studentName: student.name})
+    await req(qAddStudentToTeacherByName, {teacherName: teacher.name, studentName: newStudent.name})
     state.loading = false
 
     teacher.students.push(newStudent)
     state.studentsLeft = exclude(propEq('_id', teacher.newStudentId))(state.studentsLeft)
     teacher.newStudentId = ''
     // @ts-ignore
-    Notification.success({message: '추가 완료', position: 'bottom-right'})
+    Notification.success({
+      message: `${teacher.name} 선생님 반에 ${newStudent.name} 추가 완료`,
+      position: 'bottom-right',
+    })
   }
 }
 
 export function useHandleClose(state: IState) {
   return async (teacher: ITeacher, student: IStudent) => {
-    const studentClosed = teacher.students.find(eqProps('_id', student))
-    if (!studentClosed) {
-      throw Error('Not found studentdClosed')
-    }
+    // const studentClosed = teacher.students.find(eqProps('_id', student))
+    // if (!studentClosed) {
+    //   throw Error('Not found studentdClosed')
+    // }
     state.loading = true
     await req(qRemoveStudentToTeacherByName, {teacherName: teacher.name, studentName: student.name})
     state.loading = false
-    state.studentsLeft.push(studentClosed)
+    state.studentsLeft.push(student)
     teacher.students = exclude(eqProps('_id', student))(teacher.students)
     // @ts-ignore
-    Notification.success({message: '삭제 완료', position: 'bottom-right'})
+    Notification.success({
+      message: `${teacher.name} 선생님 반에 ${student.name} 제거 완료`,
+      position: 'bottom-right',
+    })
   }
 }

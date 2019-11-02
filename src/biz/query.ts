@@ -89,6 +89,14 @@ export const qTeachers = gql`
     }
   }
 `
+export const qStudents = gql`
+  query students {
+    res: students {
+      _id
+      name
+    }
+  }
+`
 
 export const qPoints = gql`
   query points($date: String, $teacherId: ObjectId) {

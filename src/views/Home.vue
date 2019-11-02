@@ -50,7 +50,7 @@ export default {
   name: 'v-home',
   components: {EditPoint, ReadPoint},
   setup(props: any, {root}: any) {
-    const globalState: IGlobalState = useGlobalState()
+    const globalState = useGlobalState()
     const state: IState = useState()
     onBeforeMount(useBeforeMount({state, globalState}))
     return {
