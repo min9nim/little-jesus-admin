@@ -1,68 +1,54 @@
 <template lang="pug">
 .home(v-loading='state.loading')
-  .teachers
-    h3 선생님&학생 현황
-    .no-result(v-if="globalState.teachers.length === 0") 선생님을 추가해 주세요
-    .teacher(v-for="teacher in globalState.teachers" :key="teacher._id" v-loading="teacher.loading")
-      .teacherName
-        h4 {{teacher.name}}
-      .no-result(v-if="teacher.students.length === 0") 반 학생을 추가해 주세요
-      .item(v-for="(student, index) in teacher.students" :key="student._id" v-loading="student.loading")
-        el-tag(
-          closable
-          @close="handleClose(teacher, student)"
-        ) {{student.name}}
-      .new-student(v-if="state.studentsLeft.length > 0")
-        el-select.studentsLeft(
-          v-model="teacher.newStudentId"
-          placeholder="학생 추가"
-          size="mini"
-          @change="handleNewStudentChange(teacher)"
-        )
-          el-option.newStudent(
-            v-for="item in state.studentsLeft"
-            :key="item._id"
-            :label="item.name"
-            :value="item._id"
-          )
-    .teacher
-      .teacherName
-        h4 반배정이 필요한 어린이
-      .no-result(v-if="state.studentsLeft.length === 0") 모든 친구 반 배정 완료
-      .item(v-for="(student, index) in state.studentsLeft" :key="student._id")
-        el-tag {{student.name}}    
+  .students
+    h3 학생 목록
+    .student(v-for="(student, index) in globalState.students" :key="student._id" v-loading="student.loading")
+      el-tag.studentName(
+        closable
+        @close="handleClose(student, index)"
+      ) {{student.name}}
+    .new-student
+      el-input.input-new-tag(
+        v-if="state.inputVisible"
+        v-model="state.newStudentName"
+        ref="saveTagInput"
+        size="mini"
+        @keyup.enter.native="handleInputConfirm"
+        @blur="handleInputConfirm"
+      )
+      el-button.button-new-tag(
+        v-else
+        size="small"
+        @click="showInput"
+      ) + 학생 추가
 </template>
 
 <script lang="ts">
 import {createComponent, onBeforeMount, onMounted} from '@vue/composition-api'
-import {
-  useState,
-  useBeforeMount,
-  useHandleSave,
-  IState,
-  useGlobalState,
-  useHandleEdit,
-  useHandleClose,
-  useHandleNewStudentChange,
-} from './home.fn'
-import EditPoint from '../components/EditPoint.vue'
-import ReadPoint from '../components/ReadPoint.vue'
+import {useBeforeMount, useHandleSave, useGlobalState, useHandleEdit} from './home.fn'
+import {useShowInput} from './teacher.fn'
+import {useState, IState, useHandleClose, useHandleInputConfirm} from './student.fn'
 import {IGlobalState, IPoint, ITeacher, IStudent} from '../biz/type'
 import {remove, equals, propEq, eqProps} from 'ramda'
 import {exclude} from '../utils'
 
 export default {
-  name: 'v-home',
-  components: {EditPoint, ReadPoint},
-  setup(props: any, {root}: any) {
+  name: 'v-student',
+  setup(props: any, {root, refs}: any) {
     const globalState = useGlobalState()
     const state: IState = useState()
+    // @ts-ignore
+    const handleClose = useHandleClose(state, globalState)
     onBeforeMount(useBeforeMount({state, globalState}))
+    // @ts-ignore
+    const handleInputConfirm = useHandleInputConfirm(state, globalState)
+    const showInput = useShowInput({state, root, refs})
     return {
       state,
       globalState,
-      handleClose: useHandleClose(state),
-      handleNewStudentChange: useHandleNewStudentChange(state),
+      handleClose,
+      showInput,
+      handleInputConfirm,
     }
   },
 }
@@ -73,28 +59,25 @@ export default {
   padding: 5px;
   text-align: left;
 
-  .teachers {
-    .teacher {
-      margin: 20px 0;
+  .students {
+    .student {
+      margin: 10px 10px;
 
-      .teacherName {
+      .studentName {
         h4 {
           margin: 10px 0 3px 0;
         }
       }
+    }
+  }
 
-      .item {
-        margin: 2px 3px;
-        display: inline-block;
-      }
+  .new-student {
+    margin: 0 10px;
 
-      .new-student {
-        margin: 5px 3px;
-
-        .studentsLeft {
-          width: 100px;
-        }
-      }
+    .input-new-tag {
+      width: 90px;
+      margin-left: 0;
+      vertical-align: bottom;
     }
   }
 }

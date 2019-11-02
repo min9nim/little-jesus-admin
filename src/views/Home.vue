@@ -25,7 +25,7 @@
             :label="item.name"
             :value="item._id"
           )
-    .teacher
+    .teacher(v-if="state.studentsLeft.length > 0")
       .teacherName
         h4 반배정이 필요한 어린이
       .no-result(v-if="state.studentsLeft.length === 0") 모든 친구 반 배정 완료

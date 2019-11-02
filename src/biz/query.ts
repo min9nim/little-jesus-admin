@@ -194,6 +194,15 @@ export const qCreateTeacher = gql`
   }
 `
 
+export const qCreateStudent = gql`
+  mutation createStudent($name: String!) {
+    createStudent(name: $name) {
+      _id
+      name
+    }
+  }
+`
+
 export const qRemoveTeacher = gql`
   mutation removeTeacher($_id: ObjectId!) {
     removeTeacher(_id: $_id) {
@@ -203,6 +212,15 @@ export const qRemoveTeacher = gql`
         _id
         name
       }
+    }
+  }
+`
+
+export const qRemoveStudent = gql`
+  mutation removeStudent($_id: ObjectId!) {
+    removeStudent(_id: $_id) {
+      _id
+      name
     }
   }
 `
