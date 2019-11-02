@@ -4,6 +4,7 @@ import {pipe, complement, filter} from 'ramda'
 
 const prod_url = 'https://little-jesus-api.now.sh'
 const dev_url = 'https://little-jesus-api-git-develop.min1.now.sh'
+console.log('[env] = ', process.env)
 const BASEURL = process.env.NOW_GITHUB_COMMIT_REF === 'master' ? prod_url : dev_url
 
 const headers = {'Content-Type': 'application/json'}
