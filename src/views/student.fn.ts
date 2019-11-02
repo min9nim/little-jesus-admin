@@ -81,9 +81,9 @@ export function useHandleStudentNameConfirm(state: IState, globalState: IGlobalS
   return async (student: IStudent) => {
     try {
       if (student.name) {
-        state.loading = true
+        student.loading = true
         const result = await req(qUpdateStudent, {_id: student._id, name: student.name})
-        state.loading = false
+        student.loading = false
         // globalState.students.push({_id: result.res._id, name: state.newStudentName})
         // @ts-ignore
         Notification.success({

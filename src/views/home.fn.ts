@@ -70,7 +70,12 @@ export async function initTeachers({state, globalState}: IAllState) {
   state.loading = true
   const result = await req(qTeachers)
   state.loading = false
-  globalState.teachers = result.res
+  globalState.teachers = result.res.map((teacher: ITeacher) => ({
+    ...teacher,
+    loading: false,
+    students: teacher.students.map(student => ({...student, loading: false})),
+  }))
+
   globalState.teachers.sort(nameAscending)
 }
 export async function initStudents({state, globalState}: IAllState) {
@@ -185,12 +190,12 @@ export function useHandleClose(state: IState) {
       //   `${teacher.name} 선생님 반에서 ${student.name} 를 제거합니다`,
       //   {type: 'warning'},
       // )
-      state.loading = true
-      // teacher.loading = true
+      // state.loading = true
+      student.loading = true
 
       await req(qRemoveStudentToTeacher, {teacherId: teacher._id, studentId: student._id})
-      state.loading = false
-      // teacher.loading = false
+      // state.loading = false
+      student.loading = false
       state.studentsLeft.push(student)
       teacher.students = exclude(eqProps('_id', student))(teacher.students)
       // @ts-ignore

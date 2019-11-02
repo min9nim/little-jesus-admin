@@ -36,9 +36,9 @@ export function useHandleClose(state: IState, globalState: IGlobalState) {
   return async (teacher: ITeacher, index: number) => {
     try {
       await await MessageBox.confirm(`${teacher.name} 선생님을 삭제합니다`, {type: 'warning'})
-      state.loading = true
+      teacher.loading = true
       await req(qRemoveTeacher, {_id: teacher._id})
-      state.loading = false
+      teacher.loading = false
       // @ts-ignore
       Notification.success({message: teacher.name + ' 선생님 삭제 완료', position: 'bottom-right'})
       // globalState.teachers = exclude(eqProps('_id', teacher))(globalState.teachers)
@@ -59,9 +59,14 @@ export function useHandleInputConfirm(state: IState, globalState: IGlobalState) 
       // console.log('handleInputConfirm called', state.newTeacherName)
       if (state.newTeacherName) {
         state.loading = true
-        const newTeacher = await req(qCreateTeacher, {name: state.newTeacherName})
+        const result = await req(qCreateTeacher, {name: state.newTeacherName})
         state.loading = false
-        globalState.teachers.push({_id: newTeacher._id, name: state.newTeacherName, students: []})
+        globalState.teachers.push({
+          _id: result.res._id,
+          name: state.newTeacherName,
+          students: [],
+          loading: false,
+        })
         // @ts-ignore
         Notification.success({
           message: state.newTeacherName + ' 선생님 추가 완료',

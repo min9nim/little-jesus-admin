@@ -7,7 +7,11 @@
       .teacherName
         h4 {{teacher.name}}
       .no-result(v-if="teacher.students.length === 0") 반 학생을 추가해 주세요
-      .item(v-for="(student, index) in teacher.students" :key="student._id" v-loading="student.loading")
+      .item(
+        v-for="(student, index) in teacher.students"
+        :key="student._id"
+        v-loading="student.loading"
+      )
         el-tag(
           closable
           @close="handleClose(teacher, student)"
