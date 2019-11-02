@@ -122,7 +122,7 @@ export const qPoints = gql`
 
 export const qRemovePoint = gql`
   mutation removePoint($_id: ObjectId!) {
-    removePoint(_id: $_id) {
+    res: removePoint(_id: $_id) {
       _id
       date
     }
@@ -131,7 +131,7 @@ export const qRemovePoint = gql`
 
 export const qRemoveStudentToTeacherByName = gql`
   mutation removeStudentToTeacherByName($teacherName: String!, $studentName: String!) {
-    removeStudentToTeacherByName(teacherName: $teacherName, studentName: $studentName) {
+    res: removeStudentToTeacherByName(teacherName: $teacherName, studentName: $studentName) {
       _id
       name
       students {
@@ -144,7 +144,7 @@ export const qRemoveStudentToTeacherByName = gql`
 
 export const qRemoveStudentToTeacher = gql`
   mutation removeStudentToTeacher($teacherId: ObjectId!, $studentId: ObjectId!) {
-    removeStudentToTeacher(teacherId: $teacherId, studentId: $studentId) {
+    res: removeStudentToTeacher(teacherId: $teacherId, studentId: $studentId) {
       _id
       name
       students {
@@ -157,7 +157,7 @@ export const qRemoveStudentToTeacher = gql`
 
 export const qAddStudentToTeacherByName = gql`
   mutation addStudentToTeacherByName($teacherName: String!, $studentName: String!) {
-    addStudentToTeacherByName(teacherName: $teacherName, studentName: $studentName) {
+    res: addStudentToTeacherByName(teacherName: $teacherName, studentName: $studentName) {
       _id
       name
       students {
@@ -170,7 +170,7 @@ export const qAddStudentToTeacherByName = gql`
 
 export const qAddStudentToTeacher = gql`
   mutation addStudentToTeacher($teacherId: ObjectId!, $studentId: ObjectId!) {
-    addStudentToTeacher(teacherId: $teacherId, studentId: $studentId) {
+    res: addStudentToTeacher(teacherId: $teacherId, studentId: $studentId) {
       _id
       name
       students {
@@ -183,7 +183,7 @@ export const qAddStudentToTeacher = gql`
 
 export const qCreateTeacher = gql`
   mutation createTeacher($name: String!) {
-    createTeacher(name: $name) {
+    res: createTeacher(name: $name) {
       _id
       name
       students {
@@ -196,7 +196,7 @@ export const qCreateTeacher = gql`
 
 export const qCreateStudent = gql`
   mutation createStudent($name: String!) {
-    createStudent(name: $name) {
+    res: createStudent(name: $name) {
       _id
       name
     }
@@ -205,7 +205,7 @@ export const qCreateStudent = gql`
 
 export const qRemoveTeacher = gql`
   mutation removeTeacher($_id: ObjectId!) {
-    removeTeacher(_id: $_id) {
+    res: removeTeacher(_id: $_id) {
       _id
       name
       students {
@@ -218,7 +218,7 @@ export const qRemoveTeacher = gql`
 
 export const qRemoveStudent = gql`
   mutation removeStudent($_id: ObjectId!) {
-    removeStudent(_id: $_id) {
+    res: removeStudent(_id: $_id) {
       _id
       name
     }

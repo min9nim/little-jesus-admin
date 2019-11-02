@@ -44,6 +44,7 @@ export function useHandleClose(state: IState, globalState: IGlobalState) {
       // globalState.teachers = exclude(eqProps('_id', teacher))(globalState.teachers)
       globalState.teachers.splice(index, 1)
     } catch (e) {
+      state.loading = false
       if (e !== 'cancel') {
         console.error(e)
         MessageBox.alert(e.message, {type: 'warning'})
@@ -54,20 +55,28 @@ export function useHandleClose(state: IState, globalState: IGlobalState) {
 
 export function useHandleInputConfirm(state: IState, globalState: IGlobalState) {
   return async () => {
-    console.log('handleInputConfirm called', state.newTeacherName)
-    if (state.newTeacherName) {
-      state.loading = true
-      const newTeacher = await req(qCreateTeacher, {name: state.newTeacherName})
+    try {
+      // console.log('handleInputConfirm called', state.newTeacherName)
+      if (state.newTeacherName) {
+        state.loading = true
+        const newTeacher = await req(qCreateTeacher, {name: state.newTeacherName})
+        state.loading = false
+        globalState.teachers.push({_id: newTeacher._id, name: state.newTeacherName, students: []})
+        // @ts-ignore
+        Notification.success({
+          message: state.newTeacherName + ' 선생님 추가 완료',
+          position: 'bottom-right',
+        })
+      }
+      state.inputVisible = false
+      state.newTeacherName = ''
+    } catch (e) {
       state.loading = false
-      globalState.teachers.push({_id: newTeacher._id, name: state.newTeacherName, students: []})
-      // @ts-ignore
-      Notification.success({
-        message: state.newTeacherName + ' 선생님 추가 완료',
-        position: 'bottom-right',
-      })
+      if (e !== 'cancel') {
+        console.error(e)
+        MessageBox.alert(e.message, {type: 'warning'})
+      }
     }
-    state.inputVisible = false
-    state.newTeacherName = ''
   }
 }
 

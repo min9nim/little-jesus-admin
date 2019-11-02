@@ -25,19 +25,25 @@ export function useState(): IState {
 
 export function useHandleInputConfirm(state: IState, globalState: IGlobalState) {
   return async () => {
-    if (state.newStudentName) {
-      state.loading = true
-      const newStudent = await req(qCreateStudent, {name: state.newStudentName})
+    try {
+      if (state.newStudentName) {
+        state.loading = true
+        const result = await req(qCreateStudent, {name: state.newStudentName})
+        state.loading = false
+        globalState.students.push({_id: result.res._id, name: state.newStudentName})
+        // @ts-ignore
+        Notification.success({
+          message: state.newStudentName + ' 어린이 추가 완료',
+          position: 'bottom-right',
+        })
+      }
+      state.inputVisible = false
+      state.newStudentName = ''
+    } catch (e) {
       state.loading = false
-      globalState.students.push({_id: newStudent._id, name: state.newStudentName})
-      // @ts-ignore
-      Notification.success({
-        message: state.newStudentName + ' 어린이 추가 완료',
-        position: 'bottom-right',
-      })
+      console.error(e)
+      MessageBox.alert(e.message, {type: 'warning'})
     }
-    state.inputVisible = false
-    state.newStudentName = ''
   }
 }
 
@@ -52,6 +58,7 @@ export function useHandleClose(state: IState, globalState: IGlobalState) {
       Notification.success({message: student.name + ' 어린이 삭제 완료', position: 'bottom-right'})
       globalState.students.splice(index, 1)
     } catch (e) {
+      state.loading = false
       if (e !== 'cancel') {
         console.error(e)
         MessageBox.alert(e.message, {type: 'warning'})
