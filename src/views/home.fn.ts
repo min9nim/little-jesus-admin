@@ -1,5 +1,5 @@
 import {reactive} from '@vue/composition-api'
-import {req, exclude} from '@/utils'
+import {req, exclude, nameAscending} from '@/utils'
 import {
   qCreatePoint,
   qTeachers,
@@ -71,12 +71,14 @@ export async function initTeachers({state, globalState}: IAllState) {
   const result = await req(qTeachers)
   state.loading = false
   globalState.teachers = result.res
+  globalState.teachers.sort(nameAscending)
 }
 export async function initStudents({state, globalState}: IAllState) {
   state.loading = true
   const result = await req(qStudents)
   state.loading = false
   globalState.students = result.res
+  globalState.students.sort(nameAscending)
 }
 
 export function useHandleSave({state, globalState}: IAllState) {

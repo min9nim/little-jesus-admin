@@ -61,7 +61,8 @@ export default {
 
   .teachers {
     .teacher {
-      margin: 10px 10px;
+      display: inline-block;
+      margin: 3px 5px;
 
       .teacherName {
         h4 {
@@ -72,7 +73,7 @@ export default {
   }
 
   .new-teacher {
-    margin: 0 10px;
+    margin: 10px 0 0 3px;
 
     .input-new-tag {
       width: 90px;

@@ -61,7 +61,8 @@ export default {
 
   .students {
     .student {
-      margin: 10px 10px;
+      display: inline-block;
+      margin: 3px 4px;
 
       .studentName {
         h4 {
@@ -72,7 +73,7 @@ export default {
   }
 
   .new-student {
-    margin: 0 10px;
+    margin: 10px 10px 0 3px;
 
     .input-new-tag {
       width: 90px;

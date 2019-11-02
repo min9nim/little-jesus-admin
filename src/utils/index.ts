@@ -39,3 +39,9 @@ export function useIntervalCall(interval: number = 1000) {
     }
   }
 }
+
+export function nameAscending(a: any, b: any) {
+  if (a.name > b.name) return 1
+  if (b.name > a.name) return -1
+  return 0
+}
