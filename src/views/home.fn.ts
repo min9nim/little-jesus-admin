@@ -173,22 +173,32 @@ export function useHandleNewStudentChange(state: IState) {
 
 export function useHandleClose(state: IState) {
   return async (teacher: ITeacher, student: IStudent) => {
-    // const studentClosed = teacher.students.find(eqProps('_id', student))
-    // if (!studentClosed) {
-    //   throw Error('Not found studentdClosed')
-    // }
-    state.loading = true
-    // teacher.loading = true
+    try {
+      // const studentClosed = teacher.students.find(eqProps('_id', student))
+      // if (!studentClosed) {
+      //   throw Error('Not found studentdClosed')
+      // }
+      await await MessageBox.confirm(
+        `${teacher.name} 선생님 반에서 ${student.name} 를 제거합니다`,
+        {type: 'warning'},
+      )
+      state.loading = true
+      // teacher.loading = true
 
-    await req(qRemoveStudentToTeacher, {teacherId: teacher._id, studentId: student._id})
-    state.loading = false
-    // teacher.loading = false
-    state.studentsLeft.push(student)
-    teacher.students = exclude(eqProps('_id', student))(teacher.students)
-    // @ts-ignore
-    Notification.success({
-      message: `${teacher.name} 선생님 반에서 ${student.name} 제거 완료`,
-      position: 'bottom-right',
-    })
+      await req(qRemoveStudentToTeacher, {teacherId: teacher._id, studentId: student._id})
+      state.loading = false
+      // teacher.loading = false
+      state.studentsLeft.push(student)
+      teacher.students = exclude(eqProps('_id', student))(teacher.students)
+      // @ts-ignore
+      Notification.success({
+        message: `${teacher.name} 선생님 반에서 ${student.name} 제거 완료`,
+        position: 'bottom-right',
+      })
+    } catch (e) {
+      if (e !== 'cancel') {
+        throw e
+      }
+    }
   }
 }
