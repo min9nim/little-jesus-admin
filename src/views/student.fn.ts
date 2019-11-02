@@ -77,14 +77,13 @@ export function useHandleStudentClick({root, refs}: any) {
   }
 }
 
-export function useHandleStudentNameConfirm(state: IState, globalState: IGlobalState) {
+export function useHandleStudentNameConfirm(state: IState) {
   return async (student: IStudent) => {
     try {
       if (student.name) {
         student.loading = true
         const result = await req(qUpdateStudent, {_id: student._id, name: student.name})
         student.loading = false
-        // globalState.students.push({_id: result.res._id, name: state.newStudentName})
         // @ts-ignore
         Notification.success({
           message: student.name + ' 이름 수정 완료',

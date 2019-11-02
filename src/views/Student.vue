@@ -1,14 +1,14 @@
 <template lang="pug">
 .home(v-loading='state.loading')
+  h3 학생 목록
   .students
-    h3 학생 목록
     .student(v-for="(student, index) in globalState.students" :key="student._id" v-loading="student.loading")
       el-input.input-student-name(
         v-show="student.editable"
         v-model="student.name"
         :ref="student._id"
         size="mini"
-        @keyup.enter.native="$refs[student._id].blur"
+        @keyup.enter.native="handleStudentNameConfirm(student)"
         @blur="handleStudentNameConfirm(student)"
       )
       el-tag.studentName(
@@ -47,7 +47,9 @@ import {
 } from './student.fn'
 import {IGlobalState, IPoint, ITeacher, IStudent} from '../biz/type'
 import {remove, equals, propEq, eqProps} from 'ramda'
-import {exclude} from '../utils'
+import {exclude, useIntervalCall} from '../utils'
+
+const intervalCall = useIntervalCall()
 
 export default {
   name: 'v-student',
@@ -60,7 +62,7 @@ export default {
     const handleStudentClick = useHandleStudentClick({root, refs})
     // @ts-ignore
     const handleInputConfirm = useHandleInputConfirm(state, globalState)
-    const handleStudentNameConfirm = useHandleStudentNameConfirm(state, globalState)
+    const handleStudentNameConfirm = useHandleStudentNameConfirm(state)
     const showInput = useShowInput({state, root, refs})
     return {
       state,
@@ -68,7 +70,7 @@ export default {
       handleClose,
       showInput,
       handleInputConfirm,
-      handleStudentNameConfirm,
+      handleStudentNameConfirm: intervalCall(handleStudentNameConfirm),
       handleStudentClick,
     }
   },
@@ -81,6 +83,10 @@ export default {
   text-align: left;
 
   .students {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
     .student {
       display: inline-block;
       margin: 3px 4px;
