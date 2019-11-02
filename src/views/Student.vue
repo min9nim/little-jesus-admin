@@ -9,7 +9,7 @@
         :ref="student._id"
         size="mini"
         @keyup.enter.native="$refs[student._id].blur"
-        @blur="handleStudentNameConfirm(student._id)"
+        @blur="handleStudentNameConfirm(student)"
       )
       el-tag.studentName(
         v-show="!student.editable"
@@ -43,6 +43,7 @@ import {
   useHandleClose,
   useHandleInputConfirm,
   useHandleStudentClick,
+  useHandleStudentNameConfirm,
 } from './student.fn'
 import {IGlobalState, IPoint, ITeacher, IStudent} from '../biz/type'
 import {remove, equals, propEq, eqProps} from 'ramda'
@@ -59,6 +60,7 @@ export default {
     const handleStudentClick = useHandleStudentClick({root, refs})
     // @ts-ignore
     const handleInputConfirm = useHandleInputConfirm(state, globalState)
+    const handleStudentNameConfirm = useHandleStudentNameConfirm(state, globalState)
     const showInput = useShowInput({state, root, refs})
     return {
       state,
@@ -66,6 +68,7 @@ export default {
       handleClose,
       showInput,
       handleInputConfirm,
+      handleStudentNameConfirm,
       handleStudentClick,
     }
   },
@@ -91,6 +94,8 @@ export default {
       }
 
       .studentName {
+        cursor: pointer;
+
         h4 {
           margin: 10px 0 3px 0;
         }

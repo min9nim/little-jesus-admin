@@ -2,7 +2,7 @@ import {reactive} from '@vue/composition-api'
 import {IGlobalState, IStudent} from '../biz/type'
 import {req, useIntervalCall} from '@/utils'
 import moment from 'moment'
-import {qCreateStudent, qRemoveStudent} from '@/biz/query'
+import {qCreateStudent, qRemoveStudent, qUpdateStudent} from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
 import {propEq, eqProps} from 'ramda'
 import {exclude} from '../utils'
@@ -74,5 +74,28 @@ export function useHandleStudentClick({root, refs}: any) {
       console.log(refs, student._id, refs[student._id])
       refs[student._id][0].$refs.input.focus()
     })
+  }
+}
+
+export function useHandleStudentNameConfirm(state: IState, globalState: IGlobalState) {
+  return async (student: IStudent) => {
+    try {
+      if (student.name) {
+        state.loading = true
+        const result = await req(qUpdateStudent, {_id: student._id, name: student.name})
+        state.loading = false
+        // globalState.students.push({_id: result.res._id, name: state.newStudentName})
+        // @ts-ignore
+        Notification.success({
+          message: student.name + ' 이름 수정 완료',
+          position: 'bottom-right',
+        })
+      }
+      student.editable = false
+    } catch (e) {
+      state.loading = false
+      console.error(e)
+      MessageBox.alert(e.message, {type: 'warning'})
+    }
   }
 }

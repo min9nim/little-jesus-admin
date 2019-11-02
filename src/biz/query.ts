@@ -224,3 +224,12 @@ export const qRemoveStudent = gql`
     }
   }
 `
+
+export const qUpdateStudent = gql`
+  mutation updateStudent($_id: ObjectId!, $name: String) {
+    res: updateStudent(_id: $_id, name: $name) {
+      name
+      _id
+    }
+  }
+`
