@@ -2,6 +2,7 @@ export interface IStudent {
   _id: string
   name: string
   disable?: boolean
+  loading?: boolean
 }
 export interface ITeacher {
   _id: string
@@ -9,6 +10,7 @@ export interface ITeacher {
   disable?: boolean
   students: IStudent[]
   newStudentId?: string
+  loading?: boolean
 }
 export interface IPoint {
   _id?: string

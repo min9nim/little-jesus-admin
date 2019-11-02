@@ -3,11 +3,11 @@
   .teachers
     h3 선생님&학생 현황
     .no-result(v-if="globalState.teachers.length === 0") 선생님을 추가해 주세요
-    .teacher(v-for="teacher in globalState.teachers" :key="teacher._id")
+    .teacher(v-for="teacher in globalState.teachers" :key="teacher._id" v-loading="teacher.loading")
       .teacherName
         h4 {{teacher.name}}
       .no-result(v-if="teacher.students.length === 0") 반 학생을 추가해 주세요
-      .item(v-for="(student, index) in teacher.students" :key="student._id")
+      .item(v-for="(student, index) in teacher.students" :key="student._id" v-loading="student.loading")
         el-tag(
           closable
           @close="handleClose(teacher, student)"
@@ -25,7 +25,12 @@
             :label="item.name"
             :value="item._id"
           )
-    
+    .teacher
+      .teacherName
+        h4 아직 반이 없는 친구들
+      .no-result(v-if="state.studentsLeft.length === 0") 모든 친구 반 배정 완료
+      .item(v-for="(student, index) in state.studentsLeft" :key="student._id")
+        el-tag {{student.name}}    
 </template>
 
 <script lang="ts">
@@ -84,7 +89,7 @@ export default {
       }
 
       .new-student {
-        margin-top: 5px;
+        margin: 5px 3px;
 
         .studentsLeft {
           width: 100px;

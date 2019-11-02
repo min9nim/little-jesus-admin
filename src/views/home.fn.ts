@@ -156,9 +156,9 @@ export function useHandleNewStudentChange(state: IState) {
     if (!newStudent) {
       throw Error('Not found newStduent')
     }
-    state.loading = true
+    teacher.loading = true
     await req(qAddStudentToTeacherByName, {teacherName: teacher.name, studentName: newStudent.name})
-    state.loading = false
+    teacher.loading = false
 
     teacher.students.push(newStudent)
     state.studentsLeft = exclude(propEq('_id', teacher.newStudentId))(state.studentsLeft)
@@ -178,13 +178,16 @@ export function useHandleClose(state: IState) {
     //   throw Error('Not found studentdClosed')
     // }
     state.loading = true
+    // teacher.loading = true
+
     await req(qRemoveStudentToTeacherByName, {teacherName: teacher.name, studentName: student.name})
     state.loading = false
+    // teacher.loading = false
     state.studentsLeft.push(student)
     teacher.students = exclude(eqProps('_id', student))(teacher.students)
     // @ts-ignore
     Notification.success({
-      message: `${teacher.name} 선생님 반에 ${student.name} 제거 완료`,
+      message: `${teacher.name} 선생님 반에서 ${student.name} 제거 완료`,
       position: 'bottom-right',
     })
   }
