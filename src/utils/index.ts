@@ -2,7 +2,9 @@ import axios from 'axios'
 import {print} from 'graphql/language/printer'
 import {pipe, complement, filter} from 'ramda'
 
-const BASEURL = 'https://little-jesus-api-dev.now.sh'
+// const BASEURL = 'https://little-jesus-api.now.sh'
+const BASEURL = 'https://little-jesus-api-git-develop.min1.now.sh'
+
 const headers = {'Content-Type': 'application/json'}
 
 export async function req(query: any, variables = {}) {
