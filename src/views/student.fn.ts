@@ -66,3 +66,13 @@ export function useHandleClose(state: IState, globalState: IGlobalState) {
     }
   }
 }
+
+export function useHandleStudentClick({root, refs}: any) {
+  return (student: IStudent) => {
+    student.editable = true
+    root.$nextTick(() => {
+      console.log(refs, student._id, refs[student._id])
+      refs[student._id][0].$refs.input.focus()
+    })
+  }
+}

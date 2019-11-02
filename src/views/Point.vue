@@ -1,5 +1,5 @@
 <template lang="pug">
-.home points
+.home 결과집계 화면 준비 중..
 </template>
 
 <script lang="ts">

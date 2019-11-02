@@ -3,8 +3,18 @@
   .students
     h3 학생 목록
     .student(v-for="(student, index) in globalState.students" :key="student._id" v-loading="student.loading")
+      el-input.input-student-name(
+        v-show="student.editable"
+        v-model="student.name"
+        :ref="student._id"
+        size="mini"
+        @keyup.enter.native="$refs[student._id].blur"
+        @blur="handleStudentNameConfirm(student._id)"
+      )
       el-tag.studentName(
+        v-show="!student.editable"
         closable
+        @click="handleStudentClick(student)"
         @close="handleClose(student, index)"
       ) {{student.name}}
     .new-student
@@ -27,7 +37,13 @@
 import {createComponent, onBeforeMount, onMounted} from '@vue/composition-api'
 import {useBeforeMount, useHandleSave, useGlobalState, useHandleEdit} from './home.fn'
 import {useShowInput} from './teacher.fn'
-import {useState, IState, useHandleClose, useHandleInputConfirm} from './student.fn'
+import {
+  useState,
+  IState,
+  useHandleClose,
+  useHandleInputConfirm,
+  useHandleStudentClick,
+} from './student.fn'
 import {IGlobalState, IPoint, ITeacher, IStudent} from '../biz/type'
 import {remove, equals, propEq, eqProps} from 'ramda'
 import {exclude} from '../utils'
@@ -40,6 +56,7 @@ export default {
     // @ts-ignore
     const handleClose = useHandleClose(state, globalState)
     onBeforeMount(useBeforeMount({state, globalState}))
+    const handleStudentClick = useHandleStudentClick({root, refs})
     // @ts-ignore
     const handleInputConfirm = useHandleInputConfirm(state, globalState)
     const showInput = useShowInput({state, root, refs})
@@ -49,6 +66,7 @@ export default {
       handleClose,
       showInput,
       handleInputConfirm,
+      handleStudentClick,
     }
   },
 }
@@ -63,6 +81,14 @@ export default {
     .student {
       display: inline-block;
       margin: 3px 4px;
+
+      .input-student-name {
+        display: inline-block;
+        width: 70px;
+        height: 32px;
+        margin-left: 0;
+        vertical-align: bottom;
+      }
 
       .studentName {
         h4 {

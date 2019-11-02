@@ -3,6 +3,7 @@ export interface IStudent {
   name: string
   disable?: boolean
   loading?: boolean
+  editable?: boolean
 }
 export interface ITeacher {
   _id: string
@@ -11,6 +12,7 @@ export interface ITeacher {
   students: IStudent[]
   newStudentId?: string
   loading?: boolean
+  editable?: boolean
 }
 export interface IPoint {
   _id?: string

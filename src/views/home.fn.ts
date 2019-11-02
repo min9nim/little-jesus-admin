@@ -77,7 +77,11 @@ export async function initStudents({state, globalState}: IAllState) {
   state.loading = true
   const result = await req(qStudents)
   state.loading = false
-  globalState.students = result.res
+  globalState.students = result.res.map((student: IStudent) => ({
+    ...student,
+    loading: false,
+    editable: false,
+  }))
   globalState.students.sort(nameAscending)
 }
 
