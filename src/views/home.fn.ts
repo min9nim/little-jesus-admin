@@ -1,7 +1,5 @@
 import {reactive} from '@vue/composition-api'
-import {req} from '@/utils'
-import {prop} from 'ramda'
-import moment from 'moment'
+import {req, exclude} from '@/utils'
 import {
   qCreatePoint,
   qTeachers,
@@ -12,9 +10,7 @@ import {
 } from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
 import {IGlobalState, ITeacher, IStudent} from '@/biz/type'
-import {propEq, eqProps} from 'ramda'
-import {exclude} from '../utils'
-import {differenceWith, clone} from 'ramda'
+import {propEq, eqProps, prop, differenceWith, clone} from 'ramda'
 
 export interface IState {
   date?: string

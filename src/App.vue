@@ -2,9 +2,9 @@
 #app
   #nav
     router-link(to="/") Class
-    router-link(to="/teachers") Teacher
-    router-link(to="/students") Student
-    router-link(to="/points") Point
+    router-link(to="/teacher") Teacher
+    router-link(to="/student") Student
+    router-link(to="/point") Point
   router-view
 </template>
 
