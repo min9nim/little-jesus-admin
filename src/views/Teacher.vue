@@ -18,20 +18,20 @@
         @click="handleTeacherClick(teacher)"
         @close="handleClose(teacher, index)"
       ) {{teacher.name + ' (' + teacher.students.length + ')'}}
-    .new-teacher
-      el-input.input-new-tag(
-        v-if="state.inputVisible"
-        v-model="state.newTeacherName"
-        ref="saveTagInput"
-        size="mini"
-        @keyup.enter.native="$refs.saveTagInput.blur"
-        @blur="handleInputConfirm"
-      )
-      el-button.button-new-tag(
-        v-else
-        size="small"
-        @click="showInput"
-      ) + 선생님 추가
+  .new-teacher
+    el-input.input-new-tag(
+      v-if="state.inputVisible"
+      v-model="state.newTeacherName"
+      ref="saveTagInput"
+      size="mini"
+      @keyup.enter.native="$refs.saveTagInput.blur"
+      @blur="handleInputConfirm"
+    )
+    el-button.button-new-tag(
+      v-else
+      size="small"
+      @click="showInput"
+    ) + 선생님 추가
 </template>
 
 <script lang="ts">

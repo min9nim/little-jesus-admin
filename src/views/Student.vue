@@ -17,20 +17,20 @@
         @click="handleStudentClick(student)"
         @close="handleClose(student, index)"
       ) {{student.name}}
-    .new-student
-      el-input.input-new-tag(
-        v-if="state.inputVisible"
-        v-model="state.newStudentName"
-        ref="saveTagInput"
-        size="mini"
-        @keyup.enter.native="$refs.saveTagInput.blur"
-        @blur="handleInputConfirm"
-      )
-      el-button.button-new-tag(
-        v-else
-        size="small"
-        @click="showInput"
-      ) + 학생 추가
+  .new-student
+    el-input.input-new-tag(
+      v-if="state.inputVisible"
+      v-model="state.newStudentName"
+      ref="saveTagInput"
+      size="mini"
+      @keyup.enter.native="$refs.saveTagInput.blur"
+      @blur="handleInputConfirm"
+    )
+    el-button.button-new-tag(
+      v-else
+      size="small"
+      @click="showInput"
+    ) + 학생 추가
 </template>
 
 <script lang="ts">
