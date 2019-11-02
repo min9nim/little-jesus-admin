@@ -1,11 +1,21 @@
 <template lang="pug">
 .home(v-loading='state.loading')
+  h3 선생님 목록
   .teachers
-    h3 선생님 목록
     .no-result(v-if="globalState.teachers.length === 0") 선생님을 추가해 주세요
     .teacher(v-for="(teacher, index) in globalState.teachers" :key="teacher._id" v-loading="teacher.loading")
+      el-input.input-teacher-name(
+        v-show="teacher.editable"
+        v-model="teacher.name"
+        :ref="teacher._id"
+        size="mini"
+        @keyup.enter.native="handleTeacherNameConfirm(teacher)"
+        @blur="handleTeacherNameConfirm(teacher)"
+      )
       el-tag.teacherName(
+        v-show="!teacher.editable"
         closable
+        @click="handleTeacherClick(teacher)"
         @close="handleClose(teacher, index)"
       ) {{teacher.name + ' (' + teacher.students.length + ')'}}
     .new-teacher
@@ -27,10 +37,20 @@
 <script lang="ts">
 import {createComponent, onBeforeMount, onMounted} from '@vue/composition-api'
 import {useBeforeMount, useHandleSave, useGlobalState, useHandleEdit} from './home.fn'
-import {useState, IState, useHandleClose, useHandleInputConfirm, useShowInput} from './teacher.fn'
+import {
+  useState,
+  IState,
+  useHandleClose,
+  useHandleTeacherClick,
+  useHandleInputConfirm,
+  useShowInput,
+  useHandleTeacherNameConfirm,
+} from './teacher.fn'
 import {IGlobalState, IPoint, ITeacher, IStudent} from '../biz/type'
 import {remove, equals, propEq, eqProps} from 'ramda'
-import {exclude} from '../utils'
+import {exclude, useIntervalCall} from '../utils'
+
+const intervalCall = useIntervalCall()
 
 export default {
   name: 'v-teacher',
@@ -42,13 +62,17 @@ export default {
     onBeforeMount(useBeforeMount({state, globalState}))
     // @ts-ignore
     const handleInputConfirm = useHandleInputConfirm(state, globalState)
+    const handleTeacherNameConfirm = useHandleTeacherNameConfirm(state)
     const showInput = useShowInput({state, root, refs})
+    const handleTeacherClick = useHandleTeacherClick({root, refs})
     return {
       state,
       globalState,
       handleClose,
       showInput,
       handleInputConfirm,
+      handleTeacherNameConfirm: intervalCall(handleTeacherNameConfirm),
+      handleTeacherClick,
     }
   },
 }
@@ -60,11 +84,25 @@ export default {
   text-align: left;
 
   .teachers {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
     .teacher {
       display: inline-block;
       margin: 3px 5px;
 
+      .input-teacher-name {
+        display: inline-block;
+        width: 80px;
+        height: 32px;
+        margin-left: 0;
+        vertical-align: bottom;
+      }
+
       .teacherName {
+        cursor: pointer;
+
         h4 {
           margin: 10px 0 3px 0;
         }
@@ -81,5 +119,11 @@ export default {
       vertical-align: bottom;
     }
   }
+}
+</style>
+<style lang="stylus">
+.el-input--mini .el-input__inner {
+  height: 32px;
+  padding: 0 10px;
 }
 </style>

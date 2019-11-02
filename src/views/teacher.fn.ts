@@ -1,22 +1,8 @@
 import {reactive} from '@vue/composition-api'
 import {IGlobalState, IPoint, ITeacher, IStudent} from '../biz/type'
-import {req, useIntervalCall} from '@/utils'
-import moment from 'moment'
-import {
-  qCreatePoint,
-  qTeachers,
-  qUpdatePoint,
-  qAddStudentToTeacher,
-  qRemoveStudentToTeacher,
-  qStudents,
-  qRemoveTeacher,
-  qCreateTeacher,
-} from '@/biz/query'
+import {req} from '@/utils'
+import {qRemoveTeacher, qUpdateTeacher, qCreateTeacher} from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
-import {propEq, eqProps} from 'ramda'
-import {exclude} from '../utils'
-import {differenceWith, clone} from 'ramda'
-import {useGlobalState} from './home.fn'
 
 export interface IState {
   loading: boolean
@@ -90,6 +76,38 @@ export function useShowInput({state, root, refs}: any) {
     state.inputVisible = true
     root.$nextTick(() => {
       refs.saveTagInput.$refs.input.focus()
+    })
+  }
+}
+
+export function useHandleTeacherNameConfirm(state: IState) {
+  return async (teacher: ITeacher) => {
+    try {
+      if (teacher.name) {
+        teacher.loading = true
+        const result = await req(qUpdateTeacher, {_id: teacher._id, name: teacher.name})
+        teacher.loading = false
+        // @ts-ignore
+        Notification.success({
+          message: teacher.name + ' 이름 수정 완료',
+          position: 'bottom-right',
+        })
+      }
+      teacher.editable = false
+    } catch (e) {
+      state.loading = false
+      console.error(e)
+      MessageBox.alert(e.message, {type: 'warning'})
+    }
+  }
+}
+
+export function useHandleTeacherClick({root, refs}: any) {
+  return (teacher: ITeacher) => {
+    teacher.editable = true
+    root.$nextTick(() => {
+      // console.log(refs, teacher._id, refs[teacher._id])
+      refs[teacher._id][0].$refs.input.focus()
     })
   }
 }

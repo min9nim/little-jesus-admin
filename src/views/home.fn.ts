@@ -73,6 +73,7 @@ export async function initTeachers({state, globalState}: IAllState) {
   globalState.teachers = result.res.map((teacher: ITeacher) => ({
     ...teacher,
     loading: false,
+    editable: false,
     students: teacher.students.map(student => ({...student, loading: false})),
   }))
 
