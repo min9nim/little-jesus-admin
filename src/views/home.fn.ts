@@ -145,25 +145,30 @@ export function useHandleEdit({state}: {state: IState}) {
 
 export function useHandleNewStudentChange(state: IState) {
   return async (teacher: ITeacher) => {
-    if (!teacher.newStudentId) {
-      throw Error('Noy found newStudentdId')
-    }
-    const newStudent = state.studentsLeft.find(propEq('_id', teacher.newStudentId))
-    if (!newStudent) {
-      throw Error('Not found newStduent')
-    }
-    teacher.loading = true
-    await req(qAddStudentToTeacher, {teacherId: teacher._id, studentId: newStudent._id})
-    teacher.loading = false
+    try {
+      if (!teacher.newStudentId) {
+        throw Error('Noy found newStudentdId')
+      }
+      const newStudent = state.studentsLeft.find(propEq('_id', teacher.newStudentId))
+      if (!newStudent) {
+        throw Error('Not found newStduent')
+      }
+      teacher.loading = true
+      await req(qAddStudentToTeacher, {teacherId: teacher._id, studentId: newStudent._id})
+      teacher.loading = false
 
-    teacher.students.push(newStudent)
-    state.studentsLeft = exclude(propEq('_id', teacher.newStudentId))(state.studentsLeft)
-    teacher.newStudentId = ''
-    // @ts-ignore
-    Notification.success({
-      message: `${teacher.name} 선생님 반에 ${newStudent.name} 추가 완료`,
-      position: 'bottom-right',
-    })
+      teacher.students.push(newStudent)
+      state.studentsLeft = exclude(propEq('_id', teacher.newStudentId))(state.studentsLeft)
+      teacher.newStudentId = ''
+      // @ts-ignore
+      Notification.success({
+        message: `${teacher.name} 선생님 반에 ${newStudent.name} 추가 완료`,
+        position: 'bottom-right',
+      })
+    } catch (e) {
+      console.error(e)
+      MessageBox.alert(e.message, {type: 'warning'})
+    }
   }
 }
 
