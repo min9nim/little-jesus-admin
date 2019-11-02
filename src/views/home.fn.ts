@@ -6,8 +6,8 @@ import {
   qCreatePoint,
   qTeachers,
   qUpdatePoint,
-  qAddStudentToTeacherByName,
-  qRemoveStudentToTeacherByName,
+  qAddStudentToTeacher,
+  qRemoveStudentToTeacher,
   qStudents,
 } from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
@@ -157,7 +157,7 @@ export function useHandleNewStudentChange(state: IState) {
       throw Error('Not found newStduent')
     }
     teacher.loading = true
-    await req(qAddStudentToTeacherByName, {teacherName: teacher.name, studentName: newStudent.name})
+    await req(qAddStudentToTeacher, {teacherId: teacher._id, studentId: newStudent._id})
     teacher.loading = false
 
     teacher.students.push(newStudent)
@@ -180,7 +180,7 @@ export function useHandleClose(state: IState) {
     state.loading = true
     // teacher.loading = true
 
-    await req(qRemoveStudentToTeacherByName, {teacherName: teacher.name, studentName: student.name})
+    await req(qRemoveStudentToTeacher, {teacherId: teacher._id, studentId: student._id})
     state.loading = false
     // teacher.loading = false
     state.studentsLeft.push(student)

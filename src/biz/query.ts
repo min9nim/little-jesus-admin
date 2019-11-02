@@ -142,9 +142,35 @@ export const qRemoveStudentToTeacherByName = gql`
   }
 `
 
+export const qRemoveStudentToTeacher = gql`
+  mutation removeStudentToTeacher($teacherId: ObjectId!, $studentId: ObjectId!) {
+    removeStudentToTeacher(teacherId: $teacherId, studentId: $studentId) {
+      _id
+      name
+      students {
+        _id
+        name
+      }
+    }
+  }
+`
+
 export const qAddStudentToTeacherByName = gql`
   mutation addStudentToTeacherByName($teacherName: String!, $studentName: String!) {
     addStudentToTeacherByName(teacherName: $teacherName, studentName: $studentName) {
+      _id
+      name
+      students {
+        _id
+        name
+      }
+    }
+  }
+`
+
+export const qAddStudentToTeacher = gql`
+  mutation addStudentToTeacher($teacherId: ObjectId!, $studentId: ObjectId!) {
+    addStudentToTeacher(teacherId: $teacherId, studentId: $studentId) {
       _id
       name
       students {
