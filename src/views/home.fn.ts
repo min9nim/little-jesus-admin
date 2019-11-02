@@ -175,14 +175,10 @@ export function useHandleNewStudentChange(state: IState) {
 export function useHandleClose(state: IState) {
   return async (teacher: ITeacher, student: IStudent) => {
     try {
-      // const studentClosed = teacher.students.find(eqProps('_id', student))
-      // if (!studentClosed) {
-      //   throw Error('Not found studentdClosed')
-      // }
-      await await MessageBox.confirm(
-        `${teacher.name} 선생님 반에서 ${student.name} 를 제거합니다`,
-        {type: 'warning'},
-      )
+      // await await MessageBox.confirm(
+      //   `${teacher.name} 선생님 반에서 ${student.name} 를 제거합니다`,
+      //   {type: 'warning'},
+      // )
       state.loading = true
       // teacher.loading = true
 
