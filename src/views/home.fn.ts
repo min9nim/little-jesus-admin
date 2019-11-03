@@ -126,22 +126,29 @@ export async function updatePoint({state, globalState}: IAllState) {
 }
 
 export async function createPoint({state, globalState}: IAllState) {
-  state.loading = true
-  const results = globalState.points.map(point => {
-    return req(qCreatePoint, {
-      owner: point.owner._id,
-      date: state.date,
-      attendance: point.attendance,
-      visitcall: point.visitcall,
-      meditation: point.meditation,
-      recitation: point.recitation,
-      invitation: point.invitation,
-      etc: point.etc,
+  try {
+    state.loading = true
+    const results = globalState.points.map(point => {
+      return req(qCreatePoint, {
+        owner: point.owner._id,
+        date: state.date,
+        attendance: point.attendance,
+        visitcall: point.visitcall,
+        meditation: point.meditation,
+        recitation: point.recitation,
+        invitation: point.invitation,
+        etc: point.etc,
+      })
     })
-  })
-  const resolvedList: any = await Promise.all(results)
-  globalState.points = resolvedList.map(prop('res')) // 생성된 _id 세팅
-  state.loading = false
+    const resolvedList: any = await Promise.all(results)
+    globalState.points = resolvedList.map(prop('res')) // 생성된 _id 세팅
+    state.loading = false
+  } catch (e) {
+    state.loading = false
+    MessageBox.alert(e.message, {type: 'warning'})
+    throw e
+  }
+
   state.pointInit = true
   state.editable = false
   // await Message({message: '저장 완료', type: 'success'})
@@ -178,6 +185,7 @@ export function useHandleNewStudentChange(state: IState) {
         position: 'bottom-right',
       })
     } catch (e) {
+      teacher.loading = false
       console.error(e)
       MessageBox.alert(e.message, {type: 'warning'})
     }
@@ -187,15 +195,12 @@ export function useHandleNewStudentChange(state: IState) {
 export function useHandleClose(state: IState) {
   return async (teacher: ITeacher, student: IStudent) => {
     try {
-      // await await MessageBox.confirm(
-      //   `${teacher.name} 선생님 반에서 ${student.name} 를 제거합니다`,
-      //   {type: 'warning'},
-      // )
-      // state.loading = true
+      await await MessageBox.confirm(
+        `${teacher.name} 선생님 반에서 ${student.name} 를 제거합니다`,
+        {type: 'warning'},
+      )
       student.loading = true
-
       await req(qRemoveStudentToTeacher, {teacherId: teacher._id, studentId: student._id})
-      // state.loading = false
       student.loading = false
       state.studentsLeft.push(student)
       teacher.students = exclude(eqProps('_id', student))(teacher.students)
@@ -205,6 +210,7 @@ export function useHandleClose(state: IState) {
         position: 'bottom-right',
       })
     } catch (e) {
+      student.loading = false
       if (e !== 'cancel') {
         throw e
       }
