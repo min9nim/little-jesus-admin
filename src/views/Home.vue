@@ -30,11 +30,11 @@
             :value="item._id"
           )
     .teacher(v-if="state.studentsLeft.length > 0")
-      .teacherName
-        h4 반배정이 필요한 어린이
+      .teacher-undefined
+        h4 반미정
       .no-result(v-if="state.studentsLeft.length === 0") 모든 친구 반 배정 완료
       .item(v-for="(student, index) in state.studentsLeft" :key="student._id")
-        el-tag {{student.name}}    
+        el-tag(type="info") {{student.name}}    
 </template>
 
 <script lang="ts">
@@ -82,6 +82,14 @@ export default {
       margin: 20px 0;
 
       .teacherName {
+        h4 {
+          margin: 10px 0 3px 0;
+        }
+      }
+
+      .teacher-undefined {
+        color: #888;
+
         h4 {
           margin: 10px 0 3px 0;
         }
