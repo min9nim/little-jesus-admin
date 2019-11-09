@@ -74,7 +74,7 @@ export async function initTeachers({state, globalState}: IAllState) {
     ...teacher,
     loading: false,
     editable: false,
-    students: teacher.students.map(student => ({...student, loading: false})),
+    students: teacher.students.map(student => ({...student, loading: false})).sort(nameAscending),
   }))
 
   globalState.teachers.sort(nameAscending)
