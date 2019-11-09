@@ -195,10 +195,9 @@ export function useHandleNewStudentChange(state: IState) {
 export function useHandleClose(state: IState) {
   return async (teacher: ITeacher, student: IStudent) => {
     try {
-      await await MessageBox.confirm(
-        `${teacher.name} 선생님 반에서 ${student.name} 를 제거합니다`,
-        {type: 'warning'},
-      )
+      await await MessageBox.confirm(`${teacher.name} 선생님 반에서 ${student.name}를 제거합니다`, {
+        type: 'warning',
+      })
       student.loading = true
       await req(qRemoveStudentToTeacher, {teacherId: teacher._id, studentId: student._id})
       student.loading = false

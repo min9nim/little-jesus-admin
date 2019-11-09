@@ -31,4 +31,18 @@
     color: #42b983;
   }
 }
+
+#app {
+  .el-card {
+    // border: 5px solid #f1f1f1;
+    .el-card__header {
+      padding: 10px 10px;
+      background-color: #f9f9f9;
+    }
+
+    .el-card__body {
+      padding: 10px 10px;
+    }
+  }
+}
 </style>
