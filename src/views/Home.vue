@@ -4,7 +4,7 @@
     h3 선생님&학생 현황
     .no-result(v-if="globalState.teachers.length === 0") 선생님을 추가해 주세요
     .teacher(v-for="teacher in globalState.teachers" :key="teacher._id" v-loading="teacher.loading")
-      el-card
+      el-card(shadow="hover")
         div(slot="header")
           .teacherName
             h4 {{teacher.name}}
