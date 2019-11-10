@@ -1,6 +1,6 @@
 <template lang="pug">
 .home(v-loading='state.loading')
-  h3 선생님 목록
+  h3 선생님 목록({{globalState.teachers.length}})
   .teachers
     .no-result(v-if="globalState.teachers.length === 0") 선생님을 추가해 주세요
     .teacher(v-for="(teacher, index) in globalState.teachers" :key="teacher._id" v-loading="teacher.loading")
