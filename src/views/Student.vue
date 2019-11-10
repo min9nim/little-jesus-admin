@@ -1,6 +1,6 @@
 <template lang="pug">
 .home(v-loading='state.loading')
-  h3 학생 목록
+  h3 학생 목록({{globalState.students.length}})
   .students
     .student(v-for="(student, index) in globalState.students" :key="student._id" v-loading="student.loading")
       el-input.input-student-name(
