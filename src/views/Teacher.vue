@@ -79,6 +79,10 @@ export default {
 </script>
 <style scoped lang="stylus">
 .home {
+  h3 {
+    margin-top: 0;
+  }
+
   // margin: 0 10px;
   padding: 5px;
   text-align: left;

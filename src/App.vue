@@ -1,12 +1,31 @@
 <template lang="pug">
 #app
   #nav
-    router-link(to="/") Class
-    router-link(to="/teacher") Teacher
-    router-link(to="/student") Student
-    router-link(to="/point") Point
+    el-tabs(v-model="state.activeName" @tab-click="handleClick")
+      el-tab-pane(label="Class" name="/")
+      el-tab-pane(label="Teacher" name="/teacher")
+      el-tab-pane(label="Student" name="/student")
+      el-tab-pane(label="Point" name="/point")
   router-view
 </template>
+<script lang="ts">
+import {reactive} from '@vue/composition-api'
+
+export default {
+  setup(props, {root}) {
+    const state = reactive({
+      activeName: '/',
+    })
+    return {
+      state,
+      handleClick(tab: any, event: any) {
+        console.log(tab, event)
+        root.$router.push(tab.name)
+      },
+    }
+  },
+}
+</script>
 
 <style lang="stylus" >
 #app {
@@ -19,7 +38,11 @@
 
 #nav {
   text-align: center;
-  margin-bottom: 20px;
+
+  .el-tabs__item {
+    padding: 0 10px;
+    height: 35px;
+  }
 
   a {
     margin: 0 5px;
