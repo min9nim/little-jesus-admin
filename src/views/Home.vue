@@ -80,6 +80,10 @@ export default {
   text-align: left;
 
   .teachers {
+    h3 {
+      margin-top: 0;
+    }
+
     .teacher {
       margin: 20px 0;
 
