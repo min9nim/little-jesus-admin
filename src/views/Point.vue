@@ -7,6 +7,8 @@
       el-card(shadow="hover")
         .pointLabel(slot="header")
           h4 {{item.label}}
+          el-button(size="mini") 수정
+          el-button(size="mini") 삭제
         .item
           .label 형태
           .value {{item.type}}
@@ -52,7 +54,12 @@ export default {
       margin: 15px 0;
 
       .pointLabel {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
         h4 {
+          flex: 1;
           margin: 0;
         }
       }
