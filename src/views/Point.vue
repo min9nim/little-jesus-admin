@@ -10,14 +10,35 @@
           el-button(size="mini") 수정
           el-button(size="mini") 삭제
         .item
-          .label 형태
+          .label type
           .value {{item.type}}
         .item 
-          .label 가중치
+          .label priority
           .value {{item.priority}}
         .item
-          .label 숨김여부
+          .label hidden
           .value {{item.hidden}}
+    .point(v-if="state.newPointMenu")
+      el-card(shadow="hover")
+        .pointLabel(slot="header")
+          el-input(v-model='state.newPointMenu.label')
+          el-button(size="mini" @click="handleSave") 저장
+        .item
+          .label type
+          .value
+            el-input(v-model='state.newPointMenu.type')
+        .item 
+          .label priority
+          .value
+            el-input(v-model='state.newPointMenu.priority')
+        .item
+          .label hidden
+          .value
+            el-radio(v-model="state.newPointMenu.hidden" :label="true") true
+            el-radio(v-model="state.newPointMenu.hidden" :label="false") false
+            
+              
+    el-button(v-else @click="handleAddClick") 추가      
 </template>
 
 <script lang="ts">
@@ -31,10 +52,17 @@ export default {
     const state = reactive({
       menus: [],
       loading: false,
+      newPointMenu: null as any,
     })
     onBeforeMount(useBeforeMount({state}))
     return {
       state,
+      handleAddClick: () => {
+        state.newPointMenu = {}
+      },
+      handleSave: () => {
+        state.newPointMenu = null
+      },
     }
   },
 }
