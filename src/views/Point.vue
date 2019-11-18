@@ -3,7 +3,7 @@
   .points
     h3 포인트 관리
     .no-result(v-if="state.menus.length === 0") 포인트 항목을 추가해 주세요
-    .point(v-for="item in state.menus" :key="item._id" v-loading="state.loading")
+    .point(v-for="item in state.menus" :key="item._id")
       el-card(shadow="hover")
         .pointLabel(slot="header")
           h4 {{item.label}}
