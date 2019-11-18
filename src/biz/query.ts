@@ -120,6 +120,19 @@ export const qPoints = gql`
   }
 `
 
+export const qPointMenus = gql`
+  query pointMenus {
+    res: pointMenus {
+      _id
+      label
+      type
+      priority
+      hidden
+      disable
+    }
+  }
+`
+
 export const qRemovePoint = gql`
   mutation removePoint($_id: ObjectId!) {
     res: removePoint(_id: $_id) {

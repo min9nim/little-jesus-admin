@@ -1,14 +1,36 @@
 <template lang="pug">
-.home 포인트 관리..
+.home(v-loading='state.loading')
+  .points
+    h3 포인트 관리
+    .no-result(v-if="state.menus.length === 0") 포인트 항목을 추가해 주세요
+    .point(v-for="item in state.menus" :key="item._id" v-loading="state.loading")
+      el-card(shadow="hover")
+        div(slot="header")
+          .pointName
+            h4 {{item.label}}
+        div 형태 {{item.type}}
+        div 가중치 {{item.priority}}
+        div 숨김여부 {{item.hidden}}
+        div type {{item.type}}
 </template>
 
 <script lang="ts">
-import {createComponent, onBeforeMount} from '@vue/composition-api'
-import {useGlobalState} from './home.fn'
-import {IGlobalState, IPoint, ITeacher} from '../biz/type'
+import {createComponent, onBeforeMount, onMounted, reactive} from '@vue/composition-api'
+import {remove, equals, propEq, eqProps} from 'ramda'
+import {useBeforeMount} from './point.fn'
 
 export default {
-  name: 'v-points',
+  name: 'v-point',
+  setup(props: any, {root}: any) {
+    const state = reactive({
+      menus: [],
+      loading: false,
+    })
+    onBeforeMount(useBeforeMount({state}))
+    return {
+      state,
+    }
+  },
 }
 </script>
 <style scoped lang="stylus">
@@ -17,39 +39,39 @@ export default {
   padding: 5px;
   text-align: left;
 
-  .options {
-    .teacher {
-      width: 150px;
+  .points {
+    h3 {
+      margin-top: 0;
     }
 
-    .date {
-      margin-left: 5px;
-      width: 140px;
-    }
-  }
+    .point {
+      margin: 20px 0;
 
-  hr {
-    margin-top: 30px;
-  }
-
-  .result {
-    margin-top: 40px;
-
-    .title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      .teacher {
-        margin: 0;
+      .pointName {
+        h4 {
+          margin: 0;
+        }
       }
 
-      .btn {
-        height: 25px;
+      .point-undefined {
+        color: #888;
+
+        h4 {
+          margin: 10px 0 3px 0;
+        }
+      }
+
+      .item {
+        margin: 2px 3px;
         display: inline-block;
-        margin-left: 15px;
-        width: 45px;
-        padding: 7px 3px;
+      }
+
+      .new-student {
+        margin: 5px 3px;
+
+        .studentsLeft {
+          width: 100px;
+        }
       }
     }
   }
