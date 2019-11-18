@@ -1,5 +1,5 @@
 import {qPointMenus} from '@/biz/query'
-import {req, exclude} from '@/utils'
+import {req} from '@/utils'
 
 export function useBeforeMount({state}) {
   return async () => {
