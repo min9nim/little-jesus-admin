@@ -72,5 +72,13 @@ export default {
       padding: 10px 10px;
     }
   }
+
+  .home {
+    .points {
+      .el-card__header {
+        padding: 5px 10px;
+      }
+    }
+  }
 }
 </style>
