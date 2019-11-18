@@ -5,13 +5,17 @@
     .no-result(v-if="state.menus.length === 0") 포인트 항목을 추가해 주세요
     .point(v-for="item in state.menus" :key="item._id" v-loading="state.loading")
       el-card(shadow="hover")
-        div(slot="header")
-          .pointName
-            h4 {{item.label}}
-        div 형태 {{item.type}}
-        div 가중치 {{item.priority}}
-        div 숨김여부 {{item.hidden}}
-        div type {{item.type}}
+        .pointLabel(slot="header")
+          h4 {{item.label}}
+        .item
+          .label 형태
+          .value {{item.type}}
+        .item 
+          .label 가중치
+          .value {{item.priority}}
+        .item
+          .label 숨김여부
+          .value {{item.hidden}}
 </template>
 
 <script lang="ts">
@@ -36,7 +40,7 @@ export default {
 <style scoped lang="stylus">
 .home {
   // margin: 0 10px;
-  padding: 5px;
+  padding: 0 5px;
   text-align: left;
 
   .points {
@@ -45,32 +49,28 @@ export default {
     }
 
     .point {
-      margin: 20px 0;
+      margin: 15px 0;
 
-      .pointName {
+      .pointLabel {
         h4 {
           margin: 0;
         }
       }
 
-      .point-undefined {
-        color: #888;
-
-        h4 {
-          margin: 10px 0 3px 0;
-        }
+      .item + .item {
+        margin: 5px 0;
       }
 
       .item {
-        margin: 2px 3px;
-        display: inline-block;
-      }
+        font-size: 14px;
+        display: flex;
 
-      .new-student {
-        margin: 5px 3px;
+        .label {
+          width: 80px;
+        }
 
-        .studentsLeft {
-          width: 100px;
+        .value {
+          flex: 1;
         }
       }
     }
