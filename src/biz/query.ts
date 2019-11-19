@@ -1,81 +1,81 @@
 import gql from 'graphql-tag'
 
-export const qCreatePoint = gql`
-  # Write your query or mutation here
-  mutation createPoint(
-    $owner: ObjectId!
-    $date: String!
-    $attendance: Boolean
-    $visitcall: Boolean
-    $meditation: Int
-    $recitation: Boolean
-    $invitation: Int
-    $etc: String
-  ) {
-    res: createPoint(
-      owner: $owner
-      date: $date
-      attendance: $attendance
-      visitcall: $visitcall
-      meditation: $meditation
-      recitation: $recitation
-      invitation: $invitation
-      etc: $etc
-    ) {
-      _id
-      owner {
-        _id
-        name
-      }
-      date
-      attendance
-      visitcall
-      meditation
-      recitation
-      invitation
-      etc
-    }
-  }
-`
-export const qUpdatePoint = gql`
-  # Write your query or mutation here
-  mutation updatePoint(
-    $_id: ObjectId!
-    $owner: ObjectId
-    $date: String
-    $attendance: Boolean
-    $visitcall: Boolean
-    $meditation: Int
-    $recitation: Boolean
-    $invitation: Int
-    $etc: String
-  ) {
-    res: updatePoint(
-      _id: $_id
-      owner: $owner
-      date: $date
-      attendance: $attendance
-      visitcall: $visitcall
-      meditation: $meditation
-      recitation: $recitation
-      invitation: $invitation
-      etc: $etc
-    ) {
-      _id
-      owner {
-        _id
-        name
-      }
-      date
-      attendance
-      visitcall
-      meditation
-      recitation
-      invitation
-      etc
-    }
-  }
-`
+// export const qCreatePoint = gql`
+//   # Write your query or mutation here
+//   mutation createPoint(
+//     $owner: ObjectId!
+//     $date: String!
+//     $attendance: Boolean
+//     $visitcall: Boolean
+//     $meditation: Int
+//     $recitation: Boolean
+//     $invitation: Int
+//     $etc: String
+//   ) {
+//     res: createPoint(
+//       owner: $owner
+//       date: $date
+//       attendance: $attendance
+//       visitcall: $visitcall
+//       meditation: $meditation
+//       recitation: $recitation
+//       invitation: $invitation
+//       etc: $etc
+//     ) {
+//       _id
+//       owner {
+//         _id
+//         name
+//       }
+//       date
+//       attendance
+//       visitcall
+//       meditation
+//       recitation
+//       invitation
+//       etc
+//     }
+//   }
+// `
+// export const qUpdatePoint = gql`
+//   # Write your query or mutation here
+//   mutation updatePoint(
+//     $_id: ObjectId!
+//     $owner: ObjectId
+//     $date: String
+//     $attendance: Boolean
+//     $visitcall: Boolean
+//     $meditation: Int
+//     $recitation: Boolean
+//     $invitation: Int
+//     $etc: String
+//   ) {
+//     res: updatePoint(
+//       _id: $_id
+//       owner: $owner
+//       date: $date
+//       attendance: $attendance
+//       visitcall: $visitcall
+//       meditation: $meditation
+//       recitation: $recitation
+//       invitation: $invitation
+//       etc: $etc
+//     ) {
+//       _id
+//       owner {
+//         _id
+//         name
+//       }
+//       date
+//       attendance
+//       visitcall
+//       meditation
+//       recitation
+//       invitation
+//       etc
+//     }
+//   }
+// `
 
 export const qTeachers = gql`
   query teachers {
@@ -133,14 +133,26 @@ export const qPointMenus = gql`
   }
 `
 
-export const qRemovePoint = gql`
-  mutation removePoint($_id: ObjectId!) {
-    res: removePoint(_id: $_id) {
+export const qCreatePointMenu = gql`
+  mutation createPointMenu($label: String!, $priority: Int, $type: String, $hidden: Boolean) {
+    createPointMenu(label: $label, priority: $priority, type: $type, hidden: $hidden) {
       _id
-      date
+      label
+      priority
+      type
+      hidden
     }
   }
 `
+
+// export const qRemovePoint = gql`
+//   mutation removePoint($_id: ObjectId!) {
+//     res: removePoint(_id: $_id) {
+//       _id
+//       date
+//     }
+//   }
+// `
 
 export const qRemoveStudentToTeacherByName = gql`
   mutation removeStudentToTeacherByName($teacherName: String!, $studentName: String!) {
