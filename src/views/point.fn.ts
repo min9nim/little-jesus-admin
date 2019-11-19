@@ -37,8 +37,10 @@ export function useBeforeMount({state}) {
 export function useHandleCreate({state}) {
   return async () => {
     const priority = Number(state.newPointMenu.priority)
-    if (typeof priority !== 'number') {
-      throw Error('Not a number priority')
+    if (Number.isNaN(priority)) {
+      console.warn('Not a number priority')
+      await MessageBox.alert(`priority 는 숫자만 입력 가능합니다`, {type: 'warning'})
+      return
     }
     state.newPointMenu.loading = true
     const variables = {...state.newPointMenu, priority}
@@ -68,8 +70,10 @@ export function useHandleSave() {
   return async (item: IPointMenu) => {
     try {
       const priority = Number(item.priority)
-      if (typeof priority !== 'number') {
-        throw Error('Not a number priority')
+      if (Number.isNaN(priority)) {
+        console.warn('Not a number priority')
+        await MessageBox.alert(`priority 는 숫자만 입력 가능합니다`, {type: 'warning'})
+        return
       }
       item.loading = true
       await req(qUpdatePointMenu, {...item, priority})
