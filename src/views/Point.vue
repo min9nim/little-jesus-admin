@@ -4,7 +4,7 @@
     h3 포인트 관리
     .no-result(v-if="state.menus.length === 0") 포인트 항목을 추가해 주세요
     .point(v-for="item in state.menus" :key="item._id")
-      el-card(shadow="hover")
+      el-card(shadow="hover" v-loading="item.loading")
         .pointLabel(slot="header")
           h4 {{item.label}}
           el-button(size="mini") 수정
@@ -22,7 +22,7 @@
       el-card(shadow="hover")
         .pointLabel(slot="header")
           el-input.label-input(v-model='state.newPointMenu.label' placeholder="제목입력. ex) 출석")
-          el-button(size="mini" @click="handleSave") 저장
+          el-button(size="mini" @click="handleCreate") 저장
         .item
           .label type
           .value
@@ -42,7 +42,7 @@
 <script lang="ts">
 import {createComponent, onBeforeMount, onMounted, reactive} from '@vue/composition-api'
 import {remove, equals, propEq, eqProps} from 'ramda'
-import {useBeforeMount, useHandleSave, IState, IPointMenu, useHandleRemove} from './point.fn'
+import {useBeforeMount, useHandleCreate, IState, IPointMenu, useHandleRemove} from './point.fn'
 
 export default {
   name: 'v-point',
@@ -58,9 +58,10 @@ export default {
       handleAddClick: () => {
         state.newPointMenu = {
           hidden: false,
+          loading: false,
         }
       },
-      handleSave: useHandleSave({state}),
+      handleCreate: useHandleCreate({state}),
       handleRemove: useHandleRemove({state}),
     }
   },

@@ -1,7 +1,7 @@
 import {qPointMenus, qCreatePointMenu, qRemovePointMenu} from '@/biz/query'
-import {req} from '@/utils'
-import {propEq, findIndex} from 'ramda'
-import {MessageBox, Notification} from 'element-ui'
+import {req, removeById} from '@/utils'
+import {assoc} from 'ramda'
+import {MessageBox} from 'element-ui'
 
 export interface IPointMenu {
   _id?: string
@@ -23,11 +23,11 @@ export function useBeforeMount({state}) {
     state.loading = true
     const result = await req(qPointMenus)
     state.loading = false
-    state.menus = result.res
+    state.menus = result.res.map(assoc('loading', false))
   }
 }
 
-export function useHandleSave({state}) {
+export function useHandleCreate({state}) {
   return async () => {
     const priority = Number(state.newPointMenu.priority)
     if (typeof priority !== 'number') {
@@ -35,9 +35,9 @@ export function useHandleSave({state}) {
     }
     state.newPointMenu.loading = true
     const variables = {...state.newPointMenu, priority}
-    await req(qCreatePointMenu, variables)
+    const result = await req(qCreatePointMenu, variables)
     state.newPointMenu.loading = false
-    state.menus.push(state.newPointMenu)
+    state.menus.push({...result.res, loading: false})
     state.newPointMenu = null
   }
 }
@@ -47,10 +47,8 @@ export function useHandleRemove({state}) {
     try {
       await MessageBox.confirm(`해당 항목을 삭제합니다`, {type: 'warning'})
       item.loading = true
-      console.log(44, item._id)
       await req(qRemovePointMenu, {_id: item._id})
-      const idx = findIndex(propEq('_id', item._id))(state.menus)
-      state.menus.splice(idx, 1)
+      state.menus = removeById(item._id)(state.menus)
     } catch (e) {
       if (e !== 'cancel') {
         throw e
