@@ -1,11 +1,11 @@
 import axios from 'axios'
 import {print} from 'graphql/language/printer'
-import {pipe, complement, filter} from 'ramda'
+import {pipe, complement, filter, propEq, curry, findIndex, remove, update, find} from 'ramda'
 
 const prod_url = 'https://little-jesus-api.now.sh'
 const dev_url = 'https://little-jesus-api-git-develop.min1.now.sh'
 const BASEURL = window.location.host === 'little-jesus-admin.now.sh' ? prod_url : dev_url
-console.log({BASEURL})
+// console.log({BASEURL})
 
 export async function req(query: any, variables = {}) {
   let config = {headers: {'Content-Type': 'application/json'}}
@@ -45,3 +45,32 @@ export function nameAscending(a: any, b: any) {
   if (b.name > a.name) return -1
   return 0
 }
+
+export const idEqual = propEq('_id')
+
+export const findById = pipe(
+  idEqual,
+  find,
+)
+
+export const updateBy = curry((pred, tobe) => {
+  return list => {
+    const index = findIndex(pred)(list)
+    return update(index, tobe)(list)
+  }
+})
+
+export const removeBy = pred => {
+  return list => {
+    const index = findIndex(pred)(list)
+    return remove(index, 1)(list)
+  }
+}
+
+export const updateById = curry((id, tobe, list) => {
+  return updateBy(idEqual(id))(tobe)(list)
+})
+
+export const removeById = curry((id, list) => {
+  return removeBy(idEqual(id))(list)
+})
