@@ -21,23 +21,21 @@
     .point(v-if="state.newPointMenu")
       el-card(shadow="hover")
         .pointLabel(slot="header")
-          el-input(v-model='state.newPointMenu.label')
+          el-input.label-input(v-model='state.newPointMenu.label' placeholder="제목입력. ex) 출석")
           el-button(size="mini" @click="handleSave") 저장
         .item
           .label type
           .value
-            el-input(v-model='state.newPointMenu.type')
+            el-input(v-model='state.newPointMenu.type' placeholder="입력 형태. ex) checkbox, radio:3")
         .item 
           .label priority
           .value
-            el-input(v-model='state.newPointMenu.priority')
+            el-input(v-model='state.newPointMenu.priority' placeholder="가중치. ex) 7")
         .item
           .label hidden
           .value
             el-radio(v-model="state.newPointMenu.hidden" :label="true") true
             el-radio(v-model="state.newPointMenu.hidden" :label="false") false
-            
-              
     el-button(v-else @click="handleAddClick") 추가      
 </template>
 
@@ -58,7 +56,9 @@ export default {
     return {
       state,
       handleAddClick: () => {
-        state.newPointMenu = {}
+        state.newPointMenu = {
+          hidden: false,
+        }
       },
       handleSave: () => {
         state.newPointMenu = null
@@ -90,6 +90,14 @@ export default {
           flex: 1;
           margin: 0;
         }
+
+        .label-input {
+          width: 150px;
+        }
+
+        .el-input__inner {
+          height: 30px;
+        }
       }
 
       .item + .item {
@@ -99,8 +107,11 @@ export default {
       .item {
         font-size: 14px;
         display: flex;
+        align-items: center;
+        justify-content: space-between;
 
         .label {
+          display: flex;
           width: 80px;
         }
 
