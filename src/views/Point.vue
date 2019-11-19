@@ -70,7 +70,14 @@
 <script lang="ts">
 import {createComponent, onBeforeMount, onMounted, reactive} from '@vue/composition-api'
 import {remove, equals, propEq, eqProps} from 'ramda'
-import {useBeforeMount, useHandleCreate, IState, IPointMenu, useHandleRemove} from './point.fn'
+import {
+  useBeforeMount,
+  useHandleCreate,
+  IState,
+  IPointMenu,
+  useHandleRemove,
+  useHandleSave,
+} from './point.fn'
 
 export default {
   name: 'v-point',
@@ -98,7 +105,7 @@ export default {
       handleEdit: item => {
         item.editable = true
       },
-      handleSave: () => {},
+      handleSave: useHandleSave(),
     }
   },
 }

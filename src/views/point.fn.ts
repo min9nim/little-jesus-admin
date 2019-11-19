@@ -1,5 +1,5 @@
 import {qPointMenus, qCreatePointMenu, qRemovePointMenu, qUpdatePointMenu} from '@/biz/query'
-import {req, removeById} from '@/utils'
+import {req, removeById, updateById} from '@/utils'
 import {assoc} from 'ramda'
 import {MessageBox} from 'element-ui'
 
@@ -58,12 +58,17 @@ export function useHandleRemove({state}) {
   }
 }
 
-export function useHandleUpdate({state}) {
+export function useHandleSave() {
   return async (item: IPointMenu) => {
     try {
+      const priority = Number(item.priority)
+      if (typeof priority !== 'number') {
+        throw Error('Not a number priority')
+      }
       item.loading = true
-      await req(qUpdatePointMenu, {_id: item._id})
-      state.menus = removeById(item._id)(state.menus)
+      await req(qUpdatePointMenu, {...item, priority})
+      item.loading = false
+      item.editable = false
     } catch (e) {
       if (e !== 'cancel') {
         throw e
