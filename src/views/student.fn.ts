@@ -45,7 +45,7 @@ export function useHandleInputConfirm(state: IState, globalState: IGlobalState) 
 export function useHandleClose(state: IState, globalState: IGlobalState) {
   return async (student: IStudent, index: number) => {
     try {
-      await await MessageBox.confirm(`${student.name} 어린이를 삭제합니다`, {type: 'warning'})
+      await MessageBox.confirm(`${student.name} 어린이를 삭제합니다`, {type: 'warning'})
       state.loading = true
       await req(qRemoveStudent, {_id: student._id})
       state.loading = false
