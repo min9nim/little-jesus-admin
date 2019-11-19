@@ -5,26 +5,49 @@
     .no-result(v-if="state.menus.length === 0") 포인트 항목을 추가해 주세요
     .point(v-for="item in state.menus" :key="item._id")
       el-card(shadow="hover" v-loading="item.loading")
-        .pointLabel(slot="header")
-          h4 {{item.label}}
-          el-button(size="mini") 수정
-          el-button(size="mini" @click="handleRemove(item)") 삭제
-        .item
-          .label type
-          .value {{item.type}}
-        .item 
-          .label priority
-          .value {{item.priority}}
-        .item
-          .label hidden
-          .value {{item.hidden}}
-    .point(v-if="state.newPointMenu" v-loading='state.newPointMenu.loading')
-      el-card(shadow="hover")
+        template(v-if="item.editable")
+          .pointLabel(slot="header")
+            .flex1
+              el-input.label-input(v-model='item.label' placeholder="제목입력. ex) 출석")
+            el-button(size="mini" @click="handleSave(item)") 저장
+            el-button(size="mini" @click="handleCancel(item)") 취소
+          .item
+            .label type
+            .value
+              el-input(
+                v-model='item.type'
+                placeholder="입력 형태. ex) checkbox, radio:3"
+              )
+          .item 
+            .label priority
+            .value
+              el-input(v-model='item.priority' placeholder="가중치. ex) 7")
+          .item
+            .label hidden
+            .value
+              el-radio(v-model="item.hidden" :label="true") true
+              el-radio(v-model="item.hidden" :label="false") false
+        template(v-else)
+          .pointLabel(slot="header")
+            h4 {{item.label}}
+            el-button(size="mini" @click="handleEdit(item)") 수정
+            el-button(size="mini" @click="handleRemove(item)") 삭제
+          .item
+            .label type
+            .value {{item.type}}
+          .item 
+            .label priority
+            .value {{item.priority}}
+          .item
+            .label hidden
+            .value {{item.hidden}}            
+    .point(v-if="state.newPointMenu.editable")
+      el-card(shadow="hover" v-loading='state.newPointMenu.loading')
         .pointLabel(slot="header")
           .flex1
             el-input.label-input(v-model='state.newPointMenu.label' placeholder="제목입력. ex) 출석")
           el-button(size="mini" @click="handleCreate") 저장
-          el-button(size="mini" @click="handleCancel") 취소
+          el-button(size="mini" @click="handleCancel(state.newPointMenu)") 취소
         .item
           .label type
           .value
@@ -41,7 +64,7 @@
           .value
             el-radio(v-model="state.newPointMenu.hidden" :label="true") true
             el-radio(v-model="state.newPointMenu.hidden" :label="false") false
-    el-button(v-else @click="handleAddClick") 추가      
+    el-button(v-else @click="handleEdit(state.newPointMenu)") 추가      
 </template>
 
 <script lang="ts">
@@ -55,22 +78,27 @@ export default {
     const state = reactive<IState>({
       menus: [],
       loading: false,
-      newPointMenu: null as any,
+      newPointMenu: {
+        hidden: false,
+        loading: false,
+        editable: false,
+      },
     })
     onBeforeMount(useBeforeMount({state}))
     return {
       state,
-      handleAddClick: () => {
-        state.newPointMenu = {
-          hidden: false,
-          loading: false,
-        }
-      },
+      // handleAddClick: () => {
+      //   state.newPointMenu.editable = true
+      // },
       handleCreate: useHandleCreate({state}),
       handleRemove: useHandleRemove({state}),
-      handleCancel: () => {
-        state.newPointMenu = null
+      handleCancel: item => {
+        item.editable = false
       },
+      handleEdit: item => {
+        item.editable = true
+      },
+      handleSave: () => {},
     }
   },
 }
