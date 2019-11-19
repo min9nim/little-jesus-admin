@@ -8,7 +8,7 @@
         .pointLabel(slot="header")
           h4 {{item.label}}
           el-button(size="mini") 수정
-          el-button(size="mini") 삭제
+          el-button(size="mini" @click="handleRemove(item)") 삭제
         .item
           .label type
           .value {{item.type}}
@@ -42,22 +42,8 @@
 <script lang="ts">
 import {createComponent, onBeforeMount, onMounted, reactive} from '@vue/composition-api'
 import {remove, equals, propEq, eqProps} from 'ramda'
-import {useBeforeMount, useHandleSave} from './point.fn'
+import {useBeforeMount, useHandleSave, IState, IPointMenu, useHandleRemove} from './point.fn'
 
-interface IPointMenu {
-  _id?: string
-  priority?: number
-  label?: string
-  hidden?: boolean
-  disable?: boolean
-  loading?: boolean
-}
-
-interface IState {
-  menus: IPointMenu[]
-  loading: boolean
-  newPointMenu: IPointMenu
-}
 export default {
   name: 'v-point',
   setup(props: any, {root}: any) {
@@ -75,6 +61,7 @@ export default {
         }
       },
       handleSave: useHandleSave({state}),
+      handleRemove: useHandleRemove({state}),
     }
   },
 }
