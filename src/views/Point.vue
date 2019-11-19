@@ -18,7 +18,7 @@
         .item
           .label hidden
           .value {{item.hidden}}
-    .point(v-if="state.newPointMenu")
+    .point(v-if="state.newPointMenu" v-loading='state.newPointMenu.loading')
       el-card(shadow="hover")
         .pointLabel(slot="header")
           el-input.label-input(v-model='state.newPointMenu.label' placeholder="제목입력. ex) 출석")
@@ -42,12 +42,26 @@
 <script lang="ts">
 import {createComponent, onBeforeMount, onMounted, reactive} from '@vue/composition-api'
 import {remove, equals, propEq, eqProps} from 'ramda'
-import {useBeforeMount} from './point.fn'
+import {useBeforeMount, useHandleSave} from './point.fn'
 
+interface IPointMenu {
+  _id?: string
+  priority?: number
+  label?: string
+  hidden?: boolean
+  disable?: boolean
+  loading?: boolean
+}
+
+interface IState {
+  menus: IPointMenu[]
+  loading: boolean
+  newPointMenu: IPointMenu
+}
 export default {
   name: 'v-point',
   setup(props: any, {root}: any) {
-    const state = reactive({
+    const state = reactive<IState>({
       menus: [],
       loading: false,
       newPointMenu: null as any,
@@ -60,9 +74,7 @@ export default {
           hidden: false,
         }
       },
-      handleSave: () => {
-        state.newPointMenu = null
-      },
+      handleSave: useHandleSave({state}),
     }
   },
 }
