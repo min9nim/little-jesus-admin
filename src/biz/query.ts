@@ -133,6 +133,38 @@ export const qPointMenus = gql`
   }
 `
 
+export const qUpdatePointMenu = gql`
+  mutation updatePointMenu(
+    $_id: ObjectId!
+    $label: String
+    $type: String
+    $priority: Int
+    $hidden: Boolean
+  ) {
+    updatePointMenu(_id: $_id, label: $label, type: $type, priority: $priority, hidden: $hidden) {
+      _id
+      label
+      hidden
+      disable
+      priority
+      type
+    }
+  }
+`
+
+export const qRemovePointMenu = gql`
+  mutation updatePointMenu($_id: ObjectId!) {
+    updatePointMenu(_id: $_id, disable: true) {
+      _id
+      label
+      hidden
+      disable
+      priority
+      type
+    }
+  }
+`
+
 export const qCreatePointMenu = gql`
   mutation createPointMenu($label: String!, $priority: Int, $type: String, $hidden: Boolean) {
     createPointMenu(label: $label, priority: $priority, type: $type, hidden: $hidden) {
