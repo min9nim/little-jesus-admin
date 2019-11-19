@@ -21,12 +21,17 @@
     .point(v-if="state.newPointMenu" v-loading='state.newPointMenu.loading')
       el-card(shadow="hover")
         .pointLabel(slot="header")
-          el-input.label-input(v-model='state.newPointMenu.label' placeholder="제목입력. ex) 출석")
+          .flex1
+            el-input.label-input(v-model='state.newPointMenu.label' placeholder="제목입력. ex) 출석")
           el-button(size="mini" @click="handleCreate") 저장
+          el-button(size="mini" @click="handleCancel") 취소
         .item
           .label type
           .value
-            el-input(v-model='state.newPointMenu.type' placeholder="입력 형태. ex) checkbox, radio:3")
+            el-input(
+              v-model='state.newPointMenu.type'
+              placeholder="입력 형태. ex) checkbox, radio:3"
+            )
         .item 
           .label priority
           .value
@@ -63,6 +68,9 @@ export default {
       },
       handleCreate: useHandleCreate({state}),
       handleRemove: useHandleRemove({state}),
+      handleCancel: () => {
+        state.newPointMenu = null
+      },
     }
   },
 }
@@ -121,5 +129,9 @@ export default {
       }
     }
   }
+}
+
+.flex1 {
+  flex: 1;
 }
 </style>
