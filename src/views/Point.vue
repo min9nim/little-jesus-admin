@@ -77,6 +77,7 @@ import {
   IPointMenu,
   useHandleRemove,
   useHandleSave,
+  DEFAULT,
 } from './point.fn'
 
 export default {
@@ -85,11 +86,7 @@ export default {
     const state = reactive<IState>({
       menus: [],
       loading: false,
-      newPointMenu: {
-        hidden: false,
-        loading: false,
-        editable: false,
-      },
+      newPointMenu: DEFAULT,
     })
     onBeforeMount(useBeforeMount({state}))
     return {

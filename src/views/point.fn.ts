@@ -19,6 +19,12 @@ export interface IState {
   newPointMenu: IPointMenu
 }
 
+export const DEFAULT = {
+  hidden: false,
+  loading: false,
+  editable: false,
+}
+
 export function useBeforeMount({state}) {
   return async () => {
     state.loading = true
@@ -39,7 +45,7 @@ export function useHandleCreate({state}) {
     const result = await req(qCreatePointMenu, variables)
     state.newPointMenu.loading = false
     state.menus.push({...result.res, loading: false, editable: false})
-    state.newPointMenu = null
+    state.newPointMenu = DEFAULT
   }
 }
 
