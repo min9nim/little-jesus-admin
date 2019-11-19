@@ -45,7 +45,11 @@
       el-card(shadow="hover" v-loading='state.newPointMenu.loading')
         .pointLabel(slot="header")
           .flex1
-            el-input.label-input(v-model='state.newPointMenu.label' placeholder="제목입력. ex) 출석")
+            el-input.label-input(
+              v-model='state.newPointMenu.label'
+              placeholder="제목입력. ex) 출석"
+              ref="newPointMenuLabel"
+            )
           el-button(size="mini" @click="handleCreate") 저장
           el-button(size="mini" @click="handleCancel(state.newPointMenu)") 취소
         .item
@@ -64,7 +68,7 @@
           .value
             el-radio(v-model="state.newPointMenu.hidden" :label="true") true
             el-radio(v-model="state.newPointMenu.hidden" :label="false") false
-    el-button(v-else @click="handleEdit(state.newPointMenu)") 추가      
+    el-button(v-else @click="handleAdd") 추가      
 </template>
 
 <script lang="ts">
@@ -82,18 +86,15 @@ import {
 
 export default {
   name: 'v-point',
-  setup(props: any, {root}: any) {
+  setup(props: any, {root, refs}: any) {
     const state = reactive<IState>({
       menus: [],
       loading: false,
-      newPointMenu: DEFAULT,
+      newPointMenu: DEFAULT(),
     })
     onBeforeMount(useBeforeMount({state}))
     return {
       state,
-      // handleAddClick: () => {
-      //   state.newPointMenu.editable = true
-      // },
       handleCreate: useHandleCreate({state}),
       handleRemove: useHandleRemove({state}),
       handleCancel: item => {
@@ -101,6 +102,11 @@ export default {
       },
       handleEdit: item => {
         item.editable = true
+      },
+      handleAdd: () => {
+        state.newPointMenu = DEFAULT()
+        state.newPointMenu.editable = true
+        setTimeout(() => refs.newPointMenuLabel.focus(), 200)
       },
       handleSave: useHandleSave(),
     }
