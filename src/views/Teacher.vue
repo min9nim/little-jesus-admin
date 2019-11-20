@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import {createComponent, onBeforeMount, onMounted} from '@vue/composition-api'
-import {useBeforeMount, useHandleSave, useGlobalState, useHandleEdit} from './home.fn'
+import {useBeforeMount, useGlobalState, useHandleEdit} from './home.fn'
 import {
   useState,
   IState,
