@@ -10,7 +10,7 @@ import {
 } from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
 import {IGlobalState, ITeacher, IStudent} from '@/biz/type'
-import {propEq, eqProps, prop, differenceWith, clone} from 'ramda'
+import {propEq, eqProps, differenceWith, clone} from 'ramda'
 
 export interface IState {
   date?: string

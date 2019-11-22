@@ -47,9 +47,10 @@ import {
 } from './student.fn'
 import {IGlobalState, IPoint, ITeacher, IStudent} from '../biz/type'
 import {remove, equals, propEq, eqProps} from 'ramda'
-import {exclude, useIntervalCall} from '../utils'
+import {exclude} from '../utils'
+import useIntervalCall from 'interval-call'
 
-const intervalCall = useIntervalCall()
+const intervalCall = useIntervalCall(1000)
 
 export default {
   name: 'v-student',

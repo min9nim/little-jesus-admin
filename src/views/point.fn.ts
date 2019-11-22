@@ -1,6 +1,5 @@
 import {qPointMenus, qCreatePointMenu, qRemovePointMenu, qUpdatePointMenu} from '@/biz/query'
 import {req, removeById, updateById} from '@/utils'
-import {assoc} from 'ramda'
 import {MessageBox} from 'element-ui'
 
 export interface IPointMenu {
