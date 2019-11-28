@@ -53,21 +53,21 @@
           el-button(size="mini" @click="handleCreate") 저장
           el-button(size="mini" @click="handleCancel(state.newPointMenu)") 취소
         .item
-          .label type
+          .label 입력개수
           .value
             el-input(
               v-model='state.newPointMenu.type'
               placeholder="입력 형태. ex) checkbox, radio:3"
             )
         .item 
-          .label priority
+          .label 가중치
           .value
             el-input(v-model='state.newPointMenu.priority' placeholder="가중치. ex) 7")
-        .item
-          .label hidden
-          .value
-            el-radio(v-model="state.newPointMenu.hidden" :label="true") true
-            el-radio(v-model="state.newPointMenu.hidden" :label="false") false
+        //- .item
+        //-   .label 숨김여부
+        //-   .value
+        //-     el-radio(v-model="state.newPointMenu.hidden" :label="true") true
+        //-     el-radio(v-model="state.newPointMenu.hidden" :label="false") false
     el-button(v-else @click="handleAdd") 추가      
 </template>
 
