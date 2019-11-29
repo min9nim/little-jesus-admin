@@ -3,7 +3,7 @@
   .points
     h3 포인트 관리
     .no-result(v-if="state.menus.length === 0") 포인트 항목을 추가해 주세요
-    .point(v-for="item in state.menus" :key="item._id")
+    .point(v-for="item in state.menus" :key="item._id" :class="{hidden: item.hidden}")
       el-card(shadow="hover" v-loading="item.loading")
         template(v-if="item.editable")
           .pointLabel(slot="header")
@@ -38,9 +38,9 @@
           .item 
             .label 가중치
             .value {{item.priority}}
-          .item
-            .label 사용여부
-            .value {{item.hidden}}            
+          //- .item
+          //-   .label 사용여부
+          //-   .value {{item.hidden}}            
     .point(v-if="state.newPointMenu.editable")
       el-card(shadow="hover" v-loading='state.newPointMenu.loading')
         .pointLabel(slot="header")
@@ -63,11 +63,11 @@
           .label 가중치
           .value
             el-input(v-model='state.newPointMenu.priority' placeholder="가중치. ex) 7")
-        .item
-          .label 사용여부
-          .value
-            el-radio(v-model="state.newPointMenu.hidden" :label="true") true
-            el-radio(v-model="state.newPointMenu.hidden" :label="false") false
+        //- .item
+        //-   .label 사용여부
+        //-   .value
+        //-     el-radio(v-model="state.newPointMenu.hidden" :label="true") true
+        //-     el-radio(v-model="state.newPointMenu.hidden" :label="false") false
     el-button(v-else @click="handleAdd") 추가      
 </template>
 
@@ -122,6 +122,12 @@ export default {
   .points {
     h3 {
       margin-top: 0;
+    }
+
+    .hidden {
+      .pointLabel, .label, .value {
+        color: #bbb;
+      }
     }
 
     .point {
