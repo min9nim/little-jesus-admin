@@ -50,8 +50,8 @@
               placeholder="제목입력. ex) 출석"
               ref="newPointMenuLabel"
             )
-          el-button(size="mini" @click="handleCreate") 저장
-          el-button(size="mini" @click="handleCancel(state.newPointMenu)") 취소
+          el-button(size="mini" icon="el-icon-check" @click="handleCreate") 저장
+          el-button(size="mini" icon="el-icon-close" @click="handleCancel(state.newPointMenu)") 취소
         .item
           .label 입력개수
           .value
@@ -68,7 +68,7 @@
         //-   .value
         //-     el-radio(v-model="state.newPointMenu.hidden" :label="true") true
         //-     el-radio(v-model="state.newPointMenu.hidden" :label="false") false
-    el-button(v-else @click="handleAdd") 추가      
+    el-button(v-else icon="el-icon-plus" @click="handleAdd") 새로운 항목 추가   
 </template>
 
 <script lang="ts">
