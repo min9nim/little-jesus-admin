@@ -16,12 +16,13 @@
             .value
               el-input(
                 v-model='item.type'
+                size="mini"
                 placeholder="입력 형태. ex) checkbox, radio:3"
               )
           .item 
             .label 가중치
             .value
-              el-input(v-model='item.priority' placeholder="가중치. ex) 7")
+              el-input(v-model='item.priority' size="mini" placeholder="가중치. ex) 7")
           .item
             .label 상태
             .value
@@ -149,7 +150,7 @@ export default {
       }
 
       .item + .item {
-        margin: 5px 0;
+        margin-top: 7px;
       }
 
       .item {
