@@ -9,8 +9,8 @@
           .pointLabel(slot="header")
             .flex1
               el-input.label-input(v-model='item.label' placeholder="제목입력. ex) 출석")
-            el-button(size="mini" @click="handleSave(item)") 저장
-            el-button(size="mini" @click="handleCancel(item)") 취소
+            el-button(size="mini" icon="el-icon-check" type="" @click="handleSave(item)") 저장
+            el-button(size="mini" icon="el-icon-close" type="" @click="handleCancel(item)") 취소
           .item
             .label 입력개수
             .value
@@ -30,8 +30,8 @@
         template(v-else)
           .pointLabel(slot="header")
             h4 {{item.label}}
-            el-button(size="mini" @click="handleEdit(item)") 수정
-            el-button(size="mini" @click="handleRemove(item)") 삭제
+            el-button(size="mini" icon="el-icon-edit" type="" @click="handleEdit(item)") 수정
+            el-button(size="mini" icon="el-icon-delete" type="" @click="handleRemove(item)") 삭제
           .item
             .label 입력개수
             .value {{item.type}}
@@ -145,10 +145,6 @@ export default {
 
         .label-input {
           width: 150px;
-        }
-
-        .el-input__inner {
-          height: 30px;
         }
       }
 
