@@ -9,8 +9,8 @@
           .pointLabel(slot="header")
             .flex1
               el-input.label-input(v-model='item.label' placeholder="제목입력. ex) 출석")
-            el-button(size="mini" icon="el-icon-check" type="" @click="handleSave(item)") 저장
-            el-button(size="mini" icon="el-icon-close" type="" @click="handleCancel(item)") 취소
+            el-button.btn(size="mini" icon="el-icon-check" type="" @click="handleSave(item)") 저장
+            el-button.btn(size="mini" icon="el-icon-close" type="" @click="handleCancel(item)") 취소
           .item
             .label 입력개수
             .value
@@ -23,15 +23,15 @@
             .value
               el-input(v-model='item.priority' placeholder="가중치. ex) 7")
           .item
-            .label 사용여부
+            .label 상태
             .value
-              el-radio(v-model="item.hidden" :label="true") true
-              el-radio(v-model="item.hidden" :label="false") false
+              el-radio(v-model="item.hidden" :label="true") 미사용
+              el-radio(v-model="item.hidden" :label="false") 사용
         template(v-else)
           .pointLabel(slot="header")
             h4 {{item.label}}
-            el-button(size="mini" icon="el-icon-edit" type="" @click="handleEdit(item)") 수정
-            el-button(size="mini" icon="el-icon-delete" type="" @click="handleRemove(item)") 삭제
+            el-button.btn(size="mini" icon="el-icon-edit" type="" @click="handleEdit(item)") 수정
+            el-button.btn(size="mini" icon="el-icon-delete" type="" @click="handleRemove(item)") 삭제
           .item
             .label 입력개수
             .value {{item.type}}
@@ -125,7 +125,7 @@ export default {
     }
 
     .hidden {
-      .pointLabel, .label, .value {
+      .pointLabel, .label, .value, .btn {
         color: #bbb;
       }
     }
