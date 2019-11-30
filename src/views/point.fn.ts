@@ -55,7 +55,7 @@ export function useHandleRemove({state}) {
   return async (item: IPointMenu) => {
     try {
       await MessageBox.confirm(
-        `${item.label} 항목을 삭제합니다. 해당 항목으로 기존에 입력했던 포인트 내역이 있다면 모두 함께 삭제되며 한번 삭제한 포인트 항목은 복원이 불가합니다.`,
+        `"${item.label}" 항목을 삭제합니다. 해당 항목으로 기존에 입력했던 포인트 내역이 있다면 모두 함께 삭제되며 한번 삭제한 포인트 항목은 복원이 불가합니다.`,
         {type: 'warning', confirmButtonText: `"${item.label}" 삭제`},
       )
       item.loading = true
