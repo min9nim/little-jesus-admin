@@ -25,8 +25,8 @@
           .item
             .label 상태
             .value
-              el-radio(v-model="item.hidden" :label="true") 미사용
               el-radio(v-model="item.hidden" :label="false") 사용
+              el-radio(v-model="item.hidden" :label="true") 미사용
         template(v-else)
           .pointLabel(slot="header")
             h4 {{item.label}}
