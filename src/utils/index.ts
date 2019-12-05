@@ -4,8 +4,14 @@ import {pipe, complement, filter, propEq, curry, findIndex, remove, update, find
 
 const prod_url = 'https://little-jesus-api.now.sh'
 const dev_url = 'https://little-jesus-api-git-develop.min1.now.sh'
-const BASEURL = window.location.host === 'little-jesus-admin.now.sh' ? prod_url : dev_url
-// console.log({BASEURL})
+const local_url = 'http://localhost:5050'
+
+let BASEURL = window.location.host === 'little-jesus-admin.now.sh' ? prod_url : dev_url
+if (window.location.host.indexOf('localhost') === 0) {
+  BASEURL = local_url
+}
+
+console.log({BASEURL})
 
 export async function req(query: any, variables = {}) {
   let config = {headers: {'Content-Type': 'application/json'}}
