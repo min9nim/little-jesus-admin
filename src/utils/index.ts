@@ -11,7 +11,7 @@ if (window.location.host.indexOf('localhost') === 0) {
   BASEURL = local_url
 }
 
-console.log({BASEURL})
+console.log('BASEURL: ' + BASEURL)
 
 export async function req(query: any, variables = {}) {
   let config = {headers: {'Content-Type': 'application/json'}}
