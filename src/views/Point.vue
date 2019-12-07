@@ -1,7 +1,7 @@
 <template lang="pug">
 .home(v-loading='state.loading')
   .points
-    h3 포인트 관리
+    h3 포인트 관리1
     .no-result(v-if="state.menus.length === 0") 포인트 항목을 추가해 주세요
     .point(v-for="item in state.menus" :key="item._id" :class="{hidden: item.hidden}")
       el-card(shadow="hover" v-loading="item.loading")
@@ -17,7 +17,7 @@
               el-input(
                 v-model='item.type'
                 size="mini"
-                placeholder="입력 형태. ex) checkbox, radio:3"
+                placeholder="입력 형태. ex) 4"
               )
           .item 
             .label 가중치
@@ -58,7 +58,7 @@
           .value
             el-input(
               v-model='state.newPointMenu.type'
-              placeholder="입력 형태. ex) checkbox, radio:3"
+              placeholder="입력 형태. ex) 4"
             )
         .item 
           .label 가중치
@@ -69,7 +69,7 @@
         //-   .value
         //-     el-radio(v-model="state.newPointMenu.hidden" :label="true") true
         //-     el-radio(v-model="state.newPointMenu.hidden" :label="false") false
-    el-button(v-else icon="el-icon-plus" @click="handleAdd") 새로운 항목 추가   
+    el-button.new-item(v-else icon="el-icon-plus" @click="handleAdd") 새로운 항목 추가   
 </template>
 
 <script lang="ts">
@@ -168,6 +168,10 @@ export default {
           flex: 1;
         }
       }
+    }
+
+    .new-item {
+      margin-top: 10px;
     }
   }
 }
