@@ -39,28 +39,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
 
-#nav {
-  text-align: center;
-
-  .el-tabs__item {
-    padding: 0 10px;
-    height: 35px;
-  }
-
-  a {
-    margin: 0 5px;
-    font-weight: bold;
-    color: #2c3e50;
-  }
-
-  a.router-link-exact-active {
-    color: #42b983;
-  }
-}
-
-#app {
   .el-card {
     // border: 5px solid #f1f1f1;
     .el-card__header {
@@ -79,6 +58,37 @@ export default {
         padding: 5px 10px;
       }
     }
+  }
+
+  .el-form .el-form-item {
+    margin: 0;
+
+    .el-form-item__content {
+      line-height: 0;
+    }
+
+    .el-form-item__error--inline {
+      display: block;
+    }
+  }
+}
+
+#nav {
+  text-align: center;
+
+  .el-tabs__item {
+    padding: 0 10px;
+    height: 35px;
+  }
+
+  a {
+    margin: 0 5px;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+
+  a.router-link-exact-active {
+    color: #42b983;
   }
 }
 </style>
