@@ -14,15 +14,21 @@
           .item
             .label 입력개수
             .value
-              el-input(
+              el-input-number(
                 v-model='item.type'
                 size="mini"
-                placeholder="입력 형태. ex) 4"
+                :min="2"
+                :max="20"
               )
           .item 
             .label 가중치
             .value
-              el-input(v-model='item.priority' size="mini" placeholder="가중치. ex) 7")
+              el-input-number(
+                v-model='item.priority'
+                size="mini"
+                :min="0"
+                :max="100"
+              )
           .item
             .label 상태
             .value
@@ -56,25 +62,27 @@
         .item
           .label 입력개수
           .value
-            el-input(
+            el-input-number(
               v-model='state.newPointMenu.type'
-              placeholder="입력 형태. ex) 4"
+              size="mini"
+              :min="2"
+              :max="20"
             )
         .item 
           .label 가중치
           .value
-            el-input(v-model='state.newPointMenu.priority' placeholder="가중치. ex) 7")
-        //- .item
-        //-   .label 사용여부
-        //-   .value
-        //-     el-radio(v-model="state.newPointMenu.hidden" :label="true") true
-        //-     el-radio(v-model="state.newPointMenu.hidden" :label="false") false
+            el-input-number(
+                v-model='state.newPointMenu.priority'
+                size="mini"
+                :min="0"
+                :max="100"
+              )          
     el-button.new-item(v-else icon="el-icon-plus" @click="handleAdd") 새로운 항목 추가   
 </template>
 
 <script lang="ts">
 import {createComponent, onBeforeMount, onMounted, reactive} from '@vue/composition-api'
-import {remove, equals, propEq, eqProps} from 'ramda'
+import {remove, equals, propEq, eqProps, clone} from 'ramda'
 import {
   useBeforeMount,
   useHandleCreate,
@@ -83,6 +91,7 @@ import {
   useHandleRemove,
   useHandleSave,
   DEFAULT,
+  checkType,
 } from './point.fn'
 
 export default {
@@ -92,6 +101,10 @@ export default {
       menus: [],
       loading: false,
       newPointMenu: DEFAULT(),
+      rules: {
+        type: [{validator: checkType, trigger: 'change'}],
+        priority: [{validator: () => {}, trigger: 'change'}],
+      },
     })
     onBeforeMount(useBeforeMount({state}))
     return {
@@ -99,9 +112,11 @@ export default {
       handleCreate: useHandleCreate({state}),
       handleRemove: useHandleRemove({state}),
       handleCancel: item => {
+        Object.assign(item, item.clone)
         item.editable = false
       },
       handleEdit: item => {
+        item.clone = clone(item)
         item.editable = true
       },
       handleAdd: () => {

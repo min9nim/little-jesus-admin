@@ -4,6 +4,7 @@ import {MessageBox} from 'element-ui'
 
 export interface IPointMenu {
   _id?: string
+  type?: string
   priority?: number
   label?: string
   hidden?: boolean
@@ -16,9 +17,12 @@ export interface IState {
   menus: IPointMenu[]
   loading: boolean
   newPointMenu: IPointMenu
+  rules: any
 }
 
 export const DEFAULT = () => ({
+  type: '2',
+  priority: 0,
   label: '',
   hidden: false,
   loading: false,
@@ -36,6 +40,11 @@ export function useBeforeMount({state}) {
 
 export function useHandleCreate({state}) {
   return async () => {
+    if (!state.newPointMenu.label) {
+      await MessageBox.alert(`제목을 입력해 주세요`, {type: 'warning'})
+      return
+    }
+    state.newPointMenu.type = String(state.newPointMenu.type)
     const priority = Number(state.newPointMenu.priority)
     if (Number.isNaN(priority)) {
       console.warn('Not a number priority')
@@ -72,6 +81,11 @@ export function useHandleRemove({state}) {
 export function useHandleSave() {
   return async (item: IPointMenu) => {
     try {
+      if (!item.label) {
+        await MessageBox.alert(`제목을 입력해 주세요`, {type: 'warning'})
+        return
+      }
+      item.type = String(item.type)
       const priority = Number(item.priority)
       if (Number.isNaN(priority)) {
         console.warn('Not a number priority')
@@ -86,6 +100,36 @@ export function useHandleSave() {
       if (e !== 'cancel') {
         throw e
       }
+    }
+  }
+}
+
+export function checkType(rule, value, callback) {
+  console.log(rule, value, callback)
+  if (!value) {
+    callback(new Error('입력 개수를 입력해 주세요'))
+  } else {
+    const num = Number(value)
+    if (Number.isNaN(num)) {
+      callback(new Error('숫자만 입력 가능합니다'))
+    } else if (num <= 1) {
+      callback(new Error('2 이상 값을 입력해 주세요'))
+    } else {
+      callback()
+    }
+  }
+}
+
+export function checkPriority(rule, value, callback) {
+  console.log(value)
+  if (!value) {
+    callback(new Error('가중치를 입력해 주세요'))
+  } else {
+    const num = Number(value)
+    if (Number.isNaN(num)) {
+      callback(new Error('숫자만 입력 가능합니다'))
+    } else {
+      callback()
     }
   }
 }
