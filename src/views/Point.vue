@@ -1,7 +1,7 @@
 <template lang="pug">
 .home(v-loading='state.loading')
   .points
-    h3 포인트 관리1
+    h3 포인트 관리
     .no-result(v-if="state.menus.length === 0") 포인트 항목을 추가해 주세요
     .point(v-for="item in state.menus" :key="item._id" :class="{hidden: item.hidden}")
       el-card(shadow="hover" v-loading="item.loading")
