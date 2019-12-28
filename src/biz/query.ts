@@ -172,10 +172,7 @@ export const qRemoveStudentToTeacherByName = gql`
     res: removeStudentToTeacherByName(teacherName: $teacherName, studentName: $studentName) {
       _id
       name
-      students {
-        _id
-        name
-      }
+      students
     }
   }
 `
@@ -185,10 +182,7 @@ export const qRemoveStudentToTeacher = gql`
     res: removeStudentToTeacher(teacherId: $teacherId, studentId: $studentId) {
       _id
       name
-      students {
-        _id
-        name
-      }
+      students
     }
   }
 `
@@ -198,10 +192,7 @@ export const qAddStudentToTeacherByName = gql`
     res: addStudentToTeacherByName(teacherName: $teacherName, studentName: $studentName) {
       _id
       name
-      students {
-        _id
-        name
-      }
+      students
     }
   }
 `
@@ -211,10 +202,7 @@ export const qAddStudentToTeacher = gql`
     res: addStudentToTeacher(teacherId: $teacherId, studentId: $studentId) {
       _id
       name
-      students {
-        _id
-        name
-      }
+      students
     }
   }
 `
@@ -224,10 +212,7 @@ export const qCreateTeacher = gql`
     res: createTeacher(name: $name) {
       _id
       name
-      students {
-        _id
-        name
-      }
+      students
     }
   }
 `
@@ -246,10 +231,7 @@ export const qRemoveTeacher = gql`
     res: removeTeacher(_id: $_id) {
       _id
       name
-      students {
-        _id
-        name
-      }
+      students
     }
   }
 `
