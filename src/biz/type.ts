@@ -33,4 +33,5 @@ export interface IGlobalState {
   teachers: ITeacher[]
   points: IPoint[]
   students: IStudent[]
+  studentMap: any
 }

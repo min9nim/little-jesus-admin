@@ -47,18 +47,21 @@ export function useGlobalState(): IGlobalState {
     teachers: [] as ITeacher[],
     points: [],
     students: [],
+    studentMap: {},
   })
   return globalState
 }
 
 export function useBeforeMount({state, globalState}: any) {
   return async () => {
-    if (globalState.teachers.length === 0) {
-      await initTeachers({state, globalState})
-    }
     if (globalState.students.length === 0) {
       await initStudents({state, globalState})
     }
+
+    if (globalState.teachers.length === 0) {
+      await initTeachers({state, globalState})
+    }
+
     state.studentsLeft = clone(globalState.students)
     globalState.teachers.forEach((teacher: any) => {
       state.studentsLeft = differenceWith(eqProps('_id'))(state.studentsLeft, teacher.students)
@@ -70,19 +73,27 @@ export async function initTeachers({state, globalState}: IAllState) {
   state.loading = true
   const result = await req(qTeachers)
   state.loading = false
-  globalState.teachers = result.res.map((teacher: ITeacher) => ({
+  globalState.teachers = result.res.map((teacher: any) => ({
     ...teacher,
     loading: false,
     editable: false,
-    students: teacher.students.map(student => ({...student, loading: false})).sort(nameAscending),
+    students: teacher.students
+      .map(studentId => ({...globalState.studentMap[studentId], loading: false}))
+      .sort(nameAscending),
   }))
 
   globalState.teachers.sort(nameAscending)
+  console.log(222, globalState.teachers)
 }
 export async function initStudents({state, globalState}: IAllState) {
   state.loading = true
   const result = await req(qStudents)
   state.loading = false
+  globalState.studentMap = result.res.reduce((acc, value) => {
+    acc[value._id] = value
+    return acc
+  }, {})
+  console.log(11, globalState.studentMap)
   globalState.students = result.res.map((student: IStudent) => ({
     ...student,
     loading: false,
