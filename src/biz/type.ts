@@ -14,24 +14,18 @@ export interface ITeacher {
   loading?: boolean
   editable?: boolean
 }
-export interface IPoint {
-  _id?: string
-  owner: {
-    _id: string
-    name: string
-  }
-  date?: string
-  attendance: boolean
-  visitcall: boolean
-  meditation: number
-  invitation: number
-  recitation: boolean
-  etc: string
+
+export interface IPointMenu {
+  _id: string
+  label: string
+  type: string
+  priority: number
+  hidden: boolean
+  disable: boolean
 }
 
 export interface IGlobalState {
   teachers: ITeacher[]
-  points: IPoint[]
   students: IStudent[]
   studentMap: any
 }

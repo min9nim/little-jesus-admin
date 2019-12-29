@@ -53,7 +53,7 @@ import {
 } from './home.fn'
 import EditPoint from '../components/EditPoint.vue'
 import ReadPoint from '../components/ReadPoint.vue'
-import {IGlobalState, IPoint, ITeacher, IStudent} from '../biz/type'
+import {IGlobalState, ITeacher, IStudent} from '../biz/type'
 import {remove, equals, propEq, eqProps} from 'ramda'
 import {exclude} from '../utils'
 

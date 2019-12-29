@@ -45,7 +45,6 @@ export function useGlobalState(): IGlobalState {
   }
   globalState = reactive<IGlobalState>({
     teachers: [] as ITeacher[],
-    points: [],
     students: [],
     studentMap: {},
   })
@@ -83,7 +82,7 @@ export async function initTeachers({state, globalState}: IAllState) {
   }))
 
   globalState.teachers.sort(nameAscending)
-  console.log(222, globalState.teachers)
+  // console.log(222, globalState.teachers)
 }
 export async function initStudents({state, globalState}: IAllState) {
   state.loading = true
