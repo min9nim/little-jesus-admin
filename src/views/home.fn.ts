@@ -59,7 +59,7 @@ export function useBeforeMount({root, state, globalState}: any) {
     }
 
     if (globalState.teachers.length === 0) {
-      await initTeachers({state, globalState})
+      await initTeachers({root, state, globalState})
     }
 
     state.studentsLeft = clone(globalState.students)
@@ -69,21 +69,26 @@ export function useBeforeMount({root, state, globalState}: any) {
   }
 }
 
-export async function initTeachers({state, globalState}: IAllState) {
+export async function initTeachers({root, state, globalState}: any) {
   state.loading = true
   const result = await req(qTeachers)
   state.loading = false
-  globalState.teachers = result.res.map((teacher: any) => ({
-    ...teacher,
-    loading: false,
-    editable: false,
-    students: teacher.students
-      .map(studentId => ({...globalState.studentMap[studentId], loading: false}))
-      .sort(nameAscending),
-  }))
-
-  globalState.teachers.sort(nameAscending)
-  // console.log(222, globalState.teachers)
+  const teachers = go(
+    result.res,
+    map((teacher: any) => ({
+      ...teacher,
+      loading: false,
+      editable: false,
+      students: go(
+        teacher.students,
+        map((studentId: string) => ({...globalState.studentMap[studentId], loading: false})),
+        sort(nameAscending),
+      ),
+    })),
+    sort(nameAscending),
+  )
+  globalState.teachers = teachers
+  root.$store.commit('setTeachers', teachers)
 }
 export async function initStudents({root, state, globalState}: any) {
   state.loading = true
