@@ -10,7 +10,8 @@ import {
 } from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
 import {IGlobalState, ITeacher, IStudent} from '@/biz/type'
-import {propEq, eqProps, differenceWith, clone} from 'ramda'
+import {propEq, eqProps, differenceWith, clone, sort, map} from 'ramda'
+import {go} from '@mgsong/min-utils'
 
 export interface IState {
   date?: string
@@ -92,79 +93,18 @@ export async function initStudents({state, globalState}: IAllState) {
     acc[value._id] = value
     return acc
   }, {})
-  console.log(11, globalState.studentMap)
-  globalState.students = result.res.map((student: IStudent) => ({
-    ...student,
-    loading: false,
-    editable: false,
-  }))
-  globalState.students.sort(nameAscending)
+  // console.log(11, globalState.studentMap)
+  globalState.students = go(
+    result.res,
+    map((student: IStudent) => ({
+      ...student,
+      loading: false,
+      editable: false,
+    })),
+    sort(nameAscending),
+  )
+  // globalState.students.sort(nameAscending)
 }
-
-// export function useHandleSave({state, globalState}: IAllState) {
-//   return async () => {
-//     if (state.pointInit) {
-//       await updatePoint({state, globalState})
-//     } else {
-//       await createPoint({state, globalState})
-//     }
-//   }
-// }
-
-// export async function updatePoint({state, globalState}: IAllState) {
-//   state.loading = true
-//   const results = globalState.points.map(point => {
-//     return req(qUpdatePoint, {
-//       _id: point._id,
-//       owner: point.owner._id,
-//       date: state.date,
-//       attendance: point.attendance,
-//       visitcall: point.visitcall,
-//       meditation: point.meditation,
-//       recitation: point.recitation,
-//       invitation: point.invitation,
-//       etc: point.etc,
-//     })
-//   })
-//   await Promise.all(results)
-//   state.loading = false
-//   state.pointInit = true
-//   state.editable = false
-//   // @ts-ignore
-//   Notification.success({message: '저장 완료', position: 'bottom-right'})
-//   // await Message({message: '저장 완료', type: 'success'})
-// }
-
-// export async function createPoint({state, globalState}: IAllState) {
-//   try {
-//     state.loading = true
-//     const results = globalState.points.map(point => {
-//       return req(qCreatePoint, {
-//         owner: point.owner._id,
-//         date: state.date,
-//         attendance: point.attendance,
-//         visitcall: point.visitcall,
-//         meditation: point.meditation,
-//         recitation: point.recitation,
-//         invitation: point.invitation,
-//         etc: point.etc,
-//       })
-//     })
-//     const resolvedList: any = await Promise.all(results)
-//     globalState.points = resolvedList.map(prop('res')) // 생성된 _id 세팅
-//     state.loading = false
-//   } catch (e) {
-//     state.loading = false
-//     MessageBox.alert(e.message, {type: 'warning'})
-//     throw e
-//   }
-
-//   state.pointInit = true
-//   state.editable = false
-//   // await Message({message: '저장 완료', type: 'success'})
-//   // @ts-ignore
-//   Notification.success({message: '저장 완료', position: 'bottom-right'})
-// }
 
 export function useHandleEdit({state}: {state: IState}) {
   return () => {
