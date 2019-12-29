@@ -52,10 +52,10 @@ export function useGlobalState(): IGlobalState {
   return globalState
 }
 
-export function useBeforeMount({state, globalState}: any) {
+export function useBeforeMount({root, state, globalState}: any) {
   return async () => {
     if (globalState.students.length === 0) {
-      await initStudents({state, globalState})
+      await initStudents({root, state, globalState})
     }
 
     if (globalState.teachers.length === 0) {
@@ -85,7 +85,7 @@ export async function initTeachers({state, globalState}: IAllState) {
   globalState.teachers.sort(nameAscending)
   // console.log(222, globalState.teachers)
 }
-export async function initStudents({state, globalState}: IAllState) {
+export async function initStudents({root, state, globalState}: any) {
   state.loading = true
   const result = await req(qStudents)
   state.loading = false
@@ -94,7 +94,8 @@ export async function initStudents({state, globalState}: IAllState) {
     return acc
   }, {})
   // console.log(11, globalState.studentMap)
-  globalState.students = go(
+
+  const students = go(
     result.res,
     map((student: IStudent) => ({
       ...student,
@@ -103,7 +104,8 @@ export async function initStudents({state, globalState}: IAllState) {
     })),
     sort(nameAscending),
   )
-  // globalState.students.sort(nameAscending)
+  globalState.students = students
+  root.$store.commit('setStudents', students)
 }
 
 export function useHandleEdit({state}: {state: IState}) {

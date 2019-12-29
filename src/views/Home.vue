@@ -63,7 +63,7 @@ export default {
   setup(props: any, {root}: any) {
     const globalState = useGlobalState()
     const state: IState = useState()
-    onBeforeMount(useBeforeMount({state, globalState}))
+    onBeforeMount(useBeforeMount({root, state, globalState}))
     return {
       state,
       globalState,
