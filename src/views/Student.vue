@@ -1,8 +1,8 @@
 <template lang="pug">
 .home(v-loading='state.loading')
-  h3 학생 목록({{globalState.students.length}})
+  h3 학생 목록({{$store.state.students.length}})
   .students
-    .student(v-for="(student, index) in globalState.students" :key="student._id" v-loading="student.loading")
+    .student(v-for="(student, index) in $store.state.students" :key="student._id" v-loading="student.loading")
       el-input.input-student-name(
         v-show="student.editable"
         v-model="student.name"
@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import {createComponent, onBeforeMount, onMounted} from '@vue/composition-api'
-import {useBeforeMount, useGlobalState, useHandleEdit} from './home.fn'
+import {useBeforeMount, useHandleEdit} from './home.fn'
 import {useShowInput} from './teacher.fn'
 import {
   useState,
@@ -45,7 +45,7 @@ import {
   useHandleStudentClick,
   useHandleStudentNameConfirm,
 } from './student.fn'
-import {IGlobalState, IPoint, ITeacher, IStudent} from '../biz/type'
+import {IGlobalState, ITeacher, IStudent} from '../biz/type'
 import {remove, equals, propEq, eqProps} from 'ramda'
 import {exclude} from '../utils'
 import useIntervalCall from 'interval-call'
@@ -55,19 +55,17 @@ const intervalCall = useIntervalCall(1000)
 export default {
   name: 'v-student',
   setup(props: any, {root, refs}: any) {
-    const globalState = useGlobalState()
     const state: IState = useState()
     // @ts-ignore
-    const handleClose = useHandleClose(state, globalState)
-    onBeforeMount(useBeforeMount({state, globalState}))
+    const handleClose = useHandleClose(state, root)
+    onBeforeMount(useBeforeMount({state, root}))
     const handleStudentClick = useHandleStudentClick({root, refs})
     // @ts-ignore
-    const handleInputConfirm = useHandleInputConfirm(state, globalState)
+    const handleInputConfirm = useHandleInputConfirm(state, root)
     const handleStudentNameConfirm = useHandleStudentNameConfirm(state)
     const showInput = useShowInput({state, root, refs})
     return {
       state,
-      globalState,
       handleClose,
       showInput,
       handleInputConfirm,

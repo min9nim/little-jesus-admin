@@ -1,9 +1,9 @@
 <template lang="pug">
 .home(v-loading='state.loading')
-  h3 선생님 목록({{globalState.teachers.length}})
+  h3 선생님 목록({{$store.state.teachers.length}})
   .teachers
-    .no-result(v-if="globalState.teachers.length === 0") 선생님을 추가해 주세요
-    .teacher(v-for="(teacher, index) in globalState.teachers" :key="teacher._id" v-loading="teacher.loading")
+    .no-result(v-if="$store.state.teachers.length === 0") 선생님을 추가해 주세요
+    .teacher(v-for="(teacher, index) in $store.state.teachers" :key="teacher._id" v-loading="teacher.loading")
       el-input.input-teacher-name(
         v-show="teacher.editable"
         v-model="teacher.name"
@@ -46,7 +46,7 @@ import {
   useShowInput,
   useHandleTeacherNameConfirm,
 } from './teacher.fn'
-import {IGlobalState, IPoint, ITeacher, IStudent} from '../biz/type'
+import {IGlobalState, ITeacher, IStudent} from '../biz/type'
 import {remove, equals, propEq, eqProps} from 'ramda'
 import {exclude} from '../utils'
 import useIntervalCall from 'interval-call'
@@ -56,19 +56,17 @@ const intervalCall = useIntervalCall(1000)
 export default {
   name: 'v-teacher',
   setup(props: any, {root, refs}: any) {
-    const globalState = useGlobalState()
     const state: IState = useState()
     // @ts-ignore
-    const handleClose = useHandleClose(state, globalState)
-    onBeforeMount(useBeforeMount({state, globalState}))
+    const handleClose = useHandleClose(state, root)
+    onBeforeMount(useBeforeMount({state, root}))
     // @ts-ignore
-    const handleInputConfirm = useHandleInputConfirm(state, globalState)
+    const handleInputConfirm = useHandleInputConfirm(state, root)
     const handleTeacherNameConfirm = useHandleTeacherNameConfirm(state)
     const showInput = useShowInput({state, root, refs})
     const handleTeacherClick = useHandleTeacherClick({root, refs})
     return {
       state,
-      globalState,
       handleClose,
       showInput,
       handleInputConfirm,

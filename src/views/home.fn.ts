@@ -24,7 +24,6 @@ export interface IState {
 
 export interface IAllState {
   state: IState
-  globalState: IGlobalState
 }
 
 export function useState(): IState {
@@ -39,37 +38,24 @@ export function useState(): IState {
   return state
 }
 
-let globalState: IGlobalState
-export function useGlobalState(): IGlobalState {
-  if (globalState) {
-    return globalState
-  }
-  globalState = reactive<IGlobalState>({
-    teachers: [] as ITeacher[],
-    students: [],
-    studentMap: {},
-  })
-  return globalState
-}
-
-export function useBeforeMount({root, state, globalState}: any) {
+export function useBeforeMount({root, state}: any) {
   return async () => {
-    if (globalState.students.length === 0) {
-      await initStudents({root, state, globalState})
+    if (root.$store.state.students.length === 0) {
+      await initStudents({root, state})
     }
 
-    if (globalState.teachers.length === 0) {
-      await initTeachers({root, state, globalState})
+    if (root.$store.state.teachers.length === 0) {
+      await initTeachers({root, state})
     }
 
-    state.studentsLeft = clone(globalState.students)
-    globalState.teachers.forEach((teacher: any) => {
+    state.studentsLeft = clone(root.$store.state.students)
+    root.$store.state.teachers.forEach((teacher: any) => {
       state.studentsLeft = differenceWith(eqProps('_id'))(state.studentsLeft, teacher.students)
     })
   }
 }
 
-export async function initTeachers({root, state, globalState}: any) {
+export async function initTeachers({root, state}: any) {
   state.loading = true
   const result = await req(qTeachers)
   state.loading = false
@@ -81,24 +67,21 @@ export async function initTeachers({root, state, globalState}: any) {
       editable: false,
       students: go(
         teacher.students,
-        map((studentId: string) => ({...globalState.studentMap[studentId], loading: false})),
+        map((studentId: string) => ({
+          ...root.$store.getters.studentMap[studentId],
+          loading: false,
+        })),
         sort(nameAscending),
       ),
     })),
     sort(nameAscending),
   )
-  globalState.teachers = teachers
   root.$store.commit('setTeachers', teachers)
 }
-export async function initStudents({root, state, globalState}: any) {
+export async function initStudents({root, state}: any) {
   state.loading = true
   const result = await req(qStudents)
   state.loading = false
-  globalState.studentMap = result.res.reduce((acc, value) => {
-    acc[value._id] = value
-    return acc
-  }, {})
-  // console.log(11, globalState.studentMap)
 
   const students = go(
     result.res,
@@ -109,7 +92,6 @@ export async function initStudents({root, state, globalState}: any) {
     })),
     sort(nameAscending),
   )
-  globalState.students = students
   root.$store.commit('setStudents', students)
 }
 
@@ -152,7 +134,7 @@ export function useHandleNewStudentChange(state: IState) {
 export function useHandleClose(state: IState) {
   return async (teacher: ITeacher, student: IStudent) => {
     try {
-      await await MessageBox.confirm(`${teacher.name} 선생님 반에서 ${student.name}를 제거합니다`, {
+      await MessageBox.confirm(`${teacher.name} 선생님 반에서 ${student.name}를 제거합니다`, {
         type: 'warning',
       })
       student.loading = true

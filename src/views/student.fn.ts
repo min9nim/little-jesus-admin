@@ -3,6 +3,7 @@ import {IGlobalState, IStudent} from '../biz/type'
 import {req} from '@/utils'
 import {qCreateStudent, qRemoveStudent, qUpdateStudent} from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
+import Vue from 'vue'
 
 export interface IState {
   loading: boolean
@@ -18,14 +19,13 @@ export function useState(): IState {
   })
 }
 
-export function useHandleInputConfirm(state: IState, globalState: IGlobalState) {
+export function useHandleInputConfirm(state: IState, root: Vue) {
   return async () => {
     try {
       if (state.newStudentName) {
         state.loading = true
-        const result = await req(qCreateStudent, {name: state.newStudentName})
+        root.$store.dispatch('addStudent', {name: state.newStudentName})
         state.loading = false
-        globalState.students.push({_id: result.res._id, name: state.newStudentName})
         // @ts-ignore
         Notification.success({
           message: state.newStudentName + ' 어린이 추가 완료',
@@ -42,16 +42,15 @@ export function useHandleInputConfirm(state: IState, globalState: IGlobalState) 
   }
 }
 
-export function useHandleClose(state: IState, globalState: IGlobalState) {
+export function useHandleClose(state: IState, root: any) {
   return async (student: IStudent, index: number) => {
     try {
       await MessageBox.confirm(`${student.name} 어린이를 삭제합니다`, {type: 'warning'})
       state.loading = true
-      await req(qRemoveStudent, {_id: student._id})
+      await root.$store.dispatch('removeStudent', {_id: student._id})
       state.loading = false
       // @ts-ignore
       Notification.success({message: student.name + ' 어린이 삭제 완료', position: 'bottom-right'})
-      globalState.students.splice(index, 1)
     } catch (e) {
       state.loading = false
       if (e !== 'cancel') {

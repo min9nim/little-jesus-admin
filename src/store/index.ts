@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {IPointMenu, ITeacher, IStudent} from '@/biz/type'
+import {qCreateStudent, qRemoveStudent, qCreateTeacher, qRemoveTeacher} from '@/biz/query'
+import {req} from '@/utils'
+import {removeById} from '@mgsong/min-utils'
 
 Vue.use(Vuex)
 
@@ -10,48 +13,6 @@ export default new Vuex.Store({
     teachers: [] as ITeacher[],
     students: [] as IStudent[],
     pointMenus: [] as IPointMenu[],
-    asisPointMenus: [
-      {
-        _id: 'attendance',
-        label: '출석',
-        type: 'checkbox',
-        priority: 1,
-        hidden: false,
-        disable: false,
-      },
-      {
-        _id: 'visitcall',
-        label: '심방',
-        type: 'checkbox',
-        priority: 0,
-        hidden: false,
-        disable: false,
-      },
-      {
-        _id: 'invitation',
-        label: '전도',
-        type: 'radio:5',
-        priority: 10,
-        hidden: false,
-        disable: false,
-      },
-      {
-        _id: 'meditation',
-        label: '묵상',
-        type: 'radio:7',
-        priority: 1,
-        hidden: false,
-        disable: false,
-      },
-      {
-        _id: 'recitation',
-        label: '암송',
-        type: 'checkbox',
-        priority: 7,
-        hidden: false,
-        disable: false,
-      },
-    ],
   },
   mutations: {
     setDate(state, date) {
@@ -69,6 +30,15 @@ export default new Vuex.Store({
     addTeacher(state, teacher) {
       state.teachers.push(teacher)
     },
+    removeTeacher(state, _id) {
+      state.teachers = removeById(_id)(state.teachers)
+    },
+    addStudent(state, student) {
+      state.students.push(student)
+    },
+    removeStudent(state, studentId) {
+      state.students = removeById(studentId)(state.students)
+    },
   },
   getters: {
     pointMenuMap(state) {
@@ -84,6 +54,23 @@ export default new Vuex.Store({
       }, {})
     },
   },
-  actions: {},
+  actions: {
+    async addStudent({commit}, {name}) {
+      const result = await req(qCreateStudent, {name})
+      commit('addStudent', {_id: result.res._id, name})
+    },
+    async removeStudent({commit}, {_id: studentId}) {
+      await req(qRemoveStudent, {_id: studentId})
+      commit('removeStudent', studentId)
+    },
+    async addTeacher({commit}, {name}) {
+      const result = await req(qCreateTeacher, {name})
+      commit('addTeacher', {_id: result.res._id, name: result.res._name})
+    },
+    async removeTeacher({commit}, {_id}) {
+      await req(qRemoveTeacher, {_id})
+      commit('removeTeacher', _id)
+    },
+  },
   modules: {},
 })
