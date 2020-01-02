@@ -65,7 +65,7 @@ export default new Vuex.Store({
     },
     async addTeacher({commit}, {name}) {
       const result = await req(qCreateTeacher, {name})
-      commit('addTeacher', {_id: result.res._id, name: result.res._name})
+      commit('addTeacher', {_id: result.res._id, name: result.res.name, students: []})
     },
     async removeTeacher({commit}, {_id}) {
       await req(qRemoveTeacher, {_id})

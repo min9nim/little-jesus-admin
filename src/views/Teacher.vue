@@ -17,7 +17,7 @@
         closable
         @click="handleTeacherClick(teacher)"
         @close="handleClose(teacher, index)"
-      ) {{teacher.name + ' (' + teacher.students.length + ')'}}
+      ) {{teacher.name + ' (' + teacher.students.length+ ')'}}
   .new-teacher
     el-input.input-new-tag(
       v-if="state.inputVisible"
@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import {createComponent, onBeforeMount, onMounted} from '@vue/composition-api'
-import {useBeforeMount, useGlobalState, useHandleEdit} from './home.fn'
+import {useBeforeMount, useHandleEdit} from './home.fn'
 import {
   useState,
   IState,
@@ -47,7 +47,7 @@ import {
   useHandleTeacherNameConfirm,
 } from './teacher.fn'
 import {IGlobalState, ITeacher, IStudent} from '../biz/type'
-import {remove, equals, propEq, eqProps} from 'ramda'
+import {remove, equals, propEq, eqProps, path} from 'ramda'
 import {exclude} from '../utils'
 import useIntervalCall from 'interval-call'
 
@@ -55,6 +55,7 @@ const intervalCall = useIntervalCall(1000)
 
 export default {
   name: 'v-teacher',
+  methods: {path},
   setup(props: any, {root, refs}: any) {
     const state: IState = useState()
     // @ts-ignore
