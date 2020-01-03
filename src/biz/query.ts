@@ -35,10 +35,10 @@ export const qPointMenus = gql`
 export const qUpdatePointMenu = gql`
   mutation updatePointMenu(
     $_id: ObjectId!
-    $label: String!
-    $type: String!
-    $defaultValue: String!
-    $priority: Int!
+    $label: String
+    $type: String
+    $defaultValue: String
+    $priority: Int
     $hidden: Boolean
   ) {
     res: updatePointMenu(

@@ -60,6 +60,11 @@ export function useHandleCreate({state}) {
       await MessageBox.alert(`제목을 입력해 주세요`, {type: 'warning'})
       return
     }
+    if (!state.newPointMenu.defaultValue) {
+      await MessageBox.alert(`기본입력값을 입력해 주세요`, {type: 'warning'})
+      return
+    }
+
     state.newPointMenu.type = String(state.newPointMenu.type)
     const priority = Number(state.newPointMenu.priority)
     if (Number.isNaN(priority)) {
