@@ -34,7 +34,12 @@ export function useBeforeMount({state}) {
     state.loading = true
     const result = await req(qPointMenus)
     state.loading = false
-    state.menus = result.res.map(menu => ({...menu, loading: false, editable: false}))
+    state.menus = result.res.map(menu => {
+      if (!menu.items) {
+        menu.items = Array.from(Array(Number(menu.type)).keys())
+      }
+      return {...menu, loading: false, editable: false}
+    })
   }
 }
 

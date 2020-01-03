@@ -12,7 +12,7 @@
             el-button.btn(size="mini" icon="el-icon-check" type="" @click="handleSave(item)") 저장
             el-button.btn(size="mini" icon="el-icon-close" type="" @click="handleCancel(item)") 취소
           .item
-            .label 입력개수
+            .label 입력항목
             .value
               el-input-number(
                 v-model='item.type'
@@ -40,7 +40,7 @@
             el-button.btn(size="mini" icon="el-icon-edit" type="" @click="handleEdit(item)") 수정
             el-button.btn(size="mini" icon="el-icon-delete" type="" @click="handleRemove(item)") 삭제
           .item
-            .label 입력개수
+            .label 입력항목
             .value {{item.type}}
           .item 
             .label 가중치
