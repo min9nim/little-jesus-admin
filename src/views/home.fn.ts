@@ -10,7 +10,7 @@ import {
 } from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
 import {IGlobalState, ITeacher, IStudent} from '@/biz/type'
-import {propEq, eqProps, differenceWith, clone, sort, map} from 'ramda'
+import {propEq, eqProps, differenceWith, clone, sort, map, append} from 'ramda'
 import {go} from '@mgsong/min-utils'
 
 export interface IState {
@@ -140,7 +140,7 @@ export function useHandleClose(state: IState) {
       student.loading = true
       await req(qRemoveStudentToTeacher, {teacherId: teacher._id, studentId: student._id})
       student.loading = false
-      state.studentsLeft.push(student)
+      state.studentsLeft = go(state.studentsLeft, append(student), sort(nameAscending))
       teacher.students = exclude(eqProps('_id', student))(teacher.students)
       // @ts-ignore
       Notification.success({
