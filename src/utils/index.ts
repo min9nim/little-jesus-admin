@@ -66,6 +66,12 @@ export function nameAscending(a: any, b: any) {
   return 0
 }
 
+export function _idAscending(a: any, b: any) {
+  if (a._id > b._id) return 1
+  if (b._id > a._id) return -1
+  return 0
+}
+
 export const idEqual = propEq('_id')
 
 export const findById = pipe(

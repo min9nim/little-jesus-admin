@@ -1,82 +1,5 @@
 import gql from 'graphql-tag'
 
-// export const qCreatePoint = gql`
-//   # Write your query or mutation here
-//   mutation createPoint(
-//     $owner: ObjectId!
-//     $date: String!
-//     $attendance: Boolean
-//     $visitcall: Boolean
-//     $meditation: Int
-//     $recitation: Boolean
-//     $invitation: Int
-//     $etc: String
-//   ) {
-//     res: createPoint(
-//       owner: $owner
-//       date: $date
-//       attendance: $attendance
-//       visitcall: $visitcall
-//       meditation: $meditation
-//       recitation: $recitation
-//       invitation: $invitation
-//       etc: $etc
-//     ) {
-//       _id
-//       owner {
-//         _id
-//         name
-//       }
-//       date
-//       attendance
-//       visitcall
-//       meditation
-//       recitation
-//       invitation
-//       etc
-//     }
-//   }
-// `
-// export const qUpdatePoint = gql`
-//   # Write your query or mutation here
-//   mutation updatePoint(
-//     $_id: ObjectId!
-//     $owner: ObjectId
-//     $date: String
-//     $attendance: Boolean
-//     $visitcall: Boolean
-//     $meditation: Int
-//     $recitation: Boolean
-//     $invitation: Int
-//     $etc: String
-//   ) {
-//     res: updatePoint(
-//       _id: $_id
-//       owner: $owner
-//       date: $date
-//       attendance: $attendance
-//       visitcall: $visitcall
-//       meditation: $meditation
-//       recitation: $recitation
-//       invitation: $invitation
-//       etc: $etc
-//     ) {
-//       _id
-//       owner {
-//         _id
-//         name
-//       }
-//       date
-//       attendance
-//       visitcall
-//       meditation
-//       recitation
-//       invitation
-//       etc
-//     }
-//   }
-// `
-
 export const qTeachers = gql`
   query teachers {
     res: teachers {
@@ -101,6 +24,7 @@ export const qPointMenus = gql`
       _id
       label
       type
+      defaultValue
       priority
       hidden
       disable
@@ -111,15 +35,17 @@ export const qPointMenus = gql`
 export const qUpdatePointMenu = gql`
   mutation updatePointMenu(
     $_id: ObjectId!
-    $label: String
-    $type: String
-    $priority: Int
+    $label: String!
+    $type: String!
+    $defaultValue: String!
+    $priority: Int!
     $hidden: Boolean
   ) {
     res: updatePointMenu(
       _id: $_id
       label: $label
       type: $type
+      defaultValue: $defaultValue
       priority: $priority
       hidden: $hidden
     ) {
@@ -129,6 +55,7 @@ export const qUpdatePointMenu = gql`
       disable
       priority
       type
+      defaultValue
     }
   }
 `
@@ -142,17 +69,31 @@ export const qRemovePointMenu = gql`
       disable
       priority
       type
+      defaultValue
     }
   }
 `
 
 export const qCreatePointMenu = gql`
-  mutation createPointMenu($label: String!, $priority: Int, $type: String, $hidden: Boolean) {
-    res: createPointMenu(label: $label, priority: $priority, type: $type, hidden: $hidden) {
+  mutation createPointMenu(
+    $label: String!
+    $priority: Int!
+    $type: String!
+    $defaultValue: String!
+    $hidden: Boolean
+  ) {
+    res: createPointMenu(
+      label: $label
+      priority: $priority
+      type: $type
+      defaultValue: $defaultValue
+      hidden: $hidden
+    ) {
       _id
       label
       priority
       type
+      defaultValue
       hidden
     }
   }

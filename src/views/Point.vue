@@ -14,11 +14,16 @@
           .item
             .label 입력항목
             .value
-              el-input-number(
+              el-input(
                 v-model='item.type'
                 size="mini"
-                :min="2"
-                :max="20"
+              )
+          .item
+            .label 기본 입력값
+            .value
+              el-input(
+                v-model='item.defaultValue'
+                size="mini"
               )
           .item 
             .label 가중치
@@ -28,7 +33,7 @@
                 size="mini"
                 :min="0"
                 :max="100"
-              )
+              )                                        
           .item
             .label 상태
             .value
@@ -42,6 +47,9 @@
           .item
             .label 입력항목
             .value {{item.type}}
+          .item
+            .label 기본 입력값
+            .value {{item.defaultValue}}     
           .item 
             .label 가중치
             .value {{item.priority}}
@@ -60,13 +68,18 @@
           el-button(size="mini" icon="el-icon-check" @click="handleCreate") 저장
           el-button(size="mini" icon="el-icon-close" @click="handleCancel(state.newPointMenu)") 취소
         .item
-          .label 입력개수
+          .label 입력항목
           .value
-            el-input-number(
+            el-input(
               v-model='state.newPointMenu.type'
               size="mini"
-              :min="2"
-              :max="20"
+            )
+        .item
+          .label 기본 입력값
+          .value
+            el-input(
+              v-model='state.newPointMenu.defaultValue'
+              size="mini"
             )
         .item 
           .label 가중치
@@ -103,7 +116,6 @@ export default {
       newPointMenu: DEFAULT(),
       rules: {
         type: [{validator: checkType, trigger: 'change'}],
-        priority: [{validator: () => {}, trigger: 'change'}],
       },
     })
     onBeforeMount(useBeforeMount({state}))

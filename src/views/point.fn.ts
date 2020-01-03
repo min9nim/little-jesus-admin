@@ -1,10 +1,13 @@
 import {qPointMenus, qCreatePointMenu, qRemovePointMenu, qUpdatePointMenu} from '@/biz/query'
-import {req, removeById, updateById} from '@/utils'
+import {req, removeById, updateById, nameAscending, _idAscending} from '@/utils'
 import {MessageBox} from 'element-ui'
+import {map, sort, split, trim, join, omit} from 'ramda'
+import {go} from '@mgsong/min-utils'
 
 export interface IPointMenu {
   _id?: string
   type?: string
+  defaultValue?: string
   priority?: number
   label?: string
   hidden?: boolean
@@ -21,8 +24,9 @@ export interface IState {
 }
 
 export const DEFAULT = () => ({
-  type: '2',
-  priority: 0,
+  type: '라벨1:0,라벨2:1',
+  default: '라벨1',
+  priority: 1,
   label: '',
   hidden: false,
   loading: false,
@@ -34,12 +38,19 @@ export function useBeforeMount({state}) {
     state.loading = true
     const result = await req(qPointMenus)
     state.loading = false
-    state.menus = result.res.map(menu => {
-      if (!menu.items) {
-        menu.items = Array.from(Array(Number(menu.type)).keys())
-      }
-      return {...menu, loading: false, editable: false}
-    })
+    state.menus = go(
+      result.res,
+      map((menu: any) => {
+        if (menu.type.split(',').length < 2) {
+          menu.type = Array.from(Array(Number(menu.type)).keys()).join(', ')
+        }
+        // console.log(44, menu.type)
+        menu.type = menu.type.replace(/,/g, ', ')
+        // console.log(55, menu.type)
+        return {...menu, loading: false, editable: false}
+      }),
+      sort(_idAscending),
+    )
   }
 }
 
@@ -90,7 +101,7 @@ export function useHandleSave() {
         await MessageBox.alert(`제목을 입력해 주세요`, {type: 'warning'})
         return
       }
-      item.type = String(item.type)
+      item.type = go(item.type, split(','), map(trim), join(','))
       const priority = Number(item.priority)
       if (Number.isNaN(priority)) {
         console.warn('Not a number priority')
@@ -112,13 +123,10 @@ export function useHandleSave() {
 export function checkType(rule, value, callback) {
   console.log(rule, value, callback)
   if (!value) {
-    callback(new Error('입력 개수를 입력해 주세요'))
+    callback(new Error('입력 항목을 입력해 주세요'))
   } else {
-    const num = Number(value)
-    if (Number.isNaN(num)) {
-      callback(new Error('숫자만 입력 가능합니다'))
-    } else if (num <= 1) {
-      callback(new Error('2 이상 값을 입력해 주세요'))
+    if (value.split(',').length < 2) {
+      callback(new Error('2개 이상 입력해 주세요'))
     } else {
       callback()
     }
