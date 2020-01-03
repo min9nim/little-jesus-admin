@@ -1,14 +1,28 @@
 import axios from 'axios'
 import {print} from 'graphql/language/printer'
+import {getQueryParams} from '@mgsong/min-utils'
 import {pipe, complement, filter, propEq, curry, findIndex, remove, update, find} from 'ramda'
 
-const prod_url = 'https://little-jesus-api.now.sh'
-const dev_url = 'https://little-jesus-api-git-develop.min1.now.sh'
-const local_url = 'http://localhost:5050'
+const url: any = {
+  prod: 'https://little-jesus-api.now.sh',
+  prod2020: 'https://little-jesus-api-git-lj2020.min1.now.sh',
+  dev: 'https://little-jesus-api-git-develop.min1.now.sh',
+  local: 'http://localhost:5050',
+}
 
-let BASEURL = window.location.host === 'little-jesus-admin.now.sh' ? prod_url : dev_url
+let BASEURL = url.dev
 if (window.location.host.indexOf('localhost') === 0) {
-  BASEURL = local_url
+  BASEURL = url.local
+}
+if (window.location.host === 'little-jesus-admin.now.sh') {
+  BASEURL = url.prod
+}
+if (window.location.host === 'little-jesus-admin-2020.now.sh') {
+  BASEURL = url.prod2020
+}
+const queryParam = getQueryParams(window.location.href)
+if (queryParam.api) {
+  BASEURL = url[queryParam.api]
 }
 
 console.log('BASEURL: ' + BASEURL)
