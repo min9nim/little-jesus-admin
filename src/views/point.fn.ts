@@ -1,7 +1,7 @@
 import {qPointMenus, qCreatePointMenu, qRemovePointMenu, qUpdatePointMenu} from '@/biz/query'
-import {req, removeById, updateById, nameAscending, _idAscending} from '@/utils'
+import {req, removeById, _idAscending} from '@/utils'
 import {MessageBox} from 'element-ui'
-import {map, sort, split, trim, join, omit} from 'ramda'
+import {map, sort, split, trim, join} from 'ramda'
 import {go} from '@mgsong/min-utils'
 
 export interface IPointMenu {
@@ -121,7 +121,7 @@ export function useHandleSave() {
 }
 
 export function checkType(rule, value, callback) {
-  console.log(rule, value, callback)
+  // console.log(rule, value, callback)
   if (!value) {
     callback(new Error('입력 항목을 입력해 주세요'))
   } else {
@@ -134,7 +134,7 @@ export function checkType(rule, value, callback) {
 }
 
 export function checkPriority(rule, value, callback) {
-  console.log(value)
+  // console.log(value)
   if (!value) {
     callback(new Error('가중치를 입력해 주세요'))
   } else {

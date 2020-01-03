@@ -25,6 +25,7 @@ if (queryParam.api) {
   BASEURL = url[queryParam.api]
 }
 
+// eslint-disable-next-line
 console.log('BASEURL: ' + BASEURL)
 
 export async function req(query: any, variables = {}) {
