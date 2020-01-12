@@ -2,7 +2,7 @@ import {qPointMenus, qCreatePointMenu, qRemovePointMenu, qUpdatePointMenu} from 
 import {req, removeById, _idAscending} from '@/utils'
 import {MessageBox} from 'element-ui'
 import {map, sort, split, trim, join} from 'ramda'
-import {go} from '@mgsong/min-utils'
+import {go} from 'mingutils'
 
 export interface IPointMenu {
   _id?: string

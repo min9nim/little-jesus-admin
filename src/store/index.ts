@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import {IPointMenu, ITeacher, IStudent} from '@/biz/type'
 import {qCreateStudent, qRemoveStudent, qCreateTeacher, qRemoveTeacher} from '@/biz/query'
 import {req} from '@/utils'
-import {removeById} from '@mgsong/min-utils'
+import {removeById} from 'mingutils'
 
 Vue.use(Vuex)
 
