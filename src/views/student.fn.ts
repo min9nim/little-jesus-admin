@@ -46,6 +46,10 @@ export function useHandleClose(state: IState, root: any) {
   return async (student: IStudent, index: number) => {
     try {
       await MessageBox.confirm(`${student.name} 어린이를 삭제합니다`, {type: 'warning'})
+      await MessageBox.confirm(
+        `'${student.name}' 가 삭제될 경우 기존 입력되었던 모든 포인트가 함께 삭제되며 복원은 불가합니다. 정말 '${student.name}' 어린이를 삭제하시겠습니까?`,
+        {type: 'warning'},
+      )
       state.loading = true
       await root.$store.dispatch('removeStudent', {_id: student._id})
       state.loading = false
