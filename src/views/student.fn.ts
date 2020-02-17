@@ -1,7 +1,7 @@
 import {reactive} from '@vue/composition-api'
-import {IGlobalState, IStudent} from '../biz/type'
+import {IStudent} from '../biz/type'
 import {req} from '@/utils'
-import {qCreateStudent, qRemoveStudent, qUpdateStudent} from '@/biz/query'
+import {qUpdateStudent} from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
 import Vue from 'vue'
 
