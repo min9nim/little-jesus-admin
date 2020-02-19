@@ -5131,6 +5131,13 @@ ieee754@^1.1.4:
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.13.tgz#ec168558e95aa181fd87d37f55c32bbcb6708b84"
   integrity sha512-4vf7I2LYV/HaWerSo3XmlMkp5eZ83i+/CDluXi/IGTs/O1sejBNhTtnxzmRZfvOUqj7lZjqHkeTvpgSFDlWZTg==
 
+if-logger@^0.8.4:
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/if-logger/-/if-logger-0.8.4.tgz#c9951ba09e547e5fce8a6b3cebbc0b37c79bc8f7"
+  integrity sha512-y7OhJrOjonBbFQuJuuyhWly0KR0XAR+ZLMMVHpFbu02j5+G6X4Gd/MTVsd2n5e3amGIFOG11xar9CtFrZaurrQ==
+  dependencies:
+    tslib "^1.10.0"
+
 iferr@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/iferr/-/iferr-0.1.5.tgz#c60eed69e6d8fdb6b3104a1fcbca1c192dc5b501"
@@ -9677,7 +9684,7 @@ ts-toolbelt@^4.7.7:
   resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-4.8.22.tgz#d7f15a5d35594af629ca10ae890c1ededc10d662"
   integrity sha512-CQXoGSEOlNP0XQ1OsXVjLVzErc8LQBaAe6HHFLRpqdm0ZvZEd1q1noAle2J3DSc33LL+DaxwJzstps/AQGXH4Q==
 
-tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
+tslib@^1.10.0, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
   integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==

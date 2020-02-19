@@ -4,7 +4,7 @@
   .students
     .student(v-for="(student, index) in $store.state.students" :key="student._id" v-loading="student.loading")
       el-input.input-student-name(
-        v-if="student.editable"
+        v-show="student.editable"
         v-model="student.name"
         :ref="student._id"
         size="mini"
@@ -12,7 +12,7 @@
         @blur="handleStudentNameConfirm(student)"
       )
       el-tag.studentName(
-        v-else
+        v-show="!student.editable"
         :disable-transitions="true"
         closable
         @click="handleStudentClick(student)"
@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import {createComponent, onBeforeMount, onMounted} from '@vue/composition-api'
+import {createComponent, onBeforeMount, watch} from '@vue/composition-api'
 import {useBeforeMount, useHandleEdit} from './home.fn'
 import {useShowInput} from './teacher.fn'
 import {
@@ -44,14 +44,17 @@ import {
   useHandleClose,
   useHandleInputConfirm,
   useHandleStudentClick,
+  originalStudents,
   useHandleStudentNameConfirm,
 } from './student.fn'
 import {IGlobalState, ITeacher, IStudent} from '../biz/type'
-import {remove, equals, propEq, eqProps} from 'ramda'
+import {remove, equals, propEq, eqProps, clone} from 'ramda'
 import {exclude} from '../utils'
 import useIntervalCall from 'interval-call'
+import createLogger from 'if-logger'
 
 const intervalCall = useIntervalCall(1000)
+const logger = createLogger().addTags('Student.vue')
 
 export default {
   name: 'v-student',
@@ -65,6 +68,17 @@ export default {
     const handleInputConfirm = useHandleInputConfirm(state, root)
     const handleStudentNameConfirm = useHandleStudentNameConfirm(state)
     const showInput = useShowInput({state, root, refs})
+    watch(
+      () => root.$store.state.students.length,
+      () => {
+        const l = logger.addTags('watch')
+        l.debug('root.$store.state.students.length', root.$store.state.students.length)
+        if (root.$store.state.students.length > 0) {
+          originalStudents.push(...clone(root.$store.state.students))
+          l.info('root.$store.state.students cloned to state.originalStudents')
+        }
+      },
+    )
     return {
       state,
       handleClose,

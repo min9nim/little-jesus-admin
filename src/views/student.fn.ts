@@ -4,6 +4,13 @@ import {req, errMsg} from '@/utils'
 import {qUpdateStudent} from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
 import Vue from 'vue'
+import createLogger from 'if-logger'
+import {go, findById, removeById} from 'mingutils'
+import {find, propEq} from 'ramda'
+
+const logger = createLogger().addTags('student.fn.ts')
+
+export const originalStudents: IStudent[] = []
 
 export interface IState {
   loading: boolean
@@ -21,11 +28,23 @@ export function useState(): IState {
 
 export function useHandleInputConfirm(state: IState, root: Vue) {
   return async () => {
+    const l = logger.addTags('useHandleInputConfirm')
     try {
       if (state.newStudentName) {
+        const sameName = go(originalStudents, find(propEq('name', state.newStudentName)))
+        if (sameName) {
+          await MessageBox.alert('동일한 이름이 존재합니다. 다른 이름을 입력해 주세요.', '', {
+            type: 'warning',
+          })
+          state.inputVisible = false
+          state.newStudentName = ''
+          return
+        }
+
         state.loading = true
-        root.$store.dispatch('addStudent', {name: state.newStudentName})
+        const newStudent: any = root.$store.dispatch('addStudent', {name: state.newStudentName})
         state.loading = false
+        originalStudents.push(newStudent)
         // @ts-ignore
         Notification.success({
           message: state.newStudentName + ' 어린이 추가 완료',
@@ -55,6 +74,10 @@ export function useHandleClose(state: IState, root: any) {
       state.loading = false
       // @ts-ignore
       Notification.success({message: student.name + ' 어린이 삭제 완료', position: 'bottom-right'})
+
+      // originalStudents 에서도 삭제
+      const idx = originalStudents.findIndex(propEq('_id', student._id))
+      originalStudents.splice(idx, 1)
     } catch (e) {
       state.loading = false
       if (e !== 'cancel') {
@@ -77,11 +100,24 @@ export function useHandleStudentClick({root, refs}: any) {
 
 export function useHandleStudentNameConfirm(state: IState) {
   return async (student: IStudent) => {
+    const l = logger.addTags('useHandleStudentNameConfirm')
     try {
       if (student.name) {
+        const sameName = go(originalStudents, find(propEq('name', student.name)))
+        if (sameName) {
+          // 동일한 이름인 경우 그냥 리턴
+          l.info('이름 변경사항 없음')
+          student.editable = false
+          return
+        }
+
         student.loading = true
         await req(qUpdateStudent, {_id: student._id, name: student.name})
         student.loading = false
+
+        const originalStudent = go(originalStudents, findById(student._id))
+        originalStudent.name = student.name
+
         // @ts-ignore
         Notification.success({
           message: student.name + ' 이름 수정 완료',

@@ -14,6 +14,7 @@
     "element-ui": "^2.12.0",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
+    "if-logger": "0.8.4",
     "interval-call": "^0.0.3",
     "mingutils": "0.0.7",
     "moment": "^2.24.0",
