@@ -1,6 +1,6 @@
 import {reactive} from '@vue/composition-api'
 import {IStudent} from '../biz/type'
-import {req} from '@/utils'
+import {req, errMsg} from '@/utils'
 import {qUpdateStudent} from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
 import Vue from 'vue'
@@ -59,7 +59,7 @@ export function useHandleClose(state: IState, root: any) {
       state.loading = false
       if (e !== 'cancel') {
         console.error(e)
-        MessageBox.alert(e.message, {type: 'warning'})
+        MessageBox.alert(errMsg(e), {type: 'warning'})
       }
     }
   }
