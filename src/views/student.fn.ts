@@ -42,7 +42,10 @@ export function useHandleInputConfirm(state: IState, root: Vue) {
         }
 
         state.loading = true
-        const newStudent: any = root.$store.dispatch('addStudent', {name: state.newStudentName})
+        const newStudent: any = root.$store.dispatch('addStudent', {
+          name: state.newStudentName,
+          editable: false,
+        })
         state.loading = false
         originalStudents.push(newStudent)
         // @ts-ignore
@@ -89,10 +92,14 @@ export function useHandleClose(state: IState, root: any) {
 }
 
 export function useHandleStudentClick({root, refs}: any) {
+  const l = logger.addTags('useHandleStudentClick')
   return (student: IStudent) => {
+    l.verbose('start')
     student.editable = true
+    l.debug('111')
     root.$nextTick(() => {
-      // console.log(refs, student._id, refs[student._id])
+      l.debug('222')
+      l.debug(refs, student._id, refs[student._id])
       refs[student._id][0].$refs.input.focus()
     })
   }
