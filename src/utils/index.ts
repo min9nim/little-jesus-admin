@@ -101,3 +101,4 @@ export const updateById = curry((id, tobe, list) => {
 export const removeById = curry((id, list) => {
   return removeBy(idEqual(id))(list)
 })
+export const errMsg = e => (Array.isArray(e) ? e[0].message : e.message)
