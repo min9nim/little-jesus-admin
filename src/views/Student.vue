@@ -4,7 +4,7 @@
   .students
     .student(v-for="(student, index) in $store.state.students" :key="student._id" v-loading="student.loading")
       el-input.input-student-name(
-        v-show="student.editable"
+        v-if="student.editable"
         v-model="student.name"
         :ref="student._id"
         size="mini"
@@ -12,7 +12,8 @@
         @blur="handleStudentNameConfirm(student)"
       )
       el-tag.studentName(
-        v-show="!student.editable"
+        v-else
+        :disable-transitions="true"
         closable
         @click="handleStudentClick(student)"
         @close="handleClose(student, index)"
@@ -93,6 +94,7 @@ export default {
     .student {
       display: inline-block;
       margin: 3px 4px;
+      width: 80px;
 
       .input-student-name {
         display: inline-block;
