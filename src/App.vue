@@ -6,6 +6,7 @@
       el-tab-pane(label="Teacher" name="/teacher")
       el-tab-pane(label="Student" name="/student")
       el-tab-pane(label="Point" name="/point")
+      el-tab-pane(label="Code" name="/code")
   router-view
 </template>
 <script lang="ts">

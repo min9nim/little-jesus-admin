@@ -28,6 +28,11 @@ const routes = [
     name: 'student',
     component: () => import(/* webpackChunkName: "student" */ '../views/Student.vue'),
   },
+  {
+    path: '/code',
+    name: 'code',
+    component: () => import(/* webpackChunkName: "code" */ '../views/Code.vue'),
+  },
 ]
 
 const router = new VueRouter({

@@ -14,6 +14,7 @@ export const qStudents = gql`
     res: students {
       _id
       name
+      no
     }
   }
 `
@@ -162,6 +163,7 @@ export const qCreateStudent = gql`
   mutation createStudent($name: String!) {
     res: createStudent(name: $name) {
       _id
+      no
       name
     }
   }
@@ -182,15 +184,17 @@ export const qRemoveStudent = gql`
     res: removeStudent(_id: $_id) {
       _id
       name
+      no
     }
   }
 `
 
 export const qUpdateStudent = gql`
-  mutation updateStudent($_id: ObjectId!, $name: String) {
-    res: updateStudent(_id: $_id, name: $name) {
-      name
+  mutation updateStudent($_id: ObjectId!, $name: String, $no: String) {
+    res: updateStudent(_id: $_id, name: $name, no: $no) {
       _id
+      name
+      no
     }
   }
 `
