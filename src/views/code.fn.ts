@@ -54,7 +54,7 @@ export function useHandleStudentNameConfirm(state: IState) {
       }
 
       const sameNoStudent = go(state.originalStudents, find(propEq('no', student.no)))
-      if (!sameNoStudent.no && sameNoStudent) {
+      if (student.no && sameNoStudent) {
         MessageBox.alert(
           sameNoStudent.name +
             '의 코드값(' +
