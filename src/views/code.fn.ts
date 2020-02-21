@@ -41,10 +41,10 @@ export function useHandleStudentNameConfirm(state: IState) {
   const l = logger.addTags('useHandleStudentNameConfirm')
   return async (student: IStudent) => {
     try {
-      if (!student.no) {
-        student.editable = false
-        return
-      }
+      // if (!student.no) {
+      //   student.editable = false
+      //   return
+      // }
       const originalStudent = go(state.originalStudents, find(propEq('_id', student._id)))
       l.verbose(originalStudent.no, student.no)
       if (originalStudent.no === student.no) {
