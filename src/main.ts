@@ -7,6 +7,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 import store from './store'
 import locale from 'element-ui/lib/locale/lang/ko'
 // import {ko} from 'element-ui/locale'   // not exist
+import {setApiServer} from '@/utils'
+
+setApiServer()
 
 Vue.config.productionTip = false
 Vue.use(VueCompositionApi)
