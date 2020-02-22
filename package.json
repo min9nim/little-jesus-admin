@@ -16,7 +16,7 @@
     "graphql-tag": "^2.10.1",
     "if-logger": "0.8.4",
     "interval-call": "^0.0.3",
-    "lj-code": "0.0.5",
+    "lj-code": "0.0.6",
     "mingutils": "0.0.7",
     "moment": "^2.24.0",
     "ramda": "^0.26.1",
