@@ -7,7 +7,7 @@ import VCode from 'lj-code'
 import 'lj-code/dist/code.css'
 import {initStudents} from './home.fn'
 import createLogger from 'if-logger'
-const logger = createLogger({tags: 'Code.vue'})
+const logger = createLogger({tags: ['Code.vue']})
 export default {
   name: 'v-code-wrapper',
   components: {VCode},
