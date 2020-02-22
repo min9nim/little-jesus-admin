@@ -9,7 +9,7 @@ import {
   qStudents,
 } from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
-import {IGlobalState, ITeacher, IStudent} from '@/biz/type'
+import {ITeacher, IStudent} from '@/biz/type'
 import {propEq, eqProps, differenceWith, clone, sort, map, append} from 'ramda'
 import {go} from 'mingutils'
 
