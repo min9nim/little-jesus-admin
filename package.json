@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@mgsong/lj-common": "0.0.4",
     "@vue/composition-api": "latest",
     "axios": "^0.19.0",
     "core-js": "^3.3.2",
@@ -16,7 +17,6 @@
     "graphql-tag": "^2.10.1",
     "if-logger": "0.8.4",
     "interval-call": "^0.0.3",
-    "lj-code": "0.0.6",
     "mingutils": "0.0.7",
     "moment": "^2.24.0",
     "ramda": "^0.26.1",

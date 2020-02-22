@@ -3,10 +3,11 @@ v-code(:students="$store.state.students" v-loading='state.loading')
 </template>
 
 <script>
-import VCode from 'lj-code'
-import 'lj-code/dist/code.css'
+import {VCode} from '@mgsong/lj-common'
+import '@mgsong/lj-common/dist/lj.css'
 import {initStudents} from './home.fn'
 import createLogger from 'if-logger'
+
 const logger = createLogger({tags: ['Code.vue']})
 export default {
   name: 'v-code-wrapper',

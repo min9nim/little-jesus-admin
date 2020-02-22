@@ -781,6 +781,30 @@
     request-promise "^4.1.1"
     yargs "^8.0.2"
 
+"@mgsong/lj-common@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@mgsong/lj-common/-/lj-common-0.0.4.tgz#a00ba72c521c1e9fe5ccfd399a5bc302091a192e"
+  integrity sha512-YoxOIKAmZSvcIirnhkiTaaEugSc30uuTtTRL/HOwvjSfsB3jg7x0sLsaY6eqv2bMZyn1EmVl/eCC8AB/l79GVA==
+  dependencies:
+    "@sentry/browser" "^5.9.1"
+    "@sentry/integrations" "^5.8.0"
+    "@vue/composition-api" latest
+    axios "^0.19.0"
+    core-js "^3.3.2"
+    element-ui "^2.12.0"
+    graphql "^14.5.8"
+    graphql-tag "^2.10.1"
+    if-logger "0.8.4"
+    interval-call "^0.1.0"
+    mingutils "0.0.10"
+    mocha "^6.2.2"
+    moment "^2.24.0"
+    ramda "^0.26.1"
+    sweetalert2 "^9.7.2"
+    vue "^2.6.10"
+    vue-router "^3.1.3"
+    vuex "^3.0.1"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -6154,30 +6178,6 @@ lines-and-columns@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
   integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
-
-lj-code@0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/lj-code/-/lj-code-0.0.6.tgz#98eb14fa59068bd186e4c980652112b7be6ab5b9"
-  integrity sha512-AKRKRRvj5lQzYwzA5oaTsj7/XXszSetOvPIMvRr7TpvfB8v88Ln7VlA53zY+ETnw5Cxg0IXhaxguZ5qq4LTYXg==
-  dependencies:
-    "@sentry/browser" "^5.9.1"
-    "@sentry/integrations" "^5.8.0"
-    "@vue/composition-api" latest
-    axios "^0.19.0"
-    core-js "^3.3.2"
-    element-ui "^2.12.0"
-    graphql "^14.5.8"
-    graphql-tag "^2.10.1"
-    if-logger "0.8.4"
-    interval-call "^0.1.0"
-    mingutils "0.0.10"
-    mocha "^6.2.2"
-    moment "^2.24.0"
-    ramda "^0.26.1"
-    sweetalert2 "^9.7.2"
-    vue "^2.6.10"
-    vue-router "^3.1.3"
-    vuex "^3.0.1"
 
 load-json-file@^2.0.0:
   version "2.0.0"
