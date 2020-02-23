@@ -1,16 +1,17 @@
 import {reactive} from '@vue/composition-api'
 import {req, exclude, nameAscending} from '@/utils'
 import {
-  qCreatePoint,
+  // qCreatePoint,
   qTeachers,
-  qUpdatePoint,
+  // qUpdatePoint,
   qAddStudentToTeacher,
   qRemoveStudentToTeacher,
   qStudents,
 } from '@/biz/query'
 import {MessageBox, Notification} from 'element-ui'
-import {IGlobalState, ITeacher, IStudent} from '@/biz/type'
-import {propEq, eqProps, prop, differenceWith, clone} from 'ramda'
+import {ITeacher, IStudent} from '@/biz/type'
+import {propEq, eqProps, differenceWith, clone, sort, map, append} from 'ramda'
+import {go} from 'mingutils'
 
 export interface IState {
   date?: string
@@ -23,7 +24,6 @@ export interface IState {
 
 export interface IAllState {
   state: IState
-  globalState: IGlobalState
 }
 
 export function useState(): IState {
@@ -38,122 +38,61 @@ export function useState(): IState {
   return state
 }
 
-let globalState: IGlobalState
-export function useGlobalState(): IGlobalState {
-  if (globalState) {
-    return globalState
-  }
-  globalState = reactive<IGlobalState>({
-    teachers: [] as ITeacher[],
-    points: [],
-    students: [],
-  })
-  return globalState
-}
-
-export function useBeforeMount({state, globalState}: any) {
+export function useBeforeMount({root, state}: any) {
   return async () => {
-    if (globalState.teachers.length === 0) {
-      await initTeachers({state, globalState})
+    if (root.$store.state.students.length === 0) {
+      await initStudents({root, state})
     }
-    if (globalState.students.length === 0) {
-      await initStudents({state, globalState})
+
+    if (root.$store.state.teachers.length === 0) {
+      await initTeachers({root, state})
     }
-    state.studentsLeft = clone(globalState.students)
-    globalState.teachers.forEach((teacher: any) => {
+
+    state.studentsLeft = clone(root.$store.state.students)
+    root.$store.state.teachers.forEach((teacher: any) => {
       state.studentsLeft = differenceWith(eqProps('_id'))(state.studentsLeft, teacher.students)
     })
   }
 }
 
-export async function initTeachers({state, globalState}: IAllState) {
+export async function initTeachers({root, state}: any) {
   state.loading = true
   const result = await req(qTeachers)
   state.loading = false
-  globalState.teachers = result.res.map((teacher: ITeacher) => ({
-    ...teacher,
-    loading: false,
-    editable: false,
-    students: teacher.students.map(student => ({...student, loading: false})).sort(nameAscending),
-  }))
-
-  globalState.teachers.sort(nameAscending)
+  const teachers = go(
+    result.res,
+    map((teacher: any) => ({
+      ...teacher,
+      loading: false,
+      editable: false,
+      students: go(
+        teacher.students,
+        map((studentId: string) => ({
+          ...root.$store.getters.studentMap[studentId],
+          loading: false,
+        })),
+        sort(nameAscending),
+      ),
+    })),
+    sort(nameAscending),
+  )
+  root.$store.commit('setTeachers', teachers)
 }
-export async function initStudents({state, globalState}: IAllState) {
+export async function initStudents({root, state}: any) {
   state.loading = true
   const result = await req(qStudents)
   state.loading = false
-  globalState.students = result.res.map((student: IStudent) => ({
-    ...student,
-    loading: false,
-    editable: false,
-  }))
-  globalState.students.sort(nameAscending)
-}
 
-export function useHandleSave({state, globalState}: IAllState) {
-  return async () => {
-    if (state.pointInit) {
-      await updatePoint({state, globalState})
-    } else {
-      await createPoint({state, globalState})
-    }
-  }
-}
-
-export async function updatePoint({state, globalState}: IAllState) {
-  state.loading = true
-  const results = globalState.points.map(point => {
-    return req(qUpdatePoint, {
-      _id: point._id,
-      owner: point.owner._id,
-      date: state.date,
-      attendance: point.attendance,
-      visitcall: point.visitcall,
-      meditation: point.meditation,
-      recitation: point.recitation,
-      invitation: point.invitation,
-      etc: point.etc,
-    })
-  })
-  await Promise.all(results)
-  state.loading = false
-  state.pointInit = true
-  state.editable = false
-  // @ts-ignore
-  Notification.success({message: '저장 완료', position: 'bottom-right'})
-  // await Message({message: '저장 완료', type: 'success'})
-}
-
-export async function createPoint({state, globalState}: IAllState) {
-  try {
-    state.loading = true
-    const results = globalState.points.map(point => {
-      return req(qCreatePoint, {
-        owner: point.owner._id,
-        date: state.date,
-        attendance: point.attendance,
-        visitcall: point.visitcall,
-        meditation: point.meditation,
-        recitation: point.recitation,
-        invitation: point.invitation,
-        etc: point.etc,
-      })
-    })
-    const resolvedList: any = await Promise.all(results)
-    globalState.points = resolvedList.map(prop('res')) // 생성된 _id 세팅
-    state.loading = false
-  } catch (e) {
-    state.loading = false
-    MessageBox.alert(e.message, {type: 'warning'})
-    throw e
-  }
-
-  state.pointInit = true
-  state.editable = false
-  // await Message({message: '저장 완료', type: 'success'})
-  // @ts-ignore
-  Notification.success({message: '저장 완료', position: 'bottom-right'})
+  const students = go(
+    result.res,
+    map((student: IStudent) => ({
+      ...student,
+      loading: false,
+      editable: false,
+    })),
+    sort(nameAscending),
+  )
+  root.$store.commit('setStudents', students)
 }
 
 export function useHandleEdit({state}: {state: IState}) {
@@ -195,13 +134,13 @@ export function useHandleNewStudentChange(state: IState) {
 export function useHandleClose(state: IState) {
   return async (teacher: ITeacher, student: IStudent) => {
     try {
-      await await MessageBox.confirm(`${teacher.name} 선생님 반에서 ${student.name}를 제거합니다`, {
+      await MessageBox.confirm(`${teacher.name} 선생님 반에서 ${student.name}를 제거합니다`, {
         type: 'warning',
       })
       student.loading = true
       await req(qRemoveStudentToTeacher, {teacherId: teacher._id, studentId: student._id})
       student.loading = false
-      state.studentsLeft.push(student)
+      state.studentsLeft = go(state.studentsLeft, append(student), sort(nameAscending))
       teacher.students = exclude(eqProps('_id', student))(teacher.students)
       // @ts-ignore
       Notification.success({

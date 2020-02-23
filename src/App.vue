@@ -6,6 +6,7 @@
       el-tab-pane(label="Teacher" name="/teacher")
       el-tab-pane(label="Student" name="/student")
       el-tab-pane(label="Point" name="/point")
+      el-tab-pane(label="Code" name="/code")
   router-view
 </template>
 <script lang="ts">
@@ -24,7 +25,7 @@ export default {
     return {
       state,
       handleClick(tab: any, event: any) {
-        console.log(tab, event)
+        // console.log(tab, event)
         root.$router.push(tab.name)
       },
     }
@@ -39,6 +40,38 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+
+  .el-card {
+    // border: 5px solid #f1f1f1;
+    .el-card__header {
+      padding: 10px 10px;
+      background-color: #f9f9f9;
+    }
+
+    .el-card__body {
+      padding: 10px 10px;
+    }
+  }
+
+  .home {
+    .points {
+      .el-card__header {
+        padding: 5px 10px;
+      }
+    }
+  }
+
+  .el-form .el-form-item {
+    margin: 0;
+
+    .el-form-item__content {
+      line-height: 0;
+    }
+
+    .el-form-item__error--inline {
+      display: block;
+    }
+  }
 }
 
 #nav {
@@ -57,20 +90,6 @@ export default {
 
   a.router-link-exact-active {
     color: #42b983;
-  }
-}
-
-#app {
-  .el-card {
-    // border: 5px solid #f1f1f1;
-    .el-card__header {
-      padding: 10px 10px;
-      background-color: #f9f9f9;
-    }
-
-    .el-card__body {
-      padding: 10px 10px;
-    }
   }
 }
 </style>

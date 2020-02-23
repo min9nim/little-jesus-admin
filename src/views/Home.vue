@@ -2,35 +2,36 @@
 .home(v-loading='state.loading')
   .teachers
     h3 선생님&학생 현황
-    .no-result(v-if="globalState.teachers.length === 0") 선생님을 추가해 주세요
-    .teacher(v-for="teacher in globalState.teachers" :key="teacher._id" v-loading="teacher.loading")
-      el-card(shadow="hover")
-        div(slot="header")
-          .teacherName
-            h4 {{teacher.name}}({{teacher.students.length}})
-        .no-result(v-if="teacher.students.length === 0") 반 학생을 추가해 주세요
-        .item(
-          v-for="(student, index) in teacher.students"
-          :key="student._id"
-          v-loading="student.loading"
-        )
-          el-tag(
-            closable
-            @close="handleClose(teacher, student)"
-          ) {{student.name}}
-        .new-student(v-if="state.studentsLeft.length > 0")
-          el-select.studentsLeft(
-            v-model="teacher.newStudentId"
-            placeholder="학생 추가"
-            size="mini"
-            @change="handleNewStudentChange(teacher)"
+    .no-result(v-if="$store.state.teachers.length === 0") 선생님을 추가해 주세요
+    template(v-if="$store.state.teachers.length > 0")
+      .teacher(v-for="teacher in $store.state.teachers" :key="teacher._id" v-loading="teacher.loading")
+        el-card(shadow="hover")
+          div(slot="header")
+            .teacherName
+              h4 {{teacher.name}}({{teacher.students.length}})
+          .no-result(v-if="teacher.students.length === 0") 반 학생을 추가해 주세요
+          .item(
+            v-for="(student, index) in teacher.students"
+            :key="student._id"
+            v-loading="student.loading"
           )
-            el-option.newStudent(
-              v-for="item in state.studentsLeft"
-              :key="item._id"
-              :label="item.name"
-              :value="item._id"
+            el-tag(
+              closable
+              @close="handleClose(teacher, student)"
+            ) {{student.name}}
+          .new-student(v-if="state.studentsLeft.length > 0")
+            el-select.studentsLeft(
+              v-model="teacher.newStudentId"
+              placeholder="학생 추가"
+              size="mini"
+              @change="handleNewStudentChange(teacher)"
             )
+              el-option.newStudent(
+                v-for="item in state.studentsLeft"
+                :key="item._id"
+                :label="item.name"
+                :value="item._id"
+              )
     .teacher(v-if="state.studentsLeft.length > 0")
       .teacher-undefined
         h4 반미정
@@ -44,29 +45,23 @@ import {createComponent, onBeforeMount, onMounted} from '@vue/composition-api'
 import {
   useState,
   useBeforeMount,
-  useHandleSave,
   IState,
-  useGlobalState,
   useHandleEdit,
   useHandleClose,
   useHandleNewStudentChange,
 } from './home.fn'
-import EditPoint from '../components/EditPoint.vue'
-import ReadPoint from '../components/ReadPoint.vue'
-import {IGlobalState, IPoint, ITeacher, IStudent} from '../biz/type'
+import {IGlobalState, ITeacher, IStudent} from '../biz/type'
 import {remove, equals, propEq, eqProps} from 'ramda'
 import {exclude} from '../utils'
 
 export default {
   name: 'v-home',
-  components: {EditPoint, ReadPoint},
   setup(props: any, {root}: any) {
-    const globalState = useGlobalState()
     const state: IState = useState()
-    onBeforeMount(useBeforeMount({state, globalState}))
+    onBeforeMount(useBeforeMount({root, state}))
     return {
       state,
-      globalState,
+      studentMap: root.$store.getters.studentMap,
       handleClose: useHandleClose(state),
       handleNewStudentChange: useHandleNewStudentChange(state),
     }
