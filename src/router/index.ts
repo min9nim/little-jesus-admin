@@ -33,6 +33,11 @@ const routes = [
     name: 'code',
     component: () => import(/* webpackChunkName: "code" */ '../views/Code.vue'),
   },
+  {
+    path: '/qr',
+    name: 'qr',
+    component: () => import(/* webpackChunkName: "qr" */ '../views/QR.vue'),
+  },
 ]
 
 const router = new VueRouter({
