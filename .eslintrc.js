@@ -5,7 +5,7 @@ module.exports = {
   },
   extends: ['plugin:vue/essential', '@vue/prettier', '@vue/typescript'],
   rules: {
-    'no-unused-vars': ['warn', { "varsIgnorePattern": "I[A-Z]*" }],
+    // 'no-unused-vars': ['warn', { "varsIgnorePattern": "I[A-Z]*" }],
     'prettier/prettier': ['error', {semi: false}],
     'no-console': ['warn', {allow: ['warn', 'error']}],
     'no-debugger': 'warn',
