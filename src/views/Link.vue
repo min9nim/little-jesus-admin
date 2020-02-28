@@ -1,7 +1,7 @@
 <template lang="pug">
   .main
-    .link(@click="open") >> 학생용 QR코드 출석체크 바로가기 <<
-    .link(@click="open") >> 선생님용 출석체크 바로가기 <<
+    .link(@click="openQR") >> 학생용 QR코드 출석체크 바로가기 <<
+    .link(@click="openCheck") >> 선생님용 출석체크 바로가기 <<
 </template>
 
 <script>
@@ -19,8 +19,11 @@ export default {
   name: 'v-qr',
   async mounted() {},
   methods: {
-    open() {
+    openQR() {
       window.open(qrUrl, '_blank')
+    },
+    openCheck() {
+      window.open(checkUrl, '_blank')
     },
   },
 }
