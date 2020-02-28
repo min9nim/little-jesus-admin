@@ -5,13 +5,18 @@
 <script>
 import createLogger from 'if-logger'
 
+let qrUrl = 'https://little-jesus-code-dev.now.sh'
+if (location.host === 'little-jesus-admin-2020.now.sh') {
+  qrUrl = 'https://little-jesus-code.now.sh'
+}
+
 const logger = createLogger({tags: ['Code.vue']})
 export default {
   name: 'v-qr',
   async mounted() {},
   methods: {
     open() {
-      window.open('https://little-jesus-code.now.sh', '_blank')
+      window.open(qrUrl, '_blank')
     },
   },
 }
