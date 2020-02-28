@@ -1,7 +1,9 @@
 <template lang="pug">
   .main
-    .link(@click="openQR") >> 학생용 QR코드 출석체크 바로가기 <<
-    .link(@click="openCheck") >> 선생님용 출석체크 바로가기 <<
+    .link
+      el-link(:href="qrUrl" target="_blank") >> 학생용 QR코드 출석체크 바로가기 <<
+    .link
+      el-link(:href="checkUrl" target="_blank") >> 선생님용 출석체크 바로가기 <<
 </template>
 
 <script>
@@ -15,27 +17,22 @@ if (location.host === 'little-jesus-admin-2020.now.sh') {
 }
 
 const logger = createLogger({tags: ['Code.vue']})
+
+logger.info({qrUrl, checkUrl})
+
 export default {
   name: 'v-qr',
   async mounted() {},
-  methods: {
-    openQR() {
-      window.open(qrUrl, '_blank')
-    },
-    openCheck() {
-      window.open(checkUrl, '_blank')
-    },
+  data() {
+    return {
+      qrUrl,
+      checkUrl,
+    }
   },
 }
 </script>
 <style scoped lang="stylus">
 .link {
   margin: 10px 0;
-  cursor: pointer;
-
-  &:hover {
-    // color: green;
-    font-weight: bold;
-  }
 }
 </style>
