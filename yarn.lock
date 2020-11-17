@@ -781,10 +781,10 @@
     request-promise "^4.1.1"
     yargs "^8.0.2"
 
-"@mgsong/lj-common@0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@mgsong/lj-common/-/lj-common-0.0.8.tgz#2a8d2afa65b1c9952d9b71972a856ad08b3f84f2"
-  integrity sha512-YJAYWuUa9vgjJHtjw953J+qDfik3cv5Qg43B8cPJHr0wR0lk0I1bikF3e5UN0xeyCxwFdN+Q2SMPi7AImxsmFg==
+"@mgsong/lj-common@0.1.9":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@mgsong/lj-common/-/lj-common-0.1.9.tgz#a94f617f7e864767f5b31dafd910142036a0e6d8"
+  integrity sha512-IMZNvwEsp1oQVh4RAvxyUMCdZUy4Xbo/102Nu04gVK65jF3sMliEddYvn+HWiXcDi3vxuJ9swkuj7ZRb2aJ0Vw==
   dependencies:
     "@sentry/browser" "^5.12.4"
     "@sentry/integrations" "^5.12.4"
@@ -794,9 +794,9 @@
     element-ui "^2.12.0"
     graphql "^14.5.8"
     graphql-tag "^2.10.1"
-    if-logger "0.8.4"
+    if-logger "0.11.2"
     interval-call "^0.1.0"
-    mingutils "0.0.10"
+    mingutils "0.2.0"
     mocha "^6.2.2"
     ramda "^0.26.1"
     vue "^2.6.10"
@@ -5253,6 +5253,11 @@ ieee754@^1.1.4:
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.13.tgz#ec168558e95aa181fd87d37f55c32bbcb6708b84"
   integrity sha512-4vf7I2LYV/HaWerSo3XmlMkp5eZ83i+/CDluXi/IGTs/O1sejBNhTtnxzmRZfvOUqj7lZjqHkeTvpgSFDlWZTg==
 
+if-logger@0.11.2:
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/if-logger/-/if-logger-0.11.2.tgz#b24eb0bf2d73b4fa68d4872f968bcfe4f6a8b587"
+  integrity sha512-LR7cbSzni5wTb7s14EXhzyDxCY/Ee4HdlEbf6zHfGVKx+L9h3gB7VLaLLOUOmTCXPOzoQBGtWk9vdhVyf2DuVw==
+
 if-logger@0.8.4:
   version "0.8.4"
   resolved "https://registry.yarnpkg.com/if-logger/-/if-logger-0.8.4.tgz#c9951ba09e547e5fce8a6b3cebbc0b37c79bc8f7"
@@ -6606,17 +6611,17 @@ mimic-fn@^2.0.0, mimic-fn@^2.1.0:
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-2.1.0.tgz#7ed2c2ccccaf84d3ffcb7a69b57711fc2083401b"
   integrity sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
 
-mingutils@0.0.10:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/mingutils/-/mingutils-0.0.10.tgz#156805a8747e6cc49a7f490e5dab5e0316d522c2"
-  integrity sha512-wPZTWwaK9FPC3ozxxyGAzbgGOAWoPjsjFbBF3IVqwBDBQNdYQXx+HNEudHC8Y1yszg0R6WDp5No6n3FPppAtEw==
-  dependencies:
-    ramda "^0.26.1"
-
 mingutils@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/mingutils/-/mingutils-0.0.7.tgz#017d437de87bab56d1575ae971a7a80cc1a2e898"
   integrity sha512-u3JFT2k9zHkpTphXUOQ2p67T2FqKuiaEVb7nkOn57k85wVlqmcwze+Oo16bQdBVboz2uDs0N37Fg8uTPWOtd7w==
+  dependencies:
+    ramda "^0.26.1"
+
+mingutils@0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/mingutils/-/mingutils-0.2.0.tgz#ab4bdc262f1f2da7e5c68867e83754e240244edf"
+  integrity sha512-bY9CEOXcOLNyTm1HRJu0NDpOyJJyV77vOj06BoM7j3GIfuZhQ4LsKXOfaccq37Kefun8lq0bsBRNQn2Rx9ktbQ==
   dependencies:
     ramda "^0.26.1"
 
