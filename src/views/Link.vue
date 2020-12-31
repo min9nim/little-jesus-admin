@@ -8,13 +8,18 @@
 
 <script>
 import createLogger from 'if-logger'
+import {oneOf} from 'mingutils'
 
-let qrUrl = 'https://little-jesus-code-dev.now.sh'
-let checkUrl = 'https://little-jesus-dev.now.sh'
-if (location.host === 'little-jesus-admin-2020.now.sh') {
-  qrUrl = 'https://little-jesus-code.now.sh'
-  checkUrl = 'https://little-jesus-2020.now.sh'
-}
+const qrUrl = oneOf([
+  [location.host === 'little-jesus-admin-2020.now.sh', 'https://little-jesus-code.now.sh'],
+  [location.host === 'little-jesus-admin-2021.now.sh', 'https://little-jesus-code-2021.now.sh'],
+  [true, 'https://little-jesus-code-dev.now.sh'],
+])
+const checkUrl = oneOf([
+  [location.host === 'little-jesus-admin-2020.now.sh', 'https://little-jesus-2020.now.sh'],
+  [location.host === 'little-jesus-admin-2021.now.sh', 'https://little-jesus-2021.now.sh'],
+  [true, 'https://little-jesus-dev.now.sh'],
+])
 
 const logger = createLogger({tags: ['Code.vue']})
 

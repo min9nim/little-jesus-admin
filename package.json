@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "reformat": "prettier --write",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -17,7 +18,7 @@
     "graphql-tag": "^2.10.1",
     "if-logger": "0.8.4",
     "interval-call": "^0.0.3",
-    "mingutils": "0.0.7",
+    "mingutils": "0.6.0",
     "moment": "^2.24.0",
     "ramda": "^0.26.1",
     "vue": "^2.6.10",
