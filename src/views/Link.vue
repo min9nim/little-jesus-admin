@@ -11,14 +11,14 @@ import createLogger from 'if-logger'
 import {oneOf} from 'mingutils'
 
 const qrUrl = oneOf([
-  [location.host === 'little-jesus-admin-2020.now.sh', 'https://little-jesus-code.now.sh'],
-  [location.host === 'little-jesus-admin-2021.now.sh', 'https://little-jesus-code-2021.now.sh'],
-  [true, 'https://little-jesus-code-dev.now.sh'],
+  [location.host === 'little-jesus-admin-2020.vercel.app', 'https://little-jesus-code.vercel.app'],
+  [location.host === 'little-jesus-admin-2021.vercel.app', 'https://little-jesus-code-2021.vercel.app'],
+  [true, 'https://little-jesus-code-dev.vercel.app'],
 ])
 const checkUrl = oneOf([
-  [location.host === 'little-jesus-admin-2020.now.sh', 'https://little-jesus-2020.now.sh'],
-  [location.host === 'little-jesus-admin-2021.now.sh', 'https://little-jesus-2021.now.sh'],
-  [true, 'https://little-jesus-dev.now.sh'],
+  [location.host === 'little-jesus-admin-2020.vercel.app', 'https://little-jesus-2020.vercel.app'],
+  [location.host === 'little-jesus-admin-2021.vercel.app', 'https://little-jesus-2021.vercel.app'],
+  [true, 'https://little-jesus-dev.vercel.app'],
 ])
 
 const logger = createLogger({tags: ['Code.vue']})
